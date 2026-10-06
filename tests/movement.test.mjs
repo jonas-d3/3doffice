@@ -52,7 +52,7 @@ test('the wall beside the door remains solid in both directions', () => {
 });
 
 test('door jambs, corridor ends and furnishings stop the camera', () => {
-  for (const point of [[.5, 3.5], [1.6, 3.5], [.3, 6], [1.8, 6], [1.05, 11.35], [.4, 7.5], [.6, 10.55], [-2, 4.65]]) {
+  for (const point of [[.5, 3.5], [1.6, 3.5], [.3, 6], [1.8, 6], [1.05, 11.35], [.4, 8.7], [.6, 10.55], [-2, 4.65]]) {
     assert.equal(canStand(...point), false, `Blocked at ${point}`);
   }
   assert.ok(canStand(1.05, 3.5));
@@ -60,11 +60,60 @@ test('door jambs, corridor ends and furnishings stop the camera', () => {
   assert.ok(end.z <= 11.23 && end.z > 11.1);
 });
 
+test('Minecraft is reached across the corridor directly opposite the toilet foyer', () => {
+  const room = moveWithCollisions(3.15, 7.5, -3.8, 0);
+  assert.ok(Math.abs(room.x - (-.65)) < 1e-8);
+  assert.equal(room.z, 7.5);
+  assert.equal(walkingLocation(room.x, room.z), 'Minecraft');
+  const foyer = moveWithCollisions(room.x, room.z, 3.8, 0);
+  assert.ok(Math.abs(foyer.x - 3.15) < 1e-8);
+  assert.equal(walkingLocation(foyer.x, foyer.z), 'Toiletentré');
+});
+
+test('the far end of the corridor is closed, with Minecraft accessible only from its side door', () => {
+  const end = moveWithCollisions(1.05, 10.95, 0, 3);
+  assert.ok(end.z > 11.1 && end.z <= 11.23);
+  assert.equal(canStand(1.05, 12), false);
+  for (const z of [6.5, 8.5]) {
+    const wall = moveWithCollisions(1.05, z, -2, 0);
+    assert.ok(wall.x >= .42, `Wall at z=${z}`);
+  }
+});
+
+test('Minecraft has a clear route along both sides of the meeting table', () => {
+  const left = moveWithCollisions(-.6, 7.5, -3.5, 0);
+  assert.ok(Math.abs(left.x - (-4.1)) < 1e-8);
+  const front = moveWithCollisions(-.6, 7.5, 0, 3.1);
+  assert.ok(Math.abs(front.z - 10.6) < 1e-8);
+  const right = moveWithCollisions(front.x, front.z, -4.6, 0);
+  assert.ok(Math.abs(right.x - (-5.2)) < 1e-8);
+});
+
+test('Minecraft furniture, door jambs and exterior walls stop movement', () => {
+  for (const [x, z] of [[-2.85, 8.95], [-3.35, 7], [-5.35, 7.45], [-.1, 10.65], [-5.65, 8.95], [-2.35, 10.85], [.15, 7], [.15, 8.05]]) {
+    assert.equal(canStand(x, z), false, `Blocked at ${x},${z}`);
+  }
+  const furniture = moveWithCollisions(-2.85, 7.5, 0, 4);
+  assert.ok(furniture.z > 7.5 && furniture.z <= 7.64);
+  const exterior = moveWithCollisions(-3.35, 10.6, -10, 0);
+  assert.ok(exterior.x < -5.45 && exterior.x >= -5.58);
+});
+
 test('enter the toilet foyer halfway down the corridor and return', () => {
   const entrance = moveWithCollisions(1.05, 7.5, 2.1, 0);
   assert.ok(Math.abs(entrance.x - 3.15) < 1e-8);
   const corridor = moveWithCollisions(entrance.x, entrance.z, -2.1, 0);
   assert.ok(Math.abs(corridor.x - 1.05) < 1e-8);
+});
+
+test('the open foyer door rests beside its opening without blocking the route across the hall', () => {
+  assert.equal(canStand(1.64, 6.5), false);
+  const besideDoor = moveWithCollisions(1.05, 6.5, 1, 0);
+  assert.ok(besideDoor.x > 1.45 && besideDoor.x <= 1.6);
+  const pastDoor = moveWithCollisions(1.05, 5.5, 0, 2);
+  const entrance = moveWithCollisions(pastDoor.x, pastDoor.z, 2.1, 0);
+  assert.ok(Math.abs(entrance.x - 3.15) < 1e-8);
+  assert.ok(Math.abs(entrance.z - 7.5) < 1e-8);
 });
 
 test('both toilets are reachable from the foyer through their own doors', () => {

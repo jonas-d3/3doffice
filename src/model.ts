@@ -1,8 +1,10 @@
 import * as THREE from 'three';
-import { materials as m, cushionMaterials, random } from './materials';
-import { hallway, restrooms } from './layout.mjs';
+import { materials as m, cushionMaterials } from './materials';
+import { hallway, restrooms, minecraft } from './layout.mjs';
 import { mesh, box, cylinder, rod } from './geometry';
 import { createRestrooms } from './restrooms';
+import { plant } from './plants';
+import { createMinecraft } from './minecraft';
 
 type Parent = THREE.Object3D;
 export const room = { width: 7.6, depth: 7, height: 3.05 };
@@ -94,34 +96,6 @@ function lounge(parent: Parent) {
   }
 }
 
-function leaf(parent: Parent, position: THREE.Vector3, length: number, width: number, angle: number, lean: number) {
-  const vertices: number[] = [], indices: number[] = [];
-  for (let i = 0; i <= 12; i++) {
-    const t = i / 12, halfWidth = Math.pow(Math.sin(t * Math.PI), .75) * width;
-    for (const side of [-1, 0, 1]) vertices.push(side * halfWidth, t * length, Math.sin(t * Math.PI * .8) * length * .2 + Math.abs(side) * halfWidth * .3);
-  }
-  for (let i = 0; i < 12; i++) for (let j = 0; j < 2; j++) {
-    const a = i * 3 + j; indices.push(a, a + 3, a + 1, a + 1, a + 3, a + 4);
-  }
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3)); geometry.setIndex(indices); geometry.computeVertexNormals();
-  const material = m.green.clone(); material.color.setHSL(.25 + random() * .05, .3 + random() * .15, .17 + random() * .07); material.side = THREE.DoubleSide;
-  const object = mesh(parent, geometry, material, ...position.toArray() as [number, number, number]);
-  object.rotation.set(lean, angle, .2); return object;
-}
-
-function plant(parent: Parent, x: number, z: number, size = 1) {
-  const group = new THREE.Group(); group.position.set(x, 0, z); group.scale.setScalar(size); parent.add(group);
-  cylinder(group, .3, .245, .55, 0, .295, 0, m.black);
-  cylinder(group, .27, .27, .02, 0, .56, 0, m.soil);
-  for (let i = 0; i < 10; i++) {
-    const angle = i * 2.4, height = .7 + random() * .7, reach = .15 + random() * .45;
-    const tip = new THREE.Vector3(Math.sin(angle) * reach, .5 + height, Math.cos(angle) * reach);
-    rod(group, [0, .5, 0], tip.toArray(), .012, m.green);
-    leaf(group, tip, .55 + random() * .35, .14 + random() * .09, angle, .45 + random() * .7);
-  }
-}
-
 function details(parent: Parent) {
   box(parent, 1.84, 1.06, .065, -1.8, 1.94, -3.32, m.black, .022);
   box(parent, 1.77, .99, .008, -1.8, 1.94, -3.282, m.screen, .01);
@@ -182,20 +156,20 @@ function corridor(parent: Parent) {
   for (const z of [entrance.minZ, entrance.maxZ]) box(leftWall, .24, 2.23, .065, maxX + .1, 1.115, z, m.white);
   box(leftWall, .24, .065, 1.065, maxX + .1, 2.23, 7.5, m.white);
   box(group, .2, .025, 1, maxX + .1, .025, 7.5, m.metal);
-  // Flush white doors and dark reveals, as seen on the left of the photo.
-  for (const z of [5.5]) {
-    box(leftWall, .035, 2.23, 1.06, maxX - .025, 1.115, z, m.black);
-    box(leftWall, .05, 2.15, .92, maxX - .055, 1.075, z - .018, m.white, .008);
-    for (const side of [-1, 1]) box(leftWall, .09, 2.28, .065, maxX - .03, 1.14, z + side * .54, m.white);
-    box(leftWall, .09, .065, 1.15, maxX - .03, 2.27, z, m.white);
-    rod(leftWall, [maxX - .1, 1.02, z + .31], [maxX - .1, 1.02, z + .18], .015);
-    box(leftWall, .025, .23, .12, maxX - .035, 1.55, z + .7, m.black, .005);
-    // A small person pictogram, avoiding texture or font downloads.
-    mesh(leftWall, new THREE.SphereGeometry(.016, 8, 6), m.white, maxX - .052, 1.6, z + .7);
-    box(leftWall, .008, .07, .028, maxX - .052, 1.542, z + .7, m.white);
-  }
+  // The white foyer door is hinged to this opening and folded back along the
+  // corridor wall, as in the reference photo.
+  const foyerDoor = new THREE.Group(); group.add(foyerDoor);
+  foyerDoor.position.set(entrance.minX - .035, 0, entrance.minZ);
+  foyerDoor.rotation.y = Math.PI / 2;
+  const doorWidth = entrance.maxZ - entrance.minZ;
+  box(foyerDoor, doorWidth, 2.15, .05, doorWidth / 2, 1.075, 0, m.white, .008);
+  rod(foyerDoor, [doorWidth - .2, 1.02, -.05], [doorWidth - .07, 1.02, -.05], .015);
+  for (const y of [.38, 1.79]) cylinder(foyerDoor, .012, .012, .075, 0, y, 0, m.metal);
+  const signZ = entrance.maxZ + .22;
+  box(leftWall, .025, .23, .12, maxX - .035, 1.55, signZ, m.black, .005);
+  mesh(leftWall, new THREE.SphereGeometry(.016, 8, 6), m.white, maxX - .052, 1.6, signZ);
+  box(leftWall, .008, .07, .028, maxX - .052, 1.542, signZ, m.white);
 
-  // The office wall and open doorway form the near end of the corridor.
   const farEnd = new THREE.Group(); group.add(farEnd);
   box(farEnd, width + .32, height, .16, centerX, height / 2, maxZ + .08, m.wall);
   box(farEnd, .77, 2.16, .05, 1.33, 1.08, maxZ - .035, m.black);
@@ -204,15 +178,18 @@ function corridor(parent: Parent) {
   box(farEnd, .92, .06, .1, 1.33, 2.23, maxZ - .055, m.white);
 
   const rightWall = new THREE.Group(); group.add(rightWall);
-  box(rightWall, .16, height, length, minX - .08, height / 2, centerZ, m.wall);
-  box(rightWall, .04, .11, length, minX + .02, .055, centerZ, m.white);
+  // Minecraft supplies the shared wall and open doorway opposite the foyer.
+  for (const [start, end] of [[minZ, minecraft.minZ - .1], [minecraft.maxZ + .1, maxZ]]) {
+    box(rightWall, .2, height, end - start, minX - .1, height / 2, (start + end) / 2, m.wall);
+    box(rightWall, .04, .11, end - start, minX + .02, .055, (start + end) / 2, m.white);
+  }
 
   const fittings = new THREE.Group(); group.add(fittings);
   // Tall, narrow radiator, visible pipework, and green-lit booking display.
-  box(fittings, .13, 1.06, .58, .395, .7, 7.5, m.white, .018);
-  for (let i = 0; i < 18; i++) box(fittings, .02, .96, .017, .47, .7, 7.765 - i * .031, m.trim);
-  for (const z of [7.76, 7.68]) rod(fittings, [.32, 1.19, z], [.32, height, z], .012, m.white);
-  rod(fittings, [.4, 1.2, 7.9], [.4, 1.2, 7.78], .027, m.white);
+  box(fittings, .13, 1.06, .58, .395, .7, 8.7, m.white, .018);
+  for (let i = 0; i < 18; i++) box(fittings, .02, .96, .017, .47, .7, 8.965 - i * .031, m.trim);
+  for (const z of [8.96, 8.88]) rod(fittings, [.32, 1.19, z], [.32, height, z], .012, m.white);
+  rod(fittings, [.4, 1.2, 9.1], [.4, 1.2, 8.98], .027, m.white);
   box(fittings, .045, .38, .29, .295, 1.58, 6.5, m.black, .014);
   box(fittings, .008, .32, .24, .323, 1.58, 6.5, m.screen, .005);
   const greenLight = new THREE.MeshStandardMaterial({ color: '#50d899', emissive: '#31c488', emissiveIntensity: .6 });
@@ -284,5 +261,6 @@ export function createOffice() {
   const pendants = lamps(office);
   const hall = corridor(office);
   const toilets = createRestrooms(office);
-  return { office, ceiling, pendants, hall, toilets, walls: [west, east, north, south] };
+  const minecraft = createMinecraft(office);
+  return { office, ceiling, pendants, hall, toilets, minecraft, walls: [west, east, north, south] };
 }

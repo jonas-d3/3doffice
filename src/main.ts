@@ -24,7 +24,8 @@ const sun = new THREE.DirectionalLight('#fff0da', 2.4);
 sun.position.set(-4, 10, 7);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
-Object.assign(sun.shadow.camera, { left: -9, right: 9, top: 9, bottom: -9 });
+sun.target.position.set(0, 0, 6); scene.add(sun.target);
+Object.assign(sun.shadow.camera, { left: -13, right: 13, top: 13, bottom: -13 });
 sun.shadow.normalBias = 0.035;
 sun.shadow.bias = -.00015;
 sun.shadow.radius = 3;
@@ -85,6 +86,8 @@ renderer.setAnimationLoop(now => {
   model.hall.fittings.visible = model.hall.rightWall.visible;
   model.toilets.roof.visible = walk;
   for (const wall of model.toilets.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
+  model.minecraft.roof.visible = walk;
+  for (const wall of model.minecraft.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
   if (needsRender || !previousPosition.equals(camera.position) || !previousRotation.equals(camera.quaternion)) {
     renderer.render(scene, camera);
     previousPosition.copy(camera.position); previousRotation.copy(camera.quaternion); needsRender = false;

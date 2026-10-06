@@ -14,8 +14,13 @@ export const restrooms = {
   rightDoor: { minX: 2.65, maxX: 3.65, minZ: 8.3, maxZ: 8.5 },
 };
 
+// Across the corridor from the toilet foyer, with aligned side entrances.
+export const minecraft = { minX: -5.75, maxX: .05, minZ: 6.7, maxZ: 10.9, height: 2.9 };
+export const minecraftDoor = { minX: .05, maxX: .25, minZ: 7, maxZ: 8 };
+
 export function walkingLocation(x, z) {
   if (z <= 3.5) return 'Kontoret · i øjenhøjde';
+  if (x < (minecraftDoor.minX + minecraftDoor.maxX) / 2) return 'Minecraft';
   if (x > hallway.maxX) {
     if (z < restrooms.foyer.minZ) return 'Venstre toilet';
     if (z > restrooms.foyer.maxZ) return 'Højre toilet';
