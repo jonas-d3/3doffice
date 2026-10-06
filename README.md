@@ -9,13 +9,17 @@ pnpm install
 pnpm dev
 ```
 
-Åbn den lokale adresse, som Vite skriver i terminalen (normalt http://127.0.0.1:5173).
+Åbn den lokale adresse, som Vite skriver i terminalen (normalt http://127.0.0.1:5173/3doffice/dist/).
 
 ```sh
 pnpm test     # Bevægelse, grænser og kollisioner
 pnpm build    # Typekontrol og produktionsbuild til dist/
 pnpm preview # Se produktionsbuild lokalt
 ```
+
+## GitHub Pages
+
+Siden publiceres på https://jonas-d3.github.io/3doffice/dist/. `base` i `vite.config.ts` sikrer, at alle byggede asset-stier starter med `/3doffice/dist/`. Kør `pnpm build`, og medtag den opdaterede `dist/`-mappe ved deployment.
 
 ## Navigation
 
