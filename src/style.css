@@ -74,10 +74,10 @@ dd { margin: 6px 0 0; font-size: .77rem; line-height: 1.7; color: #67705f; }
   .view-indicator { right: 22px; top: 107px; font-size: .6rem; }
   .side-tools { right: 15px; top: 37%; padding: 5px; } .side-tools .icon-button { width: 33px; height: 33px; }
   .map-card { display: none; } .bottom-panel { bottom: max(22px, env(safe-area-inset-bottom)); width: calc(100% - 28px); }
-  .view-tabs { justify-content: space-between; border-radius: 15px; padding: 5px; } .view-tabs button { flex: 1; flex-direction: column; height: 60px; padding: 8px 6px; gap: 6px; font-size: .61rem; } .view-tabs button svg { width: 20px; height: 20px; }
-  .tab-divider { margin: 0 3px; } #navigation-hint { font-size: .55rem; gap: 6px; margin-top: 12px; white-space: normal; }
+  .view-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; border-radius: 15px; padding: 5px; } .view-tabs button { justify-content: center; height: 44px; padding: 6px 4px; gap: 5px; font-size: .61rem; } .view-tabs button svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .tab-divider { display: none; } #navigation-hint { font-size: .55rem; gap: 6px; margin-top: 12px; white-space: normal; }
   #navigation-hint span:nth-of-type(2), #navigation-hint b:first-of-type { display: none; }
-  .walk-pad { right: 19px; bottom: 144px; }
+  .walk-pad { right: 19px; bottom: 174px; }
 }
 @media (max-height: 550px) and (min-width: 600px) { .intro { top: 90px; } .intro p:not(.eyebrow), .model-note, .map-card { display: none; } .side-tools { top: 105px; } .bottom-panel { bottom: 15px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }

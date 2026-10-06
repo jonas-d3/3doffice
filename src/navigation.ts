@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { moveWithCollisions } from './movement.mjs';
+import { walkingLocation } from './layout.mjs';
 
-export type View = 'overview' | 'meeting' | 'lounge' | 'walk';
-const names = { overview: 'Overblik', meeting: 'Mødebord', lounge: 'Lounge', walk: 'I øjenhøjde' };
+export type View = 'overview' | 'meeting' | 'lounge' | 'walk' | 'hallway' | 'restrooms';
+const names = { overview: 'Overblik', meeting: 'Mødebord', lounge: 'Lounge', walk: 'Kontoret · i øjenhøjde', hallway: 'Toiletgangen', restrooms: 'Toiletentré' };
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export class Navigation {
@@ -16,18 +17,20 @@ export class Navigation {
   private transition: { from: THREE.Vector3; to: THREE.Vector3; fromTarget: THREE.Vector3; target: THREE.Vector3; elapsed: number } | null = null;
   private direction = new THREE.Vector3();
 
+  get isWalking() { return this.view === 'walk' || this.view === 'hallway' || this.view === 'restrooms'; }
+
   constructor(readonly camera: THREE.PerspectiveCamera, readonly canvas: HTMLCanvasElement) {
     this.controls = new OrbitControls(camera, canvas);
     this.controls.enableDamping = !reducedMotion;
     this.controls.dampingFactor = .09;
     this.controls.minDistance = 1.2;
-    this.controls.maxDistance = 45;
+    this.controls.maxDistance = 80;
     this.controls.maxPolarAngle = Math.PI / 2 - .035;
     this.controls.panSpeed = .7;
     this.controls.addEventListener('start', () => { this.transition = null; });
     canvas.addEventListener('pointerdown', e => {
       canvas.focus({ preventScroll: true });
-      if (this.view !== 'walk' || this.drag || e.button !== 0) return;
+      if (!this.isWalking || this.drag || e.button !== 0) return;
       this.drag = { id: e.pointerId, x: e.clientX, y: e.clientY };
       canvas.setPointerCapture(e.pointerId);
     });
@@ -58,7 +61,7 @@ export class Navigation {
       button.addEventListener('pointerdown', e => { e.preventDefault(); this.keys.add(code); button.setPointerCapture(e.pointerId); });
       const stop = () => this.keys.delete(code);
       button.addEventListener('pointerup', stop); button.addEventListener('pointercancel', stop); button.addEventListener('lostpointercapture', stop);
-      button.addEventListener('click', e => { if (e.detail === 0 && this.view === 'walk') this.walkStep(code, .35); });
+      button.addEventListener('click', e => { if (e.detail === 0 && this.isWalking) this.walkStep(code, .35); });
     });
     this.setView('overview', true);
   }
@@ -68,32 +71,35 @@ export class Navigation {
   setView(view: View, immediate = false) {
     this.clearInput(); this.transition = null;
     this.view = view;
-    this.controls.enabled = view !== 'walk';
-    this.camera.fov = view === 'walk' ? 67 : 42; this.camera.updateProjectionMatrix();
-    document.body.dataset.mode = view;
+    const walking = this.isWalking;
+    this.controls.enabled = !walking;
+    this.camera.fov = walking ? 67 : 42; this.camera.updateProjectionMatrix();
+    document.body.dataset.mode = walking ? 'walk' : view;
     document.querySelector('#view-name')!.textContent = names[view];
-    document.querySelector('#map-mode')!.textContent = view === 'walk' ? 'Din position' : 'Frit kamera';
-    document.querySelector<HTMLElement>('.walk-pad')!.hidden = view !== 'walk';
+    document.querySelector('#map-mode')!.textContent = walking ? 'Din position' : 'Frit kamera';
+    document.querySelector<HTMLElement>('.walk-pad')!.hidden = !walking;
     document.querySelectorAll<HTMLButtonElement>('[data-view]').forEach(button => {
       const selected = button.dataset.view === view;
       button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected));
     });
-    for (const id of ['rotate', 'pan', 'zoom-in', 'zoom-out']) document.querySelector<HTMLButtonElement>(`#${id}`)!.disabled = view === 'walk';
-    document.querySelector('#navigation-hint')!.innerHTML = view === 'walk'
+    for (const id of ['rotate', 'pan', 'zoom-in', 'zoom-out']) document.querySelector<HTMLButtonElement>(`#${id}`)!.disabled = walking;
+    document.querySelector('#navigation-hint')!.innerHTML = walking
       ? '<span>W A S D / pile: gå</span><b>·</b><span>Træk / Q E: kig rundt</span><b>·</b><span>Esc: overblik</span>'
       : '<span>Træk: drej</span><b>·</b><span>Højretræk / to fingre: panorer</span><b>·</b><span>Scroll / knib: zoom</span>';
-    if (view === 'walk') {
-      this.camera.position.set(.65, 1.62, 2.5); this.yaw = -.12; this.pitch = -.025;
+    if (view === 'walk' || view === 'hallway' || view === 'restrooms') {
+      this.camera.position.set(view === 'restrooms' ? 2.45 : 1.05, 1.62, view === 'restrooms' ? 7.5 : view === 'hallway' ? 4.4 : 2.5);
+      this.yaw = view === 'restrooms' ? Math.PI / 2 : view === 'hallway' ? Math.PI : 0; this.pitch = view === 'restrooms' ? -.2 : -.025;
       this.look(); this.canvas.focus({ preventScroll: true }); return;
     }
     this.setTool('rotate');
-    const distanceScale = Math.max(1, 1 / this.camera.aspect);
+    const distanceScale = Math.max(1, .75 / this.camera.aspect);
+    const overviewTarget = new THREE.Vector3(1, .7, 2.3);
     const positions = {
-      overview: new THREE.Vector3(9, 8.5, 11).multiplyScalar(distanceScale),
+      overview: new THREE.Vector3(13, 15, 19).multiplyScalar(distanceScale).add(overviewTarget),
       meeting: new THREE.Vector3(1, 3.3, 4.7),
       lounge: new THREE.Vector3(-.15, 2.8, 3.2),
     };
-    const targets = { overview: new THREE.Vector3(0, .7, 0), meeting: new THREE.Vector3(-1.8, .8, -.6), lounge: new THREE.Vector3(2.65, .6, -.2) };
+    const targets = { overview: overviewTarget, meeting: new THREE.Vector3(-1.8, .8, -.6), lounge: new THREE.Vector3(2.65, .6, -.2) };
     // Flush residual orbit damping before moving to a preset.
     const damping = this.controls.enableDamping; this.controls.enableDamping = false; this.controls.update(); this.controls.enableDamping = damping;
     if (immediate || reducedMotion) {
@@ -114,7 +120,7 @@ export class Navigation {
   }
 
   zoom(scale: number) {
-    if (this.view === 'walk') return;
+    if (this.isWalking) return;
     this.transition = null;
     const offset = this.camera.position.clone().sub(this.controls.target);
     offset.setLength(THREE.MathUtils.clamp(offset.length() * scale, this.controls.minDistance, this.controls.maxDistance));
@@ -142,10 +148,13 @@ export class Navigation {
 
   update(dt: number) {
     const key = (...codes: string[]) => codes.some(code => this.keys.has(code)) ? 1 : 0;
-    if (this.view === 'walk') {
+    if (this.isWalking) {
       this.yaw += (key('KeyE') - key('KeyQ')) * dt * 1.5;
       this.move(key('KeyW', 'ArrowUp') - key('KeyS', 'ArrowDown'), key('KeyD', 'ArrowRight') - key('KeyA', 'ArrowLeft'), dt * (key('ShiftLeft', 'ShiftRight') ? 2.8 : 1.65));
       this.look();
+      const location = walkingLocation(this.camera.position.x, this.camera.position.z);
+      const label = document.querySelector('#view-name')!;
+      if (label.textContent !== location) label.textContent = location;
     } else {
       if (this.transition) {
         this.transition.elapsed += dt;
@@ -166,12 +175,12 @@ export class Navigation {
       }
       this.controls.update();
       const target = this.controls.target.clone();
-      this.controls.target.clamp(new THREE.Vector3(-5, 0, -5), new THREE.Vector3(5, 3, 5));
+      this.controls.target.clamp(new THREE.Vector3(-5, 0, -5), new THREE.Vector3(5, 3, 12));
       this.camera.position.add(this.controls.target.clone().sub(target));
     }
-    const point = this.view === 'walk' ? this.camera.position : this.controls.target;
+    const point = this.isWalking ? this.camera.position : this.controls.target;
     this.camera.getWorldDirection(this.direction);
     const angle = Math.atan2(this.direction.x, -this.direction.z) * 180 / Math.PI;
-    document.querySelector('#map-camera')!.setAttribute('transform', `translate(${80 + point.x * 17},${73 + point.z * 16}) rotate(${angle})`);
+    document.querySelector('#map-camera')!.setAttribute('transform', `translate(${90 + point.x * 12},${64 + point.z * 12}) rotate(${angle})`);
   }
 }
