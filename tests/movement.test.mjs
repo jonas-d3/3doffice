@@ -1,150 +1,98 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { canStand, moveWithCollisions } from '../src/movement.mjs';
-import { walkingLocation } from '../src/layout.mjs';
+import { canStand, moveWithCollisions, obstacles } from '../src/movement.mjs';
+import { walkingLocation, spaceInvaders, minecraft, kitchen, meeting2 } from '../src/layout.mjs';
+import { planPoint } from '../src/placement.mjs';
+import { lobbyPreset } from '../src/lobby-layout.mjs';
+const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-7, `${a} ≠ ${b}`);
+function route(points) {
+  let p = { x: points[0][0], z: points[0][1] };
+  assert.ok(canStand(p.x, p.z), `Start ${p.x},${p.z}`);
+  for (const [x, z] of points.slice(1)) {
+    p = moveWithCollisions(p.x, p.z, x - p.x, z - p.z);
+    close(p.x, x); close(p.z, z);
+  }
+  return p;
+}
 
-test('entrance and middle aisle are walkable, furniture and outside walls are not', () => {
-  for (const [x, z] of [[.65, 2.5], [0, 0], [0, -2], [.5, 1], [1.05, 4]]) assert.ok(canStand(x, z));
-  for (const [x, z] of [[-1.8, 0], [3, 0], [1.8, 0], [4, 0], [0, 6], [NaN, 0]]) assert.equal(canStand(x, z), false);
+test('all walking camera presets start on clear floor', () => {
+  for (const p of [[lobbyPreset.x, lobbyPreset.z], [5.585, 5.55], [5.585, 6.9], [6.9, 9.6], [6.4, 15.2], [.48, 10.55]]) assert.ok(canStand(...p), `Preset ${p}`);
 });
-test('walking down the aisle changes position freely', () => {
-  const position = moveWithCollisions(0, 1.5, 0, -1);
-  assert.ok(Math.abs(position.z - .5) < 1e-8);
-  assert.equal(position.x, 0);
+test('walk from MØDE 4 down the entire corridor into the kitchen and back', () => {
+  route([[5.585, 5.55], [5.585, 14.2], [5.585, 5.55]]);
 });
-test('a large step cannot tunnel through the conference table', () => {
-  const position = moveWithCollisions(0, 0, -6, 0);
-  assert.ok(position.x > -.41 && position.x <= 0);
-  assert.ok(canStand(position.x, position.z));
+test('enter Minecraft at its staggered doorway and walk around the table', () => {
+  route([[5.585, 7.85], [4.35, 7.85], [4.35, 10.55], [.48, 10.55], [4.35, 10.55], [4.35, 7.85], [5.585, 7.85]]);
 });
-test('diagonal movement slides along furniture', () => {
-  const position = moveWithCollisions(0, 0, -1, -1);
-  assert.ok(position.x > -.41);
-  assert.ok(position.z < -.95);
+test('the toilet foyer is reached further down the corridor than Minecraft', () => {
+  route([[5.585, 7.85], [5.585, 9.6], [6.9, 9.6], [5.585, 9.6]]);
+  assert.equal(canStand(6.235, 7.85), false);
+  assert.equal(canStand(4.935, 9.6), false);
 });
-test('room boundaries retain the camera even on a large step', () => {
-  const position = moveWithCollisions(0, 0, 0, -10);
-  assert.ok(position.z > -3.24);
-  assert.ok(canStand(position.x, position.z));
+test('both compact toilets remain reachable through their own doors', () => {
+  route([[6.9, 9.6], [6.9, 7.85], [6.9, 9.6], [6.9, 10.8], [6.9, 9.6]]);
 });
-
-test('walk through the office doorway into the corridor and back', () => {
-  const outside = moveWithCollisions(1.05, 2.5, 0, 1.85);
-  assert.ok(Math.abs(outside.z - 4.35) < 1e-8);
-  const inside = moveWithCollisions(outside.x, outside.z, 0, -1.85);
-  assert.ok(Math.abs(inside.z - 2.5) < 1e-8);
+test('the kitchen side opening now connects to the lobby below MØDE 2', () => {
+  route([[6.4, 15.2], [6.4, 15.95], [4.5, 15.95], [.4, 15.95], [6.4, 15.95]]);
 });
-
-test('walk straight out of the office to the far end and return without turning', () => {
-  const end = moveWithCollisions(1.05, 2.5, 0, 8.5);
-  assert.equal(end.x, 1.05);
-  assert.ok(Math.abs(end.z - 11) < 1e-8);
+test('the kitchen aisle reaches the sink without passing through the counter', () => {
+  route([[5.585, 14.2], [6.4, 14.2], [6.4, 14.6], [10.3, 14.6]]);
+  const blocked = moveWithCollisions(9, 14.5, 0, -3);
+  assert.ok(blocked.z > 14.1 && blocked.z < 14.5);
+});
+test('MØDE 2 is reserved but cannot be entered through its closed doors', () => {
+  assert.equal(canStand((meeting2.minX + meeting2.maxX) / 2, 13), false);
+  assert.ok(moveWithCollisions(5.585, 12, -5, 0).x > 5.2);
+  assert.ok(moveWithCollisions(2.75, 15.7, 0, -3).z > 15.17);
+});
+test('door jambs and the walls beside all openings stay solid', () => {
+  for (const p of [[5.04, 6.3], [6.13, 6.3], [4.935, 7.42], [4.935, 8.3], [6.235, 9.17], [6.235, 10.04], [6.49, 8.555], [7.23, 10.255], [4.935, 15.22]]) assert.equal(canStand(...p), false, `Jamb ${p}`);
+});
+test('all furnished room boundaries block leaving the model', () => {
+  for (const room of [spaceInvaders, minecraft, kitchen]) {
+    assert.equal(canStand(room.minX - .3, (room.minZ + room.maxZ) / 2), false);
+  }
+  assert.equal(canStand(NaN, 0), false);
+  assert.equal(canStand(0, Infinity), false);
+});
+test('furniture collision footprints move with the scaled room models', () => {
+  for (const [left, right, back, front] of obstacles) assert.equal(canStand((left + right) / 2, (back + front) / 2), false);
+});
+test('large steps cannot tunnel through the Space Invaders meeting table', () => {
+  const start = planPoint('office', 0, 0);
+  const end = moveWithCollisions(start.x, start.z, -6, 0);
+  assert.ok(end.x > 3.35 && end.x < start.x);
   assert.ok(canStand(end.x, end.z));
-  const inside = moveWithCollisions(end.x, end.z, 0, -8.5);
-  assert.ok(Math.abs(inside.z - 2.5) < 1e-8);
+});
+test('diagonal motion slides along the meeting furniture', () => {
+  const start = planPoint('office', 0, 0);
+  const end = moveWithCollisions(start.x, start.z, -1, -1);
+  assert.ok(end.x > 3.35);
+  close(end.z, start.z - 1);
+});
+test('a large move cannot cross the exterior wall', () => {
+  const end = moveWithCollisions(4, 2, 0, -20);
+  assert.ok(end.z >= .17 && end.z < .25);
+  assert.ok(canStand(end.x, end.z));
+});
+test('locations use room bounds, including the lobby on the kitchen side', () => {
+  assert.equal(walkingLocation(4, 2), 'Space Invaders · MØDE 4');
+  assert.equal(walkingLocation(2, 8), 'Minecraft · MØDE 3');
+  assert.equal(walkingLocation(5.585, 10), 'Toiletgangen');
+  assert.equal(walkingLocation(6.9, 9.6), 'Toiletentré');
+  assert.equal(walkingLocation(6.9, 7.85), 'Venstre toilet');
+  assert.equal(walkingLocation(6.9, 10.8), 'Højre toilet');
+  assert.equal(walkingLocation(8, 15), 'Køkken');
+  assert.equal(walkingLocation(2, 15.7), 'Lille gang ved køkkenet');
 });
 
-test('the wall beside the door remains solid in both directions', () => {
-  const fromOffice = moveWithCollisions(2, 2.5, 0, 3);
-  assert.ok(fromOffice.z < 3.24);
-  const fromHall = moveWithCollisions(.44, 4.65, 0, -3);
-  assert.ok(fromHall.z > 3.76);
+test('the small kitchen corridor keeps a clear aisle past the cabinet and coat rack', () => {
+  route([[6.4, 15.7], [4.55, 15.95], [.55, 15.95], [4.55, 15.95], [6.4, 15.7]]);
+  for (const p of [[3.5, 15.25], [1.5, 15.3], [.02, 15.8]]) assert.equal(canStand(...p), false, `Hall furniture ${p}`);
 });
-
-test('door jambs, corridor ends and furnishings stop the camera', () => {
-  for (const point of [[.5, 3.5], [1.6, 3.5], [.3, 6], [1.8, 6], [1.05, 11.35], [.4, 8.7], [.6, 10.55], [-2, 4.65]]) {
-    assert.equal(canStand(...point), false, `Blocked at ${point}`);
-  }
-  assert.ok(canStand(1.05, 3.5));
-  const end = moveWithCollisions(1.05, 4.65, 0, 20);
-  assert.ok(end.z <= 11.23 && end.z > 11.1);
-});
-
-test('Minecraft is reached across the corridor directly opposite the toilet foyer', () => {
-  const room = moveWithCollisions(3.15, 7.5, -3.8, 0);
-  assert.ok(Math.abs(room.x - (-.65)) < 1e-8);
-  assert.equal(room.z, 7.5);
-  assert.equal(walkingLocation(room.x, room.z), 'Minecraft');
-  const foyer = moveWithCollisions(room.x, room.z, 3.8, 0);
-  assert.ok(Math.abs(foyer.x - 3.15) < 1e-8);
-  assert.equal(walkingLocation(foyer.x, foyer.z), 'Toiletentré');
-});
-
-test('the far end of the corridor is closed, with Minecraft accessible only from its side door', () => {
-  const end = moveWithCollisions(1.05, 10.95, 0, 3);
-  assert.ok(end.z > 11.1 && end.z <= 11.23);
-  assert.equal(canStand(1.05, 12), false);
-  for (const z of [6.5, 8.5]) {
-    const wall = moveWithCollisions(1.05, z, -2, 0);
-    assert.ok(wall.x >= .42, `Wall at z=${z}`);
-  }
-});
-
-test('Minecraft has a clear route along both sides of the meeting table', () => {
-  const left = moveWithCollisions(-.6, 7.5, -3.5, 0);
-  assert.ok(Math.abs(left.x - (-4.1)) < 1e-8);
-  const front = moveWithCollisions(-.6, 7.5, 0, 3.1);
-  assert.ok(Math.abs(front.z - 10.6) < 1e-8);
-  const right = moveWithCollisions(front.x, front.z, -4.6, 0);
-  assert.ok(Math.abs(right.x - (-5.2)) < 1e-8);
-});
-
-test('Minecraft furniture, door jambs and exterior walls stop movement', () => {
-  for (const [x, z] of [[-2.85, 8.95], [-3.35, 7], [-5.35, 7.45], [-.1, 10.65], [-5.65, 8.95], [-2.35, 10.85], [.15, 7], [.15, 8.05]]) {
-    assert.equal(canStand(x, z), false, `Blocked at ${x},${z}`);
-  }
-  const furniture = moveWithCollisions(-2.85, 7.5, 0, 4);
-  assert.ok(furniture.z > 7.5 && furniture.z <= 7.64);
-  const exterior = moveWithCollisions(-3.35, 10.6, -10, 0);
-  assert.ok(exterior.x < -5.45 && exterior.x >= -5.58);
-});
-
-test('enter the toilet foyer halfway down the corridor and return', () => {
-  const entrance = moveWithCollisions(1.05, 7.5, 2.1, 0);
-  assert.ok(Math.abs(entrance.x - 3.15) < 1e-8);
-  const corridor = moveWithCollisions(entrance.x, entrance.z, -2.1, 0);
-  assert.ok(Math.abs(corridor.x - 1.05) < 1e-8);
-});
-
-test('the open foyer door rests beside its opening without blocking the route across the hall', () => {
-  assert.equal(canStand(1.64, 6.5), false);
-  const besideDoor = moveWithCollisions(1.05, 6.5, 1, 0);
-  assert.ok(besideDoor.x > 1.45 && besideDoor.x <= 1.6);
-  const pastDoor = moveWithCollisions(1.05, 5.5, 0, 2);
-  const entrance = moveWithCollisions(pastDoor.x, pastDoor.z, 2.1, 0);
-  assert.ok(Math.abs(entrance.x - 3.15) < 1e-8);
-  assert.ok(Math.abs(entrance.z - 7.5) < 1e-8);
-});
-
-test('both toilets are reachable from the foyer through their own doors', () => {
-  for (const dz of [-1.65, 1.55]) {
-    const toilet = moveWithCollisions(3.15, 7.5, 0, dz);
-    assert.ok(Math.abs(toilet.z - (7.5 + dz)) < 1e-8);
-    const foyer = moveWithCollisions(toilet.x, toilet.z, 0, -dz);
-    assert.ok(Math.abs(foyer.z - 7.5) < 1e-8);
-  }
-});
-
-test('toilet walls and door jambs block movement outside the openings', () => {
-  for (const [x, z] of [[1.95, 6.8], [1.95, 8.2], [2.3, 6.6], [3.9, 8.4], [5.2, 5.8], [3.15, 4.4]]) {
-    assert.equal(canStand(x, z), false, `Blocked at ${x},${z}`);
-  }
-  const wall = moveWithCollisions(1.05, 6, 3, 0);
-  assert.ok(wall.x <= 1.68);
-});
-
-test('basins, toilets, radiator and open door leaves have solid footprints', () => {
-  for (const [x, z] of [[3.85, 7], [4.1, 7.5], [3.65, 5.1], [3.05, 10], [4.7, 5.8], [4.7, 9.2], [2.65, 6.1], [2.65, 8.9]]) {
-    assert.equal(canStand(x, z), false, `Furniture at ${x},${z}`);
-  }
-  const toilet = moveWithCollisions(3.05, 9.05, 0, 5);
-  assert.ok(toilet.z > 9.05 && toilet.z < 9.4);
-});
-
-test('location labels distinguish the office, corridor, foyer and two toilets', () => {
-  assert.equal(walkingLocation(2, 1), 'Kontoret · i øjenhøjde');
-  assert.equal(walkingLocation(1.05, 7.5), 'Toiletgangen');
-  assert.equal(walkingLocation(3.15, 7.5), 'Toiletentré');
-  assert.equal(walkingLocation(3.15, 5.85), 'Venstre toilet');
-  assert.equal(walkingLocation(3.15, 9.05), 'Højre toilet');
+test('the hallway cabinet and coats stop sideways movement without blocking the aisle', () => {
+  const cabinet = moveWithCollisions(3.5, 15.95, 0, -2);
+  assert.ok(cabinet.z > 15.55 && cabinet.z < 15.8);
+  const coats = moveWithCollisions(1.5, 15.95, 0, -2);
+  assert.ok(coats.z > 15.55 && coats.z < 15.85);
 });

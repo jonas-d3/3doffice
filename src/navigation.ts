@@ -1,10 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { moveWithCollisions } from './movement.mjs';
-import { walkingLocation } from './layout.mjs';
+import { walkingLocation, mapPoint } from './layout.mjs';
+import { planPoint } from './placement.mjs';
+import { lobbyPreset } from './lobby-layout.mjs';
 
-export type View = 'overview' | 'meeting' | 'lounge' | 'walk' | 'hallway' | 'restrooms' | 'minecraft';
-const names = { overview: 'Overblik', meeting: 'Mødebord', lounge: 'Lounge', walk: 'Kontoret · i øjenhøjde', hallway: 'Toiletgangen', restrooms: 'Toiletentré', minecraft: 'Minecraft' };
+export type View = 'overview' | 'meeting' | 'lounge' | 'walk' | 'hallway' | 'restrooms' | 'minecraft' | 'kitchen' | 'lobby';
+const names = { overview: 'Overblik', meeting: 'Mødebord', lounge: 'Lounge', walk: 'Space Invaders · MØDE 4', hallway: 'Toiletgangen', restrooms: 'Toiletentré', minecraft: 'Minecraft · MØDE 3', kitchen: 'Køkken', lobby: 'Lille gang ved køkkenet' };
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export class Navigation {
@@ -17,7 +19,7 @@ export class Navigation {
   private transition: { from: THREE.Vector3; to: THREE.Vector3; fromTarget: THREE.Vector3; target: THREE.Vector3; elapsed: number } | null = null;
   private direction = new THREE.Vector3();
 
-  get isWalking() { return this.view === 'walk' || this.view === 'hallway' || this.view === 'restrooms' || this.view === 'minecraft'; }
+  get isWalking() { return this.view === 'walk' || this.view === 'hallway' || this.view === 'restrooms' || this.view === 'minecraft' || this.view === 'kitchen' || this.view === 'lobby'; }
 
   constructor(readonly camera: THREE.PerspectiveCamera, readonly canvas: HTMLCanvasElement) {
     this.controls = new OrbitControls(camera, canvas);
@@ -86,12 +88,14 @@ export class Navigation {
     document.querySelector('#navigation-hint')!.innerHTML = walking
       ? '<span>W A S D / pile: gå</span><b>·</b><span>Træk / Q E: kig rundt</span><b>·</b><span>Esc: overblik</span>'
       : '<span>Træk: drej</span><b>·</b><span>Højretræk / to fingre: panorer</span><b>·</b><span>Scroll / knib: zoom</span>';
-    if (view === 'walk' || view === 'hallway' || view === 'restrooms' || view === 'minecraft') {
+    if (view === 'walk' || view === 'hallway' || view === 'restrooms' || view === 'minecraft' || view === 'kitchen' || view === 'lobby') {
       const preset = {
-        walk: { x: 1.05, z: 2.5, yaw: 0, pitch: -.025 },
-        hallway: { x: 1.05, z: 4.4, yaw: Math.PI, pitch: -.025 },
-        restrooms: { x: 2.45, z: 7.5, yaw: Math.PI / 2, pitch: -.2 },
-        minecraft: { x: -5.18, z: 10.42, yaw: Math.PI / 2 - .52, pitch: -.12 },
+        lobby: lobbyPreset,
+        walk: { x: 5.585, z: 5.55, yaw: 0, pitch: -.025 },
+        hallway: { x: 5.585, z: 6.9, yaw: Math.PI, pitch: -.025 },
+        restrooms: { x: 6.9, z: 9.6, yaw: Math.PI / 2, pitch: -.2 },
+        kitchen: { x: 6.4, z: 15.2, yaw: Math.PI / 2 - .07, pitch: -.09 },
+        minecraft: { x: .48, z: 10.55, yaw: Math.PI / 2 - .52, pitch: -.12 },
       }[view];
       this.camera.position.set(preset.x, 1.62, preset.z);
       this.yaw = preset.yaw; this.pitch = preset.pitch;
@@ -99,13 +103,14 @@ export class Navigation {
     }
     this.setTool('rotate');
     const distanceScale = Math.max(1, .75 / this.camera.aspect);
-    const overviewTarget = new THREE.Vector3(-.4, .7, 3.8);
+    const overviewTarget = new THREE.Vector3(5.3, .7, 8.2);
+    const officeVector = (x: number, y: number, z: number) => { const p = planPoint('office', x, z); return new THREE.Vector3(p.x, y, p.z); };
     const positions = {
-      overview: new THREE.Vector3(14, 17, 21).multiplyScalar(distanceScale).add(overviewTarget),
-      meeting: new THREE.Vector3(1, 3.3, 4.7),
-      lounge: new THREE.Vector3(-.15, 2.8, 3.2),
+      overview: new THREE.Vector3(16, 23, 25).multiplyScalar(distanceScale).add(overviewTarget),
+      meeting: officeVector(1, 3.3, 4.7),
+      lounge: officeVector(-.15, 2.8, 3.2),
     };
-    const targets = { overview: overviewTarget, meeting: new THREE.Vector3(-1.8, .8, -.6), lounge: new THREE.Vector3(2.65, .6, -.2) };
+    const targets = { overview: overviewTarget, meeting: officeVector(-1.8, .8, -.6), lounge: officeVector(2.65, .6, -.2) };
     // Flush residual orbit damping before moving to a preset.
     const damping = this.controls.enableDamping; this.controls.enableDamping = false; this.controls.update(); this.controls.enableDamping = damping;
     if (immediate || reducedMotion) {
@@ -181,12 +186,13 @@ export class Navigation {
       }
       this.controls.update();
       const target = this.controls.target.clone();
-      this.controls.target.clamp(new THREE.Vector3(-6, 0, -5), new THREE.Vector3(5, 3, 12));
+      this.controls.target.clamp(new THREE.Vector3(-1, 0, -1), new THREE.Vector3(12, 3, 18));
       this.camera.position.add(this.controls.target.clone().sub(target));
     }
     const point = this.isWalking ? this.camera.position : this.controls.target;
     this.camera.getWorldDirection(this.direction);
     const angle = Math.atan2(this.direction.x, -this.direction.z) * 180 / Math.PI;
-    document.querySelector('#map-camera')!.setAttribute('transform', `translate(${90 + point.x * 12},${64 + point.z * 12}) rotate(${angle})`);
+    const marker = mapPoint(point.x, point.z);
+    document.querySelector('#map-camera')!.setAttribute('transform', `translate(${marker.x},${marker.y}) rotate(${angle})`);
   }
 }

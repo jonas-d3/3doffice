@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { materials as m, cushionMaterials } from './materials';
 import { mesh, box, cylinder, rod } from './geometry';
 import { restrooms as layout } from './layout.mjs';
+import { partition, roof as makeRoof } from './architecture';
 
 const ceramic = new THREE.MeshStandardMaterial({ color: '#fffdf3', roughness: .2 });
 const chrome = new THREE.MeshStandardMaterial({ color: '#bac4c4', metalness: .7, roughness: .22 });
@@ -122,86 +123,48 @@ export function createRestrooms(parent: THREE.Object3D) {
   const group = new THREE.Group(); parent.add(group);
   const walls: CutawayWall[] = [];
   const roof = new THREE.Group(); group.add(roof);
-  const height = layout.height;
-  const wall = (axis: 'x' | 'z', position: number, from: number, to: number, inside: number, door?: [number, number]) => {
-    const part = new THREE.Group(); group.add(part); walls.push({ group: part, axis, position, inside });
-    const piece = (a: number, b: number, bottom = 0, top = height) => {
-      const center = (a + b) / 2;
-      box(part, axis === 'x' ? .2 : b - a, top - bottom, axis === 'z' ? .2 : b - a,
-        axis === 'x' ? position : center, (top + bottom) / 2, axis === 'z' ? position : center, m.wall);
-      if (!bottom) box(part, axis === 'x' ? .215 : b - a, .1, axis === 'z' ? .215 : b - a,
-        axis === 'x' ? position : center, .05, axis === 'z' ? position : center, m.black);
-    };
-    if (door) { piece(from, door[0]); piece(door[1], to); piece(door[0], door[1], 2.2); }
-    else piece(from, to);
-    return part;
-  };
-  for (const room of [layout.foyer, layout.left, layout.right]) {
+  const h = layout.height;
+  for (const room of [layout.left, layout.foyer, layout.right]) {
     floor(group, room);
-    box(roof, room.maxX - room.minX + .2, .08, room.maxZ - room.minZ + .2,
-      (room.minX + room.maxX) / 2, height + .04, (room.minZ + room.maxZ) / 2, m.wall);
-    const light = new THREE.PointLight('#fff4df', 2.2, 5, 2);
+    roof.add(makeRoof(group, room, h));
+    const light = new THREE.PointLight('#fff4df', 1.4, 4, 2);
     light.position.set((room.minX + room.maxX) / 2, 2.35, (room.minZ + room.maxZ) / 2); group.add(light);
     cylinder(roof, .13, .13, .045, light.position.x, 2.51, light.position.z, m.light);
   }
-  floor(group, layout.entrance); floor(group, layout.leftDoor); floor(group, layout.rightDoor);
-  // The corridor supplies the wall at x=1.95, including the foyer entrance.
-  wall('z', 4.4, 1.95, 5.15, 1);
-  wall('z', 10.6, 1.95, 5.15, -1);
-  wall('x', 5.15, 4.4, 6.6, -1);
-  wall('x', 5.15, 8.4, 10.6, -1);
-  wall('z', 6.6, 1.95, 5.15, -1, [2.65, 3.65]);
-  wall('z', 8.4, 1.95, 5.15, 1, [2.65, 3.65]);
-  for (const [z, direction] of [[6.6, -1], [8.4, 1]]) {
-    for (const x of [2.65, 3.65]) box(group, .065, 2.23, .24, x, 1.115, z, m.white);
-    box(group, 1.065, .065, .24, 3.15, 2.23, z, m.white);
-    const door = new THREE.Group(); door.position.set(2.65, 0, z); door.rotation.y = direction < 0 ? Math.PI / 2 : -Math.PI / 2; group.add(door);
-    box(door, 1, 2.16, .05, .5, 1.08, 0, doorPaint, .006);
-    rod(door, [.8, 1.02, -.045], [.93, 1.02, -.045], .016, brass);
-    box(group, 1, .022, .2, 3.15, .031, z, chrome);
+  for (const child of roof.children) child.visible = true;
+  for (const door of [layout.entrance, layout.leftDoor, layout.rightDoor]) floor(group, door);
+  partition(group, walls, 'z', layout.left.minZ - .1, 6.235, 7.858, 1, h);
+  partition(group, walls, 'z', layout.right.maxZ + .1, 6.235, 7.858, -1, h);
+  for (const room of [layout.left, layout.right]) partition(group, walls, 'x', room.maxX + .1, room.minZ - .1, room.maxZ + .1, -1, h);
+  for (const [door, inside] of [[layout.leftDoor, -1], [layout.rightDoor, 1]] as const) {
+    const z = (door.minZ + door.maxZ) / 2;
+    partition(group, walls, 'z', z, 6.235, 8.058, inside, h, [door.minX, door.maxX]);
+    // Open leaves rest against the west side; each opening remains 75 cm wide.
+    const leaf = new THREE.Group(); group.add(leaf);
+    leaf.position.set(door.minX, 0, z); leaf.rotation.y = inside < 0 ? Math.PI / 2 : -Math.PI / 2;
+    box(leaf, .75, 2.16, .04, .375, 1.08, 0, doorPaint, .006);
+    rod(leaf, [.55, 1.02, -.04], [.68, 1.02, -.04], .016, brass);
   }
-  // Window wall of the shared foyer; the two toilet rooms extend further back.
-  const windowWall = new THREE.Group(); group.add(windowWall);
-  walls.push({ group: windowWall, axis: 'x', position: 4.35, inside: -1 });
-  box(windowWall, .2, 1.04, 1.6, 4.35, .52, 7.5, m.wall);
-  box(windowWall, .2, .14, 1.6, 4.35, 2.48, 7.5, m.wall);
-  box(windowWall, .07, 1.37, 1.48, 4.36, 1.725, 7.5, m.glass);
-  const view = mesh(windowWall, new THREE.PlaneGeometry(1.48, 1.37), courtyardView(), 4.31, 1.725, 7.5);
-  view.rotation.y = -Math.PI / 2; view.castShadow = false; view.receiveShadow = false;
-  for (const z of [6.74, 7.24, 7.76, 8.26]) box(windowWall, .15, 1.46, .045, 4.27, 1.73, z, m.white);
-  for (const y of [1.02, 1.73, 2.44]) box(windowWall, .15, .055, 1.58, 4.27, y, 7.5, m.white);
-  box(windowWall, .37, .055, 1.62, 4.18, 1.015, 7.5, m.white);
-  for (const z of [7, 7.5, 8]) rod(windowWall, [4.17, 1.55, z], [4.17, 1.64, z], .009, m.black);
-  radiator(group, 4.1, 7.5, -Math.PI / 2, .8);
-  basin(group, 3.86, 6.96, 0);
-  towel(group, 3.94, 8.25, Math.PI);
-  // White wall tiles behind the shared basin.
-  box(group, .76, 2.35, .016, 3.84, 1.2, 6.705, ceramic);
-  for (let y = .2; y < 2.45; y += .3) box(group, .76, .008, .018, 3.84, y, 6.716, grout);
-  for (const x of [3.6, 3.9, 4.2]) box(group, .008, 2.35, .018, x, 1.2, 6.716, grout);
-  cylinder(group, .045, .075, .23, 4.13, 1.15, 6.9, cushionMaterials[2]);
-  for (let i = 0; i < 7; i++) {
-    const z = 6.9 + Math.cos(i * 2.4) * .12, x = 4.12 + Math.sin(i * 2.4) * .07, y = 1.42 + (i % 3) * .05;
-    rod(group, [4.13, 1.23, 6.9], [x, y, z], .003, m.green);
-    const flower = mesh(group, new THREE.SphereGeometry(.04, 8, 6), cushionMaterials[2], x, y, z); flower.scale.y = .45;
-  }
-  for (const [z, color] of [[7.25, '#e8e2d2'], [7.45, '#ba3040'], [7.63, '#932c3b'], [7.8, '#eee8db']] as const) {
-    cylinder(group, .021, .03, .14, 4.17, 1.115, z, new THREE.MeshStandardMaterial({ color, roughness: .3 }));
-  }
-  toilet(group, 3.65, 4.97, 0);
-  toilet(group, 3.05, 10.03, Math.PI);
-  basin(group, 4.76, 5.8, -Math.PI / 2);
-  basin(group, 4.76, 9.2, -Math.PI / 2);
-  radiator(group, 4.97, 5, -Math.PI / 2, .65);
-  radiator(group, 2.13, 9.88, Math.PI / 2, .65);
-  towel(group, 4.55, 4.53, 0);
-  towel(group, 4.15, 10.47, Math.PI);
-  for (const z of [4.52, 10.48]) box(group, .48, .48, .022, 4.05, 1.63, z, m.trim, .009);
-  rod(group, [4.25, .05, 4.53], [4.25, 2.5, 4.53], .012, chrome);
-  cylinder(group, .105, .1, .24, 4.66, .15, 9.23, brass);
-  cylinder(group, .12, .1, .19, 4.67, .13, 5.8, m.jute);
-  for (const centerZ of [5.5, 9.5]) {
-    const slope = box(roof, 1.2, .08, 2, 4.52, 2.35, centerZ, m.wall); slope.rotation.z = -.35;
-  }
+  const window = new THREE.Group(); group.add(window);
+  const x = layout.foyer.maxX + .1, z = (layout.foyer.minZ + layout.foyer.maxZ) / 2;
+  walls.push({ group: window, axis: 'x', position: x, inside: -1 });
+  box(window, .2, 1.04, 1.5, x, .52, z, m.wall);
+  box(window, .2, .14, 1.5, x, 2.48, z, m.wall);
+  box(window, .07, 1.37, 1.4, x, 1.725, z, m.glass);
+  const view = mesh(window, new THREE.PlaneGeometry(1.4, 1.37), courtyardView(), x - .11, 1.725, z);
+  view.rotation.y = -Math.PI / 2; view.castShadow = false;
+  for (const edge of [z - .72, z, z + .72]) box(window, .15, 1.46, .045, x - .08, 1.73, edge, m.white);
+  for (const y of [1.02, 1.73, 2.44]) box(window, .15, .055, 1.5, x - .08, y, z, m.white);
+  box(window, .3, .055, 1.5, x - .14, 1.015, z, m.white);
+  radiator(group, 7.88, 9.45, -Math.PI / 2, .65);
+  basin(group, 7.55, 8.915, 0);
+  towel(group, 7.65, 10.1, Math.PI);
+  toilet(group, 6.84, 7.06, 0);
+  toilet(group, 6.94, 11.75, Math.PI);
+  basin(group, 7.51, 11.05, -Math.PI / 2);
+  basin(group, 7.51, 7.85, -Math.PI / 2);
+  radiator(group, 7.67, 6.99, -Math.PI / 2, .45);
+  radiator(group, 6.42, 11.75, Math.PI / 2, .45);
+  roof.visible = false;
   return { walls, roof };
 }

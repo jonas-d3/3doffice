@@ -1,8 +1,14 @@
 # Space Invaders — kontoret i 3D
 
-En lokal, interaktiv Three.js-model af kontorerne og toiletgangen, bygget ud fra de fire fotos i `ressources/space-invaders/`, fotoet i `ressources/toilet-gangen/`, de tre fotos i `ressources/toilet-entre/`, `ressources/left-toilet/` og `ressources/right-toilet/`, de to fotos i `ressources/minecraft/` samt `ressources/floorplan.excalidraw`. Space Invaders indeholder mødebordet, 14 stole, sofa, sofabord, tæpper, planter, vinduer, radiatorer, skærm og loftslamper. Den åbne kontordør fører til gangen med hvide døre, vægskærm, radiator og et lille rundt bord. Halvvejs ligger en toiletentré med vindue og håndvask samt to separate toiletter med mørke fliser, håndvaske, spejle og radiatorer.
+En lokal, interaktiv Three.js-model af mødelokalerne, toiletterne og køkkenet. Rumfordeling og størrelsesforhold følger `ressources/grundplan.pdf` (CAPE, 26.03.2025). Interiøret bygger på de 17 fotos i `ressources/`.
 
-Minecraft ligger direkte over for toiletentréen på den anden side af gangen. Det indeholder et mødebord med mønstret træplade, otte sorte stole, skærm, videobar, ventilation, whiteboard, planter, vindue med plisségardin og et hvidt skab med en Minecraft-hakke.
+**MØDE 4 er Space Invaders**, **MØDE 3 er Minecraft**, og **MØDE 2 er ikke implementeret**. MØDE 2 vises som en tom, markeret rumskal med lukkede døre, så placeringen og pladsen er med i overblikket.
+
+Space Invaders ligger for enden af den smalle gang. Minecraft ligger umiddelbart nedenfor, langs samme facade, og MØDE 2 fortsætter på samme side. Toiletentréen ligger på modsatte side af gangen, længere nede end Minecrafts dør. Toiletterne ligger på hver sin side af entréen. Køkkenet ligger i gangens forlængelse og strækker sig mod højre på planen. Køkkenets sideåbning forbinder nu med passagen neden for MØDE 2.
+
+Den lille gang vest for køkkenet er indrettet efter de tre fotos i `ressources/lille-gang-fra-køkken/`: en væg med kundelogoer over for det grønne skab, bøger, rammer, skrivemaskine, joystick, gulvlampe, garderobestativ med jakker, brandslukker, banner og udgangsskilt. Gulvet har tværgående træbrædder, og loftet er sænket med pladesamlinger, spots og en lavere bjælke. Vælg **Lille gang** for at stå ved køkkenåbningen og se ned gennem gangen. Den fotograferede sidedør er vist som en dørniche; kontorafdelingen bag den er endnu ikke modelleret og kan ikke betrædes.
+
+De eksisterende møbler og materialer i Space Invaders, Minecraft og køkkenet er bevaret og tilpasset rummenes nye grundmål. Toiletternes inventar er placeret på ny i de mindre rum.
 
 ## Start
 
@@ -29,12 +35,16 @@ Siden publiceres på https://jonas-d3.github.io/3doffice/dist/. `base` i `vite.c
 - Scroll eller brug +/− for at zoome. Touch: én finger drejer, to fingre panorerer/zoomer.
 - Vælg Overblik, Mødebord eller Lounge for et fast udgangspunkt.
 - Vælg Gå rundt: W/A/S/D eller piletaster bevæger kameraet; træk eller Q/E drejer blikket. Shift øger hastigheden. Pileknapperne på skærmen fungerer også med touch.
-- Gå gennem den åbne kontordør for at komme ud i gangen og tilbage igen. Vælg Gang for at starte direkte uden for døren. Vælg Toiletter for at starte i entréen. Fra gangen går du ind til venstre halvvejs nede; herfra er der et toilet til hver side. Direkte over for toiletentréen, på gangens højre side, ligger indgangen til Minecraft. Vælg Minecraft for at starte direkte i lokalet. Rumplanen og stednavnet følger dig gennem alle rummene.
+- Gå gennem den åbne dør fra Space Invaders ud i gangen. Minecraft ligger til højre; længere fremme ligger toiletentréen til venstre. Gangen fører lige frem til køkkenet, hvor sideåbningen giver adgang til passagen neden for MØDE 2. Gang, Toiletter, Minecraft, Køkken og Lille gang vælger et udgangspunkt i det pågældende område. Rumplanen og stednavnet følger dig mellem rummene.
 - Escape eller H vender tilbage til overblikket, når 3D-visningen har tastaturfokus.
 - Vægge foran kameraet skjules i overblik. I gå-tilstand er vægge og loft synlige.
 
 ## Model og præcision
 
-Dette er en manuelt opbygget, stiliseret 3D-rekonstruktion, ikke en opmålt scanning. Kontoret er anslået til 7,6 × 7,0 × 3,05 meter og gangen til 7,8 × 1,6 × 2,55 meter. Gangen fortsætter lige frem gennem kontordøren, i forlængelse af kontoret. Toiletentréen er anslået til 2,2 × 1,6 meter og hvert toiletrum til 3,0 × 2,0 meter. Minecraft er anslået til 4,2 × 5,8 × 2,9 meter. Rummenes placering følger plantegningen og din præcisering af Minecrafts placering over for toiletterne. Indretning, materialer, størrelser og skjulte detaljer er anslået ud fra fotos. Modellen kan derfor bruges til at udforske rummene, men ikke til præcis opmåling.
+MØDE 4 er **7,758 × 6,205 m**, MØDE 3 er **4,835 × 4,362 m**, og køkkenets hovedrum er **6,567 × 3,100 m**, som angivet på PDF-planen. Bredden på passagen neden for MØDE 2 er angivet til **5,107 m**.
 
-Geometri findes i `src/model.ts`, `src/restrooms.ts` og `src/minecraft.ts`, fælles former i `src/geometry.ts`, materialer i `src/materials.ts` og navigation i `src/navigation.ts`. Gangens, toiletternes og døråbningernes grænser findes i `src/layout.mjs`. Møblernes kollisionsfelter i `src/movement.mjs` skal tilpasses, hvis indretningen flyttes. Alle materialer genereres lokalt; siden henter ingen eksterne billeder, skrifttyper eller API-data.
+MØDE 2 (ca. 4,835 × 3,600 m), gangen (ca. 1,100 × 6,900 m), toiletterne (ca. 1,423 × 1,800 m), toiletentréen (ca. 1,623 × 1,500 m), vægtykkelser og dørplaceringer er aflæst efter planens skala. Planens let skrå ydervæg ved MØDE 4 er forenklet til en ret væg. Højder, vinduer, møbler og øvrige detaljer er fortsat anslået ud fra fotos; modellen er ikke beregnet til præcis opmåling.
+
+`src/layout.mjs` er den fælles grundplan i meter: X går mod højre og Z nedad på PDF'en. Rumskal, gangruter, stednavne og minikort bruger denne plan. `src/placement.mjs` tilpasser de detaljerede fotomodellers lokale koordinater til planen; samme transformation bruges til møblernes kollisionsfelter og kameravisninger. Interiøret ligger i `src/model.ts`, `src/minecraft.ts`, `src/kitchen.ts`, `src/restrooms.ts` og `src/lobby.ts`. Den lille gangs møbelplacering og kollisionsfelter deles gennem `src/lobby-layout.mjs`. Fælles vægge og gulve ligger i `src/architecture.ts`, minikortet i `src/minimap.ts` og navigationen i `src/navigation.ts`.
+
+Kør `pnpm test` for målforhold, rumplacering, sammenhængende gangruter, døråbninger, møbler og vægkollisioner. `pnpm build` kontrollerer typerne og opdaterer produktionsfilerne. Alle materialer genereres lokalt; siden henter ingen eksterne billeder, skrifttyper eller API-data.

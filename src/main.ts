@@ -2,12 +2,13 @@ import * as THREE from 'three';
 import './style.css';
 import { createOffice } from './model';
 import { Navigation, type View } from './navigation';
-import { hallway } from './layout.mjs';
+import { renderMinimap } from './minimap';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#scene')!;
 document.querySelector('#reload')!.addEventListener('click', () => location.reload());
 
 function start() {
+renderMinimap();
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('#eeede8');
 const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 0.05, 100);
@@ -25,7 +26,7 @@ sun.position.set(-4, 10, 7);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 sun.target.position.set(0, 0, 6); scene.add(sun.target);
-Object.assign(sun.shadow.camera, { left: -13, right: 13, top: 13, bottom: -13 });
+Object.assign(sun.shadow.camera, { left: -15, right: 15, top: 15, bottom: -15 });
 sun.shadow.normalBias = 0.035;
 sun.shadow.bias = -.00015;
 sun.shadow.radius = 3;
@@ -74,20 +75,8 @@ renderer.setAnimationLoop(now => {
   if (document.hidden) return;
   navigation.update(dt);
   const walk = navigation.isWalking;
-  model.walls[0].visible = walk || camera.position.x > -3.8;
-  model.walls[1].visible = walk || camera.position.x < 3.8;
-  model.walls[2].visible = walk || camera.position.z > -3.5;
-  model.walls[3].visible = walk || camera.position.z < 3.5;
-  model.ceiling.visible = walk;
-  model.hall.roof.visible = walk;
-  model.hall.leftWall.visible = walk || camera.position.x < hallway.maxX;
-  model.hall.rightWall.visible = walk || camera.position.x > hallway.minX;
-  model.hall.farEnd.visible = walk || camera.position.z < hallway.maxZ;
-  model.hall.fittings.visible = model.hall.rightWall.visible;
-  model.toilets.roof.visible = walk;
-  for (const wall of model.toilets.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
-  model.minecraft.roof.visible = walk;
-  for (const wall of model.minecraft.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
+  for (const wall of model.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
+  for (const roof of model.roofs) roof.visible = walk;
   if (needsRender || !previousPosition.equals(camera.position) || !previousRotation.equals(camera.quaternion)) {
     renderer.render(scene, camera);
     previousPosition.copy(camera.position); previousRotation.copy(camera.quaternion); needsRender = false;

@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import { materials as m } from './materials';
 import { box, cylinder, mesh, rod } from './geometry';
 import { plant } from './plants';
-import { minecraft } from './layout.mjs';
+import { authored, authoredDoors } from './placement.mjs';
+const minecraft = authored.minecraft;
 
 function parquet() {
   const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 1024;
@@ -53,7 +54,8 @@ export function createMinecraft(parent: THREE.Object3D) {
   // Keep furniture in its original modelling coordinates and rotate the entire
   // room so its entrance faces across the corridor toward the toilet foyer.
   const room = { minX: .25, maxX: 4.45, minZ: 11.6, maxZ: 17.4, height: minecraft.height };
-  const entrance = { minX: .55, maxX: 1.55 };
+  const entrance = { minX: authoredDoors.minecraft.minZ - minecraft.minZ + .25, maxX: authoredDoors.minecraft.maxZ - minecraft.minZ + .25 };
+  const doorWidth = entrance.maxX - entrance.minX, doorCenter = (entrance.minX + entrance.maxX) / 2;
   group.rotation.y = -Math.PI / 2;
   group.position.set(minecraft.maxX + room.minZ, 0, minecraft.minZ - room.minX);
   const { minX, maxX, minZ, maxZ, height } = room;
@@ -65,25 +67,25 @@ export function createMinecraft(parent: THREE.Object3D) {
   const floor = m.floor.clone(); floor.map = m.floor.map!.clone(); floor.map.rotation = Math.PI / 2; floor.map.repeat.set(1.4, 1.7); floor.bumpMap = floor.map;
   box(group, width + .2, .22, depth + .2, centerX, -.14, centerZ, m.trim, .02);
   box(group, width, .05, depth, centerX, -.005, centerZ, floor);
-  box(group, entrance.maxX - entrance.minX, .025, .2, 1.05, .025, 11.5, m.oak);
+  box(group, entrance.maxX - entrance.minX, .025, .2, doorCenter, .025, 11.5, m.oak);
 
   const front = wall('z', 11.5, 1);
   for (const [left, right] of [[minX - .1, entrance.minX], [entrance.maxX, maxX + .1]]) {
     box(front, right - left, height, .2, (left + right) / 2, height / 2, 11.5, m.wall);
     box(front, right - left, .11, .05, (left + right) / 2, .055, 11.62, m.white);
   }
-  box(front, 1, height - 2.25, .2, 1.05, (height + 2.25) / 2, 11.5, m.wall);
+  box(front, doorWidth, height - 2.25, .2, doorCenter, (height + 2.25) / 2, 11.5, m.wall);
   for (const x of [entrance.minX, entrance.maxX]) box(front, .065, 2.28, .25, x, 1.14, 11.5, m.white);
-  box(front, 1.07, .07, .25, 1.05, 2.28, 11.5, m.white);
-  const door = new THREE.Group(); door.position.set(.55, 0, 11.5); door.rotation.y = -Math.PI / 2; front.add(door);
-  box(door, 1, 2.2, .05, .5, 1.1, 0, m.white, .008);
-  for (const y of [.62, 1.62]) box(door, .79, .83, .012, .5, y, -.034, m.trim, .006);
-  rod(door, [.79, 1.03, -.06], [.94, 1.03, -.06], .016, m.metal);
+  box(front, doorWidth + .07, .07, .25, doorCenter, 2.28, 11.5, m.white);
+  const door = new THREE.Group(); door.position.set(entrance.minX, 0, 11.5); door.rotation.y = -Math.PI / 2; front.add(door);
+  box(door, doorWidth, 2.2, .05, doorWidth / 2, 1.1, 0, m.white, .008);
+  for (const y of [.62, 1.62]) box(door, doorWidth - .21, .83, .012, doorWidth / 2, y, -.034, m.trim, .006);
+  rod(door, [doorWidth - .21, 1.03, -.06], [doorWidth - .06, 1.03, -.06], .016, m.metal);
   const sign = document.createElement('canvas'); sign.width = 512; sign.height = 160;
   const ctx = sign.getContext('2d')!; ctx.fillStyle = '#f2f0e9'; ctx.fillRect(0, 0, 512, 160);
   ctx.fillStyle = '#3f583f'; ctx.font = 'bold 48px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('MINECRAFT', 256, 96);
   const signTexture = new THREE.CanvasTexture(sign); signTexture.colorSpace = THREE.SRGBColorSpace;
-  const plaque = mesh(front, new THREE.PlaneGeometry(.38, .12), new THREE.MeshBasicMaterial({ map: signTexture }), 1.86, 1.57, 11.393); plaque.rotation.y = Math.PI;
+  const plaque = mesh(front, new THREE.PlaneGeometry(.38, .12), new THREE.MeshBasicMaterial({ map: signTexture }), entrance.maxX + .3, 1.57, 11.393); plaque.rotation.y = Math.PI;
 
   const west = wall('x', minX - .1, 1), east = wall('x', maxX + .1, -1);
   for (const [part, x, inward] of [[west, minX - .1, 1], [east, maxX + .1, -1]] as const) {

@@ -1,8 +1,11 @@
-import { hallway, doorway, restrooms, minecraft, minecraftDoor } from './layout.mjs';
+import { spaceInvaders, hallway, doorway, restrooms, minecraft, minecraftDoor, kitchen, kitchenDoor, kitchenNorthDoor, lobby } from './layout.mjs';
+import { planFootprint } from './placement.mjs';
+import { lobbyFurniture } from './lobby-layout.mjs';
 
-// Estimated furniture footprints in metres, matching model.ts. Camera radius
-// keeps a person away from the furniture while allowing sliding along edges.
+// Photo furniture is fitted with the same transforms as the rendered rooms.
 export const obstacles = [
+  ...Object.values(lobbyFurniture).map(b => [b.minX, b.maxX, b.minZ, b.maxZ]),
+  ...[
   [-3.02, -.57, -3.02, 3.05], // conference table and chairs
   [2.55, 3.75, -2.27, 1.99], // sofa
   [1.58, 2.65, -2.29, -1.22], // sofa return
@@ -11,26 +14,39 @@ export const obstacles = [
   [-.81, .18, 2.54, 3.18], // whiteboard
   [.13, .63, 2.68, 3.18], // stump
   [2.34, 3.74, 2.12, 3.16], // side table and cabinet
-  [1.60, 1.69, 2.34, 3.5], // office door, standing open into the office
-  [.25, .49, 8.4, 9], // corridor radiator
-  [.27, .83, 10.27, 10.83], // corridor standing table
-  [1.76, 1.85, 6, 7], // foyer door folded back beside the entrance
-  [3.52, 4.2, 6.7, 7.23], // foyer basin
-  [4.01, 4.25, 7.08, 7.92], // foyer radiator
-  [3.32, 3.98, 4.53, 5.5], // left toilet
-  [2.72, 3.38, 9.53, 10.47], // right toilet
-  [4.42, 5.05, 5.45, 6.15], // left toilet basin
-  [4.42, 5.05, 8.85, 9.55], // right toilet basin
-  [4.87, 5.05, 4.65, 5.35], // left toilet radiator
-  [2.05, 2.23, 9.5, 10.25], // right toilet radiator
-  [2.62, 2.68, 5.6, 6.6], // left door standing open
-  [2.62, 2.68, 8.4, 9.4], // right door standing open
+  ].map(bounds => planFootprint('office', bounds)),
+  ...[
   [-4.9, -.82, 7.81, 10.09], // Minecraft meeting table and eight chairs
   [-4.3, -2.7, 6.7, 7.23], // Minecraft cabinet
   [-5.65, -4.53, 6.75, 8.15], // Minecraft plants
   [-.24, .04, 10.5, 10.85], // pedestal beside the screen
   [-5.75, -5.58, 8.5, 9.7], // Minecraft radiator
-  [-.85, .15, 6.97, 7.03], // Minecraft entrance door, standing open
+  ].map(bounds => planFootprint('minecraft', bounds)),
+  [4.1, 4.84, minecraftDoor.minZ - .025, minecraftDoor.minZ + .025],
+  ...[
+  [1.7, 5.88, 12.7, 13.4], // kitchen cabinets, sink and posts along the corridor-facing wall
+  [.75, 1.55, 16.17, 16.8], // drinks fridge recessed into the chair wall near North
+  [1.85, 2.95, 15.07, 16.12], // first lounge chair against the opposite wall
+  [3.92, 5.02, 15.07, 16.12], // second lounge chair
+  [3.02, 3.84, 15.13, 15.95], // round coffee table
+  [.32, 1.04, 14.09, 14.81], // standing table between the two North doors
+  [.3, .65, 15.9, 16.25], // plant pedestal beside the fridge niche
+  [5.52, 6.02, 15.35, 16.18], // waste bins
+  [5.9, 6.05, 14.95, 15.75], // kitchen radiator
+  ].map(bounds => planFootprint('kitchen', bounds)),
+  [6.09, 6.14, 5.205, 6.305], // Space Invaders door standing open
+  [5.035, 5.18, 10.36, 10.94], // corridor radiator
+  [6.075, 6.125, 8.255, 9.155], // foyer door folded along the corridor
+  [7.22, 7.88, 8.67, 9.16], // foyer basin
+  [7.8, 7.96, 9.12, 9.78], // foyer radiator
+  [6.55, 7.13, 6.66, 7.57], // upper WC
+  [6.65, 7.23, 11.24, 12.15], // lower WC
+  [7.26, 7.76, 7.52, 8.18], // upper basin
+  [7.26, 7.76, 10.72, 11.38], // lower basin
+  [6.46, 6.51, 7.805, 8.555], // open upper toilet door
+  [6.46, 6.51, 10.255, 11.005], // open lower toilet door
+  [7.61, 7.76, 6.765, 7.215], // upper radiator
+  [6.335, 6.49, 11.525, 11.975], // lower radiator
 ];
 
 const inside = (room, x, z, insetX, insetZ) => x >= room.minX + insetX && x <= room.maxX - insetX
@@ -38,19 +54,15 @@ const inside = (room, x, z, insetX, insetZ) => x >= room.minX + insetX && x <= r
 
 export function canStand(x, z, radius = .17) {
   if (!Number.isFinite(x) || !Number.isFinite(z)) return false;
-  const inOffice = Math.abs(x) <= 3.7 - radius && Math.abs(z) <= 3.4 - radius;
-  const inHallway = x >= hallway.minX + radius && x <= hallway.maxX - radius
-    && z >= hallway.minZ + radius && z <= hallway.maxZ - radius;
-  // Overlap the entrance with both inset rooms to avoid an invisible collision
-  // seam. Its horizontal inset still keeps the camera clear of both jambs.
-  const inDoorway = x >= doorway.minX + radius && x <= doorway.maxX - radius
-    && z >= doorway.minZ - radius && z <= doorway.maxZ + radius;
-  const inRestroom = [restrooms.foyer, restrooms.left, restrooms.right].some(room => inside(room, x, z, radius, radius));
-  const inEntrance = inside(restrooms.entrance, x, z, -radius, radius);
-  const inToiletDoor = [restrooms.leftDoor, restrooms.rightDoor].some(door => inside(door, x, z, radius, -radius));
-  const inMinecraft = inside(minecraft, x, z, radius, radius);
-  const inMinecraftDoor = inside(minecraftDoor, x, z, -radius, radius);
-  if (!inOffice && !inHallway && !inDoorway && !inRestroom && !inEntrance && !inToiletDoor && !inMinecraft && !inMinecraftDoor) return false;
+  const inRoom = [spaceInvaders, hallway, minecraft, kitchen, lobby, restrooms.foyer, restrooms.left, restrooms.right]
+    .some(room => inside(room, x, z, radius, radius));
+  // Overlap each threshold with the inset room on both sides, while keeping
+  // the camera clear of door jambs. MØDE 2 deliberately has no walkable interior.
+  const inZDoor = [doorway, kitchenDoor, restrooms.leftDoor, restrooms.rightDoor]
+    .some(door => inside(door, x, z, radius, -radius));
+  const inXDoor = [minecraftDoor, restrooms.entrance, kitchenNorthDoor]
+    .some(door => inside(door, x, z, -radius, radius));
+  if (!inRoom && !inZDoor && !inXDoor) return false;
   return !obstacles.some(([left, right, back, front]) =>
     x > left - radius && x < right + radius && z > back - radius && z < front + radius);
 }

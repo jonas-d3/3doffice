@@ -1,30 +1,37 @@
-// Estimated interior dimensions from the reference photos, in metres.
-// The corridor continues straight through the office doorway along +Z.
-export const hallway = { minX: .25, maxX: 1.85, minZ: 3.6, maxZ: 11.4, height: 2.55 };
-export const doorway = { minX: .475, maxX: 1.625, minZ: 3.4, maxZ: 3.6 };
-
-// The foyer branches left when leaving the office, as in floorplan.excalidraw.
+// Plan coordinates in metres: +X is right and +Z is down on grundplan.pdf.
+// MØDE 4, MØDE 3 and the kitchen use printed dimensions. Other dimensions,
+// partitions and door positions are traced estimates; heights remain photo estimates.
+export const spaceInvaders = { minX: 0, maxX: 7.758, minZ: 0, maxZ: 6.205, height: 3.05 };
+export const minecraft = { minX: 0, maxX: 4.835, minZ: 6.655, maxZ: 11.017, height: 2.9 };
+export const meeting2 = { minX: 0, maxX: 4.835, minZ: 11.217, maxZ: 14.817, height: 2.9 };
+export const hallway = { minX: 5.035, maxX: 6.135, minZ: 6.405, maxZ: 13.305, height: 2.55 };
+export const doorway = { minX: 5.035, maxX: 6.135, minZ: 6.205, maxZ: 6.405 };
+export const minecraftDoor = { minX: 4.835, maxX: 5.035, minZ: 7.405, maxZ: 8.305 };
 export const restrooms = {
   height: 2.55,
-  foyer: { minX: 2.05, maxX: 4.25, minZ: 6.7, maxZ: 8.3 },
-  left: { minX: 2.05, maxX: 5.05, minZ: 4.5, maxZ: 6.5 },
-  right: { minX: 2.05, maxX: 5.05, minZ: 8.5, maxZ: 10.5 },
-  entrance: { minX: 1.85, maxX: 2.05, minZ: 7, maxZ: 8 },
-  leftDoor: { minX: 2.65, maxX: 3.65, minZ: 6.5, maxZ: 6.7 },
-  rightDoor: { minX: 2.65, maxX: 3.65, minZ: 8.3, maxZ: 8.5 },
+  left: { minX: 6.335, maxX: 7.758, minZ: 6.655, maxZ: 8.455 },
+  foyer: { minX: 6.335, maxX: 7.958, minZ: 8.655, maxZ: 10.155 },
+  right: { minX: 6.335, maxX: 7.758, minZ: 10.355, maxZ: 12.155 },
+  entrance: { minX: 6.135, maxX: 6.335, minZ: 9.155, maxZ: 10.055 },
+  leftDoor: { minX: 6.485, maxX: 7.235, minZ: 8.455, maxZ: 8.655 },
+  rightDoor: { minX: 6.485, maxX: 7.235, minZ: 10.155, maxZ: 10.355 },
 };
+export const kitchen = { minX: 5.035, maxX: 11.602, minZ: 13.505, maxZ: 16.605, height: 2.85 };
+export const kitchenDoor = { minX: 5.035, maxX: 6.135, minZ: 13.305, maxZ: 13.505 };
+export const lobby = { minX: -.272, maxX: 4.835, minZ: 15.017, maxZ: 16.605, height: 2.5 };
+export const kitchenNorthDoor = { minX: 4.835, maxX: 5.035, minZ: 15.217, maxZ: 16.405 };
 
-// Across the corridor from the toilet foyer, with aligned side entrances.
-export const minecraft = { minX: -5.75, maxX: .05, minZ: 6.7, maxZ: 10.9, height: 2.9 };
-export const minecraftDoor = { minX: .05, maxX: .25, minZ: 7, maxZ: 8 };
-
+export const contains = (bounds, x, z) => x >= bounds.minX && x <= bounds.maxX && z >= bounds.minZ && z <= bounds.maxZ;
+/** @returns {string} */
 export function walkingLocation(x, z) {
-  if (z <= 3.5) return 'Kontoret · i øjenhøjde';
-  if (x < (minecraftDoor.minX + minecraftDoor.maxX) / 2) return 'Minecraft';
-  if (x > hallway.maxX) {
-    if (z < restrooms.foyer.minZ) return 'Venstre toilet';
-    if (z > restrooms.foyer.maxZ) return 'Højre toilet';
-    return 'Toiletentré';
-  }
+  const locations = [
+    { bounds: spaceInvaders, name: 'Space Invaders · MØDE 4' },
+    { bounds: minecraft, name: 'Minecraft · MØDE 3' },
+    { bounds: kitchen, name: 'Køkken' }, { bounds: lobby, name: 'Lille gang ved køkkenet' },
+    { bounds: restrooms.left, name: 'Venstre toilet' }, { bounds: restrooms.right, name: 'Højre toilet' },
+    { bounds: restrooms.foyer, name: 'Toiletentré' },
+  ];
+  for (const { bounds, name } of locations) if (contains(bounds, x, z)) return name;
   return 'Toiletgangen';
 }
+export const mapPoint = (x, z) => ({ x: 14 + x * 14, y: 14 + z * 14 });
