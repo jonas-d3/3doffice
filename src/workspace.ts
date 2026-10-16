@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { box, cylinder, mesh, rod } from './geometry';
 import { materials as m } from './materials';
 import { plant } from './plants';
-import { desks, workspacePlants, workspaceSofas } from './workspace-layout.mjs';
+import { desks, deskSize, chairOffset, workspacePlants, workspaceSofas } from './workspace-layout.mjs';
 import { createWorkspaceShell } from './workspace-shell';
 
 const leather = new THREE.MeshStandardMaterial({ color: '#a4815d', roughness: .8 });
@@ -44,36 +44,37 @@ function monitor(parent: THREE.Object3D, x: number, portrait = false, active = f
 
 function workstation(parent: THREE.Object3D, desk: typeof desks[number], index: number) {
   const group = new THREE.Group(); parent.add(group); group.position.set(desk.x, 0, desk.z); group.rotation.y = desk.rotation;
-  box(group, 1.6, .035, .8, 0, .755, 0, m.black, .009);
-  for (const x of [-.66, .66]) {
+  box(group, deskSize.width, .035, deskSize.depth, 0, .755, 0, m.black, .009);
+  const legOffset = deskSize.width / 2 - .14;
+  for (const x of [-legOffset, legOffset]) {
     box(group, .06, .71, .065, x, .38, 0, silver);
-    box(group, .09, .045, .65, x, .035, 0, m.metal, .015);
+    box(group, .09, .045, deskSize.depth - .15, x, .035, 0, m.metal, .015);
   }
-  box(group, 1.3, .055, .05, 0, .56, -.17, m.metal);
+  box(group, deskSize.width - .3, .055, .05, 0, .56, -.17, m.metal);
   const portrait = desk.islandIndex === 5 && desk.side === 1;
   monitor(group, -.34, portrait, portrait); monitor(group, .34, portrait, portrait);
-  box(group, .42, .018, .15, -.1, .785, .22, index % 4 ? m.black : m.white, .009);
-  for (let row = 0; row < 4; row++) box(group, .38, .003, .008, -.1, .796, .167 + row * .029, silver);
-  const mouse = mesh(group, new THREE.SphereGeometry(.045, 10, 6), m.black, .22, .802, .23); mouse.scale.set(.6, .4, 1);
+  box(group, .42, .018, .15, -.1, .785, .17, index % 4 ? m.black : m.white, .009);
+  for (let row = 0; row < 4; row++) box(group, .38, .003, .008, -.1, .796, .117 + row * .029, silver);
+  const mouse = mesh(group, new THREE.SphereGeometry(.045, 10, 6), m.black, .22, .802, .18); mouse.scale.set(.6, .4, 1);
   if (index % 3 === 0) {
-    box(group, .3, .016, .22, -.6, .79, .2, silver);
-    box(group, .3, .2, .014, -.6, .89, .095, m.black).rotation.x = -.12;
+    box(group, .3, .016, .22, -.53, .79, .15, silver);
+    box(group, .3, .2, .014, -.53, .89, .045, m.black).rotation.x = -.12;
   }
-  cylinder(group, .035, .03, .095, .63, .823, .18, index % 2 ? m.white : leather);
-  if (index % 4 === 1) cylinder(group, .035, .035, .26, .6, .91, -.25, silver);
-  const seat = new THREE.Group(); group.add(seat); seat.position.set(0, 0, .85); seat.rotation.y = index % 2 ? .07 : -.09;
+  cylinder(group, .035, .03, .095, .6, .823, .13, index % 2 ? m.white : leather);
+  if (index % 4 === 1) cylinder(group, .035, .035, .26, .58, .91, -.22, silver);
+  const seat = new THREE.Group(); group.add(seat); seat.position.set(0, 0, chairOffset); seat.rotation.y = index % 2 ? .07 : -.09;
   chair(seat, index % 3 !== 1);
-  box(group, 1.45, .006, 1.1, 0, .027, .72, mat);
-  cylinder(group, .12, .085, .26, .66, .145, .49, m.black);
-  cylinder(group, .126, .126, .025, .66, .276, .49, silver);
-  const cable = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-.3, .74, -.3), new THREE.Vector3(.25, .15, -.3), new THREE.Vector3(.65, .14, -.22));
+  box(group, deskSize.width - .15, .006, .95, 0, .027, chairOffset - .1, mat);
+  cylinder(group, .12, .085, .26, .56, .145, .42, m.black);
+  cylinder(group, .126, .126, .025, .56, .276, .42, silver);
+  const cable = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-.3, .74, -.25), new THREE.Vector3(.25, .15, -.25), new THREE.Vector3(.55, .14, -.17));
   mesh(group, new THREE.TubeGeometry(cable, 8, .007, 4, false), m.black, 0, 0, 0);
-  if (index % 4 === 0) box(group, .22, .42, .4, .53, .23, -.18, m.black, .014);
+  if (index % 4 === 0) box(group, .22, .42, .4, .43, .23, -.13, m.black, .014);
   if (index === 5 || index === 11) {
-    box(group, .13, .035, .13, .62, .8, -.28, m.black);
-    cylinder(group, .045, .065, .08, .62, .86, -.28, gold);
-    rod(group, [.62, .89, -.28], [.62, 1.06, -.28], .014, gold);
-    cylinder(group, .08, .025, .13, .62, 1.1, -.28, gold);
+    box(group, .13, .035, .13, .58, .8, -.23, m.black);
+    cylinder(group, .045, .065, .08, .58, .86, -.23, gold);
+    rod(group, [.58, .89, -.23], [.58, 1.06, -.23], .014, gold);
+    cylinder(group, .08, .025, .13, .58, 1.1, -.23, gold);
   }
 }
 

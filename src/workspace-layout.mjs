@@ -1,5 +1,7 @@
 // Furniture is estimated from the 16 October walkthrough, not the proposed desks on the PDF.
-// Each black desk is 160 × 80 cm. The long aisle lies between the two banks.
+// Provisional 140 × 70 cm desks, corrected for the wider aisles reported by the user.
+export const deskSize = { width: 1.4, depth: .7 };
+export const chairOffset = .7;
 export const deskIslands = [
   { x: 1.8, z: 22.25, rows: 2 }, { x: 5.8, z: 22.25, rows: 2 },
   { x: 9.8, z: 22.25, rows: 2 }, { x: 13.6, z: 22.25, rows: 1 },
@@ -7,7 +9,8 @@ export const deskIslands = [
 ];
 export const desks = deskIslands.flatMap((island, islandIndex) =>
   Array.from({ length: island.rows }, (_, row) => [-1, 1].map(side => ({
-    x: island.x + side * .405, z: island.z + (row - (island.rows - 1) / 2) * 1.62,
+    x: island.x + side * (deskSize.depth + .01) / 2,
+    z: island.z + (row - (island.rows - 1) / 2) * (deskSize.width + .02),
     rotation: side * Math.PI / 2, side, islandIndex,
   }))).flat());
 export const trussPositions = [3.8, 7.8, 11.8];
@@ -22,8 +25,8 @@ export const workspaceSofas = [
 ];
 export const workspaceObstacles = [
   ...desks.flatMap(d => [
-    [d.x - .4, d.x + .4, d.z - .8, d.z + .8],
-    [d.x + d.side * .85 - .28, d.x + d.side * .85 + .28, d.z - .3, d.z + .3],
+    [d.x - deskSize.depth / 2, d.x + deskSize.depth / 2, d.z - deskSize.width / 2, d.z + deskSize.width / 2],
+    [d.x + d.side * chairOffset - .34, d.x + d.side * chairOffset + .34, d.z - .34, d.z + .34],
   ]),
   // The sloping south braces occupy the walking envelope before their feet touch the floor.
   ...trussPositions.flatMap(x => [[x - .16, x + .16, 17.5, 19.8], [x - .16, x + .16, 22.95, 24.3]]),

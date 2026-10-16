@@ -1,6 +1,6 @@
 import { spaceInvaders, minecraft, meeting2, hallway, restrooms, kitchen, lobby, doorway, minecraftDoor, kitchenDoor, kitchenNorthDoor, workspace, workspaceDoor, mapPoint } from './layout.mjs';
 import { lobbyFurniture } from './lobby-layout.mjs';
-import { desks } from './workspace-layout.mjs';
+import { desks, deskSize } from './workspace-layout.mjs';
 import type { Bounds } from './architecture';
 
 export function renderMinimap() {
@@ -24,7 +24,7 @@ export function renderMinimap() {
     + label(restrooms.left, ['WC']) + label(restrooms.right, ['WC'])
     + Object.values(lobbyFurniture).map(b => rect(b, '#a1a78f')).join('')
     + label(lobby, ['LILLE GANG'])
-    + desks.map(d => rect({ minX: d.x - .4, maxX: d.x + .4, minZ: d.z - .8, maxZ: d.z + .8 }, '#a1a78f')).join('')
+    + desks.map(d => rect({ minX: d.x - deskSize.depth / 2, maxX: d.x + deskSize.depth / 2, minZ: d.z - deskSize.width / 2, maxZ: d.z + deskSize.width / 2 }, '#a1a78f')).join('')
     + label({ ...workspace, minZ: 19.85, maxZ: 20.85 }, ['KONTORET · 17,758 × 6,970 m'])
     + '<g id="map-camera"><path d="m-7-10 7-8 7 8" fill="#4c786235" stroke="none"/><circle r="3.5" fill="#35664b" stroke="#fff" stroke-width="1.5"/></g>';
 }
