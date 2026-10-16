@@ -20,6 +20,9 @@ export const kitchen = { minX: 5.035, maxX: 11.602, minZ: 13.505, maxZ: 16.605, 
 export const kitchenDoor = { minX: 5.035, maxX: 6.135, minZ: 13.305, maxZ: 13.505 };
 export const lobby = { minX: -.272, maxX: 4.835, minZ: 15.017, maxZ: 16.605, height: 2.5 };
 export const kitchenNorthDoor = { minX: 4.835, maxX: 5.035, minZ: 15.217, maxZ: 16.405 };
+// Printed room dimensions; the thick north wall and entrance are traced from the plan.
+export const workspace = { minX: -.5, maxX: 17.258, minZ: 17.405, maxZ: 24.375, height: 4.65 };
+export const workspaceDoor = { minX: 1.5, maxX: 2.5, minZ: lobby.maxZ, maxZ: workspace.minZ };
 
 export const contains = (bounds, x, z) => x >= bounds.minX && x <= bounds.maxX && z >= bounds.minZ && z <= bounds.maxZ;
 /** @returns {string} */
@@ -28,6 +31,7 @@ export function walkingLocation(x, z) {
     { bounds: spaceInvaders, name: 'Space Invaders · MØDE 4' },
     { bounds: minecraft, name: 'Minecraft · MØDE 3' },
     { bounds: kitchen, name: 'Køkken' }, { bounds: lobby, name: 'Lille gang ved køkkenet' },
+    { bounds: workspace, name: 'Kontoret' }, { bounds: workspaceDoor, name: 'Kontoret · indgang' },
     { bounds: restrooms.left, name: 'Venstre toilet' }, { bounds: restrooms.right, name: 'Højre toilet' },
     { bounds: restrooms.foyer, name: 'Toiletentré' },
   ];

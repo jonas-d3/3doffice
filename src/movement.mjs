@@ -1,9 +1,11 @@
-import { spaceInvaders, hallway, doorway, restrooms, minecraft, minecraftDoor, kitchen, kitchenDoor, kitchenNorthDoor, lobby } from './layout.mjs';
+import { spaceInvaders, hallway, doorway, restrooms, minecraft, minecraftDoor, kitchen, kitchenDoor, kitchenNorthDoor, lobby, workspace, workspaceDoor } from './layout.mjs';
 import { planFootprint } from './placement.mjs';
 import { lobbyFurniture } from './lobby-layout.mjs';
+import { workspaceObstacles } from './workspace-layout.mjs';
 
 // Photo furniture is fitted with the same transforms as the rendered rooms.
 export const obstacles = [
+  ...workspaceObstacles,
   ...Object.values(lobbyFurniture).map(b => [b.minX, b.maxX, b.minZ, b.maxZ]),
   ...[
   [-3.02, -.57, -3.02, 3.05], // conference table and chairs
@@ -54,11 +56,11 @@ const inside = (room, x, z, insetX, insetZ) => x >= room.minX + insetX && x <= r
 
 export function canStand(x, z, radius = .17) {
   if (!Number.isFinite(x) || !Number.isFinite(z)) return false;
-  const inRoom = [spaceInvaders, hallway, minecraft, kitchen, lobby, restrooms.foyer, restrooms.left, restrooms.right]
+  const inRoom = [spaceInvaders, hallway, minecraft, kitchen, lobby, workspace, restrooms.foyer, restrooms.left, restrooms.right]
     .some(room => inside(room, x, z, radius, radius));
   // Overlap each threshold with the inset room on both sides, while keeping
   // the camera clear of door jambs. MØDE 2 deliberately has no walkable interior.
-  const inZDoor = [doorway, kitchenDoor, restrooms.leftDoor, restrooms.rightDoor]
+  const inZDoor = [doorway, kitchenDoor, workspaceDoor, restrooms.leftDoor, restrooms.rightDoor]
     .some(door => inside(door, x, z, radius, -radius));
   const inXDoor = [minecraftDoor, restrooms.entrance, kitchenNorthDoor]
     .some(door => inside(door, x, z, -radius, radius));
