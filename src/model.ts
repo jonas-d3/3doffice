@@ -10,6 +10,7 @@ import { createMinecraft } from './minecraft';
 import { createKitchen } from './kitchen';
 import { createLobby } from './lobby';
 import { createWorkspace } from './workspace';
+import { createDay21 } from './day21';
 
 type Parent = THREE.Object3D;
 export const room = { width: 7.758, depth: 6.205, height: 3.05 };
@@ -199,6 +200,7 @@ export function createOffice() {
   slab(office, kitchenNorthDoor);
   const smallHall = createLobby(office); walls.push(...smallHall.walls); roofs.push(smallHall.roof);
   const workspace = createWorkspace(office); walls.push(...workspace.walls); roofs.push(workspace.roof);
+  const day21 = createDay21(office); walls.push(...day21.walls); roofs.push(day21.roof);
 
   const toilets = createRestrooms(office); walls.push(...toilets.walls); roofs.push(toilets.roof);
   for (const [name, create] of [['minecraft', createMinecraft], ['kitchen', createKitchen]] as const) {

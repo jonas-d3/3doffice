@@ -2,10 +2,10 @@ import * as THREE from 'three';
 import { box, cylinder, mesh, rod } from './geometry';
 import { materials as m } from './materials';
 import { slab, partition, type CutawayWall } from './architecture';
-import { workspace as room, workspaceDoor as door } from './layout.mjs';
+import { workspace as room, workspaceDoor as door, day21Door } from './layout.mjs';
 import { trussPositions } from './workspace-layout.mjs';
 
-function pineTexture(dark: boolean) {
+export function pineTexture(dark: boolean) {
   const canvas = document.createElement('canvas'); canvas.width = canvas.height = 512;
   const c = canvas.getContext('2d')!;
   let seed = 71;
@@ -61,12 +61,18 @@ export function createWorkspaceShell(parent: THREE.Object3D) {
   for (const [x, inside] of [[room.minX - .1, 1], [room.maxX + .1, -1]]) {
     const group = new THREE.Group(); parent.add(group); walls.push({ group, axis: 'x', position: x, inside }); ends.push(group);
     const shape = new THREE.Shape();
-    shape.moveTo(room.minZ, 0); shape.lineTo(room.maxZ, 0); shape.lineTo(room.maxZ, 1.6);
+    shape.moveTo(room.minZ, 0);
+    if (inside > 0) {
+      shape.lineTo(day21Door.minZ, 0); shape.lineTo(day21Door.minZ, 2.25);
+      shape.lineTo(day21Door.maxZ, 2.25); shape.lineTo(day21Door.maxZ, 0);
+    }
+    shape.lineTo(room.maxZ, 0); shape.lineTo(room.maxZ, 1.6);
     shape.lineTo(19.7, 4.65); shape.lineTo(room.minZ, 4.65); shape.closePath();
     const wall = mesh(group, new THREE.ExtrudeGeometry(shape, { depth: .2, bevelEnabled: false }), m.wall, x + .1, 0, 0);
     wall.rotation.y = -Math.PI / 2;
     // Shape X becomes world Z; extrusion extends toward -X.
-    box(group, .23, .12, room.maxZ - room.minZ, x, .06, (room.minZ + room.maxZ) / 2, m.white);
+    const skirtings = inside > 0 ? [[room.minZ, day21Door.minZ], [day21Door.maxZ, room.maxZ]] : [[room.minZ, room.maxZ]];
+    for (const [a, b] of skirtings) box(group, .23, .12, b - a, x, .06, (a + b) / 2, m.white);
     // The end-wall framing surrounds the moss panel and TV instead of crossing them.
     const postX = inside > 0 ? room.minX + .12 : room.maxX - .12;
     for (const z of [17.65, 21.35, 23.7]) beam(group, [postX, 0, z], [postX, roofY(z) - .1, z], .2);

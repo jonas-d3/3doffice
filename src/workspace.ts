@@ -42,7 +42,7 @@ function monitor(parent: THREE.Object3D, x: number, portrait = false, active = f
   }
 }
 
-function workstation(parent: THREE.Object3D, desk: typeof desks[number], index: number) {
+export function workstation(parent: THREE.Object3D, desk: typeof desks[number], index: number) {
   const group = new THREE.Group(); parent.add(group); group.position.set(desk.x, 0, desk.z); group.rotation.y = desk.rotation;
   box(group, deskSize.width, .035, deskSize.depth, 0, .755, 0, m.black, .009);
   const legOffset = deskSize.width / 2 - .14;
@@ -79,7 +79,7 @@ function workstation(parent: THREE.Object3D, desk: typeof desks[number], index: 
 }
 
 function mossWall(parent: THREE.Object3D) {
-  const group = new THREE.Group(); parent.add(group); group.position.set(-.485, 1.78, 19.75); group.rotation.y = Math.PI / 2;
+  const group = new THREE.Group(); parent.add(group); group.position.set(-.485, 1.78, 20.3); group.rotation.y = Math.PI / 2;
   box(group, 2.05, 2.1, .07, 0, 0, 0, m.black);
   const canvas = document.createElement('canvas'); canvas.width = canvas.height = 512;
   const c = canvas.getContext('2d')!; c.fillStyle = '#20391b'; c.fillRect(0, 0, 512, 512);
@@ -102,7 +102,7 @@ function mossWall(parent: THREE.Object3D) {
     clumps.setColorAt(i, new THREE.Color().setHSL(.21 + random() * .06, .45, .14 + random() * .16));
   }
   group.add(clumps);
-  const guitar = new THREE.Group(); parent.add(guitar); guitar.position.set(-.43, 1.25, 18.05); guitar.rotation.y = Math.PI / 2;
+  const guitar = new THREE.Group(); parent.add(guitar); guitar.position.set(-.43, 1.25, 21.65); guitar.rotation.y = Math.PI / 2;
   for (const [y, radius] of [[0, .17], [.2, .125]]) {
     const body = mesh(guitar, new THREE.SphereGeometry(radius, 16, 12), m.black, 0, y, 0); body.scale.set(1, 1.13, .25);
   }

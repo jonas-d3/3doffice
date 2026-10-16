@@ -5,9 +5,10 @@ import { walkingLocation, mapPoint } from './layout.mjs';
 import { planPoint } from './placement.mjs';
 import { lobbyPreset } from './lobby-layout.mjs';
 import { workspacePreset } from './workspace-layout.mjs';
+import { day21Preset } from './day21-layout.mjs';
 
-export type View = 'overview' | 'meeting' | 'lounge' | 'walk' | 'hallway' | 'restrooms' | 'minecraft' | 'kitchen' | 'lobby' | 'workspace';
-const names = { overview: 'Overblik', meeting: 'Mødebord', lounge: 'Lounge', walk: 'Space Invaders · MØDE 4', hallway: 'Toiletgangen', restrooms: 'Toiletentré', minecraft: 'Minecraft · MØDE 3', kitchen: 'Køkken', lobby: 'Lille gang ved køkkenet', workspace: 'Kontoret' };
+export type View = 'overview' | 'meeting' | 'lounge' | 'walk' | 'hallway' | 'restrooms' | 'minecraft' | 'kitchen' | 'lobby' | 'workspace' | 'day21';
+const names = { overview: 'Overblik', meeting: 'Mødebord', lounge: 'Lounge', walk: 'Space Invaders · MØDE 4', hallway: 'Toiletgangen', restrooms: 'Toiletentré', minecraft: 'Minecraft · MØDE 3', kitchen: 'Køkken', lobby: 'Lille gang ved køkkenet', workspace: 'Kontoret', day21: 'Day21' };
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export class Navigation {
@@ -20,14 +21,14 @@ export class Navigation {
   private transition: { from: THREE.Vector3; to: THREE.Vector3; fromTarget: THREE.Vector3; target: THREE.Vector3; elapsed: number } | null = null;
   private direction = new THREE.Vector3();
 
-  get isWalking() { return this.view === 'walk' || this.view === 'hallway' || this.view === 'restrooms' || this.view === 'minecraft' || this.view === 'kitchen' || this.view === 'lobby' || this.view === 'workspace'; }
+  get isWalking() { return this.view === 'walk' || this.view === 'hallway' || this.view === 'restrooms' || this.view === 'minecraft' || this.view === 'kitchen' || this.view === 'lobby' || this.view === 'workspace' || this.view === 'day21'; }
 
   constructor(readonly camera: THREE.PerspectiveCamera, readonly canvas: HTMLCanvasElement) {
     this.controls = new OrbitControls(camera, canvas);
     this.controls.enableDamping = !reducedMotion;
     this.controls.dampingFactor = .09;
     this.controls.minDistance = 1.2;
-    this.controls.maxDistance = 140;
+    this.controls.maxDistance = 240;
     this.controls.maxPolarAngle = Math.PI / 2 - .035;
     this.controls.panSpeed = .7;
     this.controls.addEventListener('start', () => { this.transition = null; });
@@ -89,8 +90,9 @@ export class Navigation {
     document.querySelector('#navigation-hint')!.innerHTML = walking
       ? '<span>W A S D / pile: gå</span><b>·</b><span>Træk / Q E: kig rundt</span><b>·</b><span>Esc: overblik</span>'
       : '<span>Træk: drej</span><b>·</b><span>Højretræk / to fingre: panorer</span><b>·</b><span>Scroll / knib: zoom</span>';
-    if (view === 'walk' || view === 'hallway' || view === 'restrooms' || view === 'minecraft' || view === 'kitchen' || view === 'lobby' || view === 'workspace') {
+    if (view === 'walk' || view === 'hallway' || view === 'restrooms' || view === 'minecraft' || view === 'kitchen' || view === 'lobby' || view === 'workspace' || view === 'day21') {
       const preset = {
+        day21: day21Preset,
         workspace: workspacePreset,
         lobby: lobbyPreset,
         walk: { x: 5.585, z: 5.55, yaw: 0, pitch: -.025 },
@@ -104,14 +106,14 @@ export class Navigation {
       this.look(); this.canvas.focus({ preventScroll: true }); return;
     }
     this.setTool('rotate');
-    const overviewTarget = new THREE.Vector3(8.4, .8, 12.2);
+    const overviewTarget = new THREE.Vector3(-5.4, .8, 12.2);
     const direction = new THREE.Vector3(21, 29, 32).normalize();
     const right = new THREE.Vector3(direction.z, 0, -direction.x).normalize();
     const up = new THREE.Vector3().crossVectors(direction, right);
     const tangent = Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2));
     let overviewDistance = 0;
     // Fit every corner of the expanded floor plan, leaving space for the controls.
-    for (const x of [-.8, 17.6]) for (const y of [0, 4.8]) for (const z of [-.3, 24.7]) {
+    for (const x of [-28.4, 17.6]) for (const y of [0, 4.8]) for (const z of [-.3, 24.7]) {
       const corner = new THREE.Vector3(x, y, z).sub(overviewTarget);
       overviewDistance = Math.max(overviewDistance, corner.dot(direction) + Math.max(
         Math.abs(corner.dot(right)) / (tangent * this.camera.aspect * .9),
@@ -200,7 +202,7 @@ export class Navigation {
       }
       this.controls.update();
       const target = this.controls.target.clone();
-      this.controls.target.clamp(new THREE.Vector3(-1, 0, -1), new THREE.Vector3(18, 4, 25));
+      this.controls.target.clamp(new THREE.Vector3(-29, 0, -1), new THREE.Vector3(18, 4, 25));
       this.camera.position.add(this.controls.target.clone().sub(target));
     }
     const point = this.isWalking ? this.camera.position : this.controls.target;

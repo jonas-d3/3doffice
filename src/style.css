@@ -33,13 +33,13 @@ h1 { font-size: clamp(1.6rem, 3vw, 2.6rem); font-weight: 470; letter-spacing: -.
 .side-tools .icon-button { border: 0; background: transparent; width: 35px; height: 35px; }
 .side-tools .active { background: #e2e9db; color: #31573b; }
 .tool-divider { width: 19px; height: 1px; background: #dcdfd3; margin: 3px 0; }
-.map-card { position: absolute; left: 39px; bottom: 150px; width: 151px; }
-body:not([data-mode="overview"]) .map-card { background: #f3f4eae8; padding: 12px; border-radius: 13px; width: 172px; }
+.map-card { position: absolute; inset-inline-start: 39px; inset-block-end: 180px; inline-size: 254px; }
+body:not([data-mode="overview"]) .map-card { background: #f3f4eae8; padding: 12px; border-radius: 13px; inline-size: 254px; }
 .map-heading { display: flex; justify-content: space-between; font-size: .52rem; letter-spacing: .1em; color: #63705d; }
 .map-heading span { letter-spacing: 0; color: #6f776b; }
-.map-card > svg { width: 148px; height: 200px; margin-top: 7px; }
+.map-card > svg { inline-size: 230px; block-size: 128px; margin-block-start: 7px; }
 .bottom-panel { inline-size: min(1160px, calc(100% - 28px)); position: absolute; bottom: 31px; left: 50%; transform: translateX(-50%); text-align: center; }
-.view-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr)); align-items: center; padding: 6px; border: 1px solid #d8ddd0; border-radius: 16px; background: #f8f9f2ed; box-shadow: 0 10px 36px #414d3510; white-space: nowrap; }
+.view-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 6rem), 1fr)); align-items: center; padding: 6px; border: 1px solid #d8ddd0; border-radius: 16px; background: #f8f9f2ed; box-shadow: 0 10px 36px #414d3510; white-space: nowrap; }
 .view-tabs button { display: flex; justify-content: center; align-items: center; gap: 9px; height: 47px; padding-inline: 6px; border: 0; border-radius: 10px; background: transparent; font-size: .72rem; }
 .view-tabs button.selected { background: #3f583f; color: #fff; box-shadow: 0 3px 7px #34463122; }
 .view-tabs button.selected:hover { background: #344d35; }
@@ -65,14 +65,16 @@ dd { margin: 6px 0 0; font-size: .77rem; line-height: 1.7; color: #67705f; }
 .error-panel button { padding: 12px 20px; border: 1px solid #748568; border-radius: 8px; }
 @media (max-width: 1050px) {
   .intro { top: 112px; } .intro > p:not(.eyebrow), .model-note { display: none; }
-  .map-card { width: 110px; bottom: 150px; } .map-card > svg { width: 110px; height: 100px; } .map-heading span { display: none; }
+  .map-card, body:not([data-mode="overview"]) .map-card { inline-size: 172px; inset-block-end: 190px; }
+  .map-card > svg { inline-size: 148px; block-size: 83px; } .map-heading span { display: none; }
   .bottom-panel { width: min(680px, calc(100% - 28px)); }
-  .view-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr)); gap: 3px; }
+  .view-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 6rem), 1fr)); gap: 3px; }
   .view-tabs button { justify-content: center; padding-inline: 6px; }
   .tab-divider { display: none; }
   .walk-pad { inset-block-end: 260px; }
 }
 @media (max-width: 600px) {
+  body:not([data-mode="overview"]) .header::before { inset-block-start: -22px; inset-inline: -20px; }
   .header { inset: 22px 20px auto; } .brand { font-size: 1.02rem; } .brand-sub { font-size: .49rem; }
   .header-actions { gap: 7px; } .live-label { display: none; } .header-actions .icon-button { width: 34px; height: 34px; }
   .intro { top: 98px; left: 21px; } .intro .eyebrow { font-size: .5rem; } h1 { margin-top: 10px; }

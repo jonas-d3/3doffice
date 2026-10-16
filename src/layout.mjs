@@ -23,6 +23,13 @@ export const kitchenNorthDoor = { minX: 4.835, maxX: 5.035, minZ: 15.217, maxZ: 
 // Printed room dimensions; the thick north wall and entrance are traced from the plan.
 export const workspace = { minX: -.5, maxX: 17.258, minZ: 17.405, maxZ: 24.375, height: 4.65 };
 export const workspaceDoor = { minX: 1.5, maxX: 2.5, minZ: lobby.maxZ, maxZ: workspace.minZ };
+// Day21: printed 27.088 m length, 3.712 m south bay and 2.770 m passage.
+export const day21 = { minX: -28.038, maxX: -.95, minZ: 17.693, maxZ: 24.375, height: 3.4 };
+export const day21Door = { minX: day21.maxX, maxX: workspace.minX, minZ: 17.95, maxZ: 19.15 };
+export const day21Meeting = { minX: -17.35, maxX: -12.723, minZ: 14.817, maxZ: 17.493, height: 3.4 };
+export const day21MeetingDoor = { minX: -15.9, maxX: -14.8, minZ: 17.493, maxZ: day21.minZ };
+export const day21Nook = { minX: -12.523, maxX: -4.3, minZ: 14.817, maxZ: day21.minZ, height: 3.4 };
+export const day21NookOpening = { minX: day21Nook.minX, maxX: day21Nook.maxX, minZ: day21.minZ - .2, maxZ: day21.minZ + .2 };
 
 export const contains = (bounds, x, z) => x >= bounds.minX && x <= bounds.maxX && z >= bounds.minZ && z <= bounds.maxZ;
 /** @returns {string} */
@@ -32,6 +39,9 @@ export function walkingLocation(x, z) {
     { bounds: minecraft, name: 'Minecraft · MØDE 3' },
     { bounds: kitchen, name: 'Køkken' }, { bounds: lobby, name: 'Lille gang ved køkkenet' },
     { bounds: workspace, name: 'Kontoret' }, { bounds: workspaceDoor, name: 'Kontoret · indgang' },
+    { bounds: day21, name: 'Day21' }, { bounds: day21Door, name: 'Day21 · indgang' },
+    { bounds: day21Meeting, name: 'Day21 · glasrum' }, { bounds: day21MeetingDoor, name: 'Day21 · glasrum' },
+    { bounds: day21Nook, name: 'Day21 · sofakrog' },
     { bounds: restrooms.left, name: 'Venstre toilet' }, { bounds: restrooms.right, name: 'Højre toilet' },
     { bounds: restrooms.foyer, name: 'Toiletentré' },
   ];
