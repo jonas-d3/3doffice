@@ -38,12 +38,12 @@ body:not([data-mode="overview"]) .map-card { background: #f3f4eae8; padding: 12p
 .map-heading { display: flex; justify-content: space-between; font-size: .52rem; letter-spacing: .1em; color: #63705d; }
 .map-heading span { letter-spacing: 0; color: #6f776b; }
 .map-card > svg { width: 148px; height: 200px; margin-top: 7px; }
-.bottom-panel { position: absolute; bottom: 31px; left: 50%; transform: translateX(-50%); text-align: center; }
-.view-tabs { display: flex; align-items: center; padding: 6px; border: 1px solid #d8ddd0; border-radius: 16px; background: #f8f9f2ed; box-shadow: 0 10px 36px #414d3510; white-space: nowrap; }
-.view-tabs button { display: flex; align-items: center; gap: 9px; height: 47px; padding: 0 18px; border: 0; border-radius: 10px; background: transparent; font-size: .72rem; }
+.bottom-panel { inline-size: min(1160px, calc(100% - 28px)); position: absolute; bottom: 31px; left: 50%; transform: translateX(-50%); text-align: center; }
+.view-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr)); align-items: center; padding: 6px; border: 1px solid #d8ddd0; border-radius: 16px; background: #f8f9f2ed; box-shadow: 0 10px 36px #414d3510; white-space: nowrap; }
+.view-tabs button { display: flex; justify-content: center; align-items: center; gap: 9px; height: 47px; padding-inline: 6px; border: 0; border-radius: 10px; background: transparent; font-size: .72rem; }
 .view-tabs button.selected { background: #3f583f; color: #fff; box-shadow: 0 3px 7px #34463122; }
 .view-tabs button.selected:hover { background: #344d35; }
-.tab-divider { width: 1px; height: 25px; background: #d8ddd0; margin: 0 4px; }
+.tab-divider { display: none; width: 1px; height: 25px; background: #d8ddd0; margin: 0 4px; }
 #navigation-hint { display: flex; justify-content: center; align-items: center; gap: 10px; font-size: .58rem; color: #6c7566; margin: 16px 0 0; white-space: nowrap; }
 #navigation-hint b { font-weight: 400; color: #929b88; }
 .walk-pad { position: absolute; right: 30px; bottom: 130px; display: grid; grid-template-columns: repeat(3, 43px); gap: 5px; }
@@ -79,7 +79,7 @@ dd { margin: 6px 0 0; font-size: .77rem; line-height: 1.7; color: #67705f; }
   .view-indicator { right: 22px; top: 107px; font-size: .6rem; }
   .side-tools { right: 15px; top: 37%; padding: 5px; } .side-tools .icon-button { width: 33px; height: 33px; }
   .map-card { display: none; } .bottom-panel { bottom: max(22px, env(safe-area-inset-bottom)); width: calc(100% - 28px); }
-  .view-tabs { border-radius: 15px; padding: 5px; } .view-tabs button { flex-direction: column; height: 54px; padding: 6px 4px; gap: 5px; font-size: .61rem; } .view-tabs button svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .view-tabs { grid-template-columns: repeat(auto-fit, minmax(min(100%, 4.1rem), 1fr)); border-radius: 15px; padding: 5px; } .view-tabs button { flex-direction: column; height: 54px; padding: 6px 4px; gap: 5px; font-size: .61rem; } .view-tabs button svg { width: 18px; height: 18px; flex-shrink: 0; }
   .tab-divider { display: none; } #navigation-hint { font-size: .55rem; gap: 6px; margin-top: 12px; white-space: normal; }
   #navigation-hint span:nth-of-type(2), #navigation-hint b:first-of-type { display: none; }
   .walk-pad { inset-inline-end: 19px; inset-block-end: 260px; }

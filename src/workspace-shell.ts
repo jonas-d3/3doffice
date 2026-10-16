@@ -63,11 +63,15 @@ export function createWorkspaceShell(parent: THREE.Object3D) {
     const shape = new THREE.Shape();
     shape.moveTo(room.minZ, 0); shape.lineTo(room.maxZ, 0); shape.lineTo(room.maxZ, 1.6);
     shape.lineTo(19.7, 4.65); shape.lineTo(room.minZ, 4.65); shape.closePath();
-    const wall = mesh(group, new THREE.ExtrudeGeometry(shape, { depth: .2, bevelEnabled: false }), m.wall, x - inside * .1, 0, 0);
+    const wall = mesh(group, new THREE.ExtrudeGeometry(shape, { depth: .2, bevelEnabled: false }), m.wall, x + .1, 0, 0);
     wall.rotation.y = -Math.PI / 2;
     // Shape X becomes world Z; extrusion extends toward -X.
-    wall.position.x = x + .1;
     box(group, .23, .12, room.maxZ - room.minZ, x, .06, (room.minZ + room.maxZ) / 2, m.white);
+    // The end-wall framing surrounds the moss panel and TV instead of crossing them.
+    const postX = inside > 0 ? room.minX + .12 : room.maxX - .12;
+    for (const z of [17.65, 21.35, 23.7]) beam(group, [postX, 0, z], [postX, roofY(z) - .1, z], .2);
+    beam(group, [postX, 3.08, 17.65], [postX, 3.08, 21.35], .22);
+    beam(group, [postX, 2.2, 17.65], [postX, 3.08, 18.15], .14);
   }
   // North wall doors visible in the walkthrough remain closed.
   for (const x of [8.2, 12.4]) {

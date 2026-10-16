@@ -9,6 +9,7 @@ import { plant } from './plants';
 import { createMinecraft } from './minecraft';
 import { createKitchen } from './kitchen';
 import { createLobby } from './lobby';
+import { createWorkspace } from './workspace';
 
 type Parent = THREE.Object3D;
 export const room = { width: 7.758, depth: 6.205, height: 3.05 };
@@ -197,6 +198,7 @@ export function createOffice() {
   box(office, .025, 2.2, .85, 5.047, 1.1, 14.05, m.trim);
   slab(office, kitchenNorthDoor);
   const smallHall = createLobby(office); walls.push(...smallHall.walls); roofs.push(smallHall.roof);
+  const workspace = createWorkspace(office); walls.push(...workspace.walls); roofs.push(workspace.roof);
 
   const toilets = createRestrooms(office); walls.push(...toilets.walls); roofs.push(toilets.roof);
   for (const [name, create] of [['minecraft', createMinecraft], ['kitchen', createKitchen]] as const) {

@@ -37,5 +37,9 @@ test('video desk islands block movement while their connecting aisles stay clear
   for (const point of [[1.8, 22.3], [5.8, 22.3], [9.8, 22.3], [13.6, 22.3], [5.8, 18.6], [9.8, 18.6], [13.6, 18.6]]) {
     assert.equal(canStand(...point), false, `Desk ${point}`);
   }
-  route([[3.8, 20.4], [3.8, 22.8], [3.8, 20.4], [7.8, 20.4], [7.8, 22.8], [7.8, 20.4]]);
+  route([[3.8, 20.4], [3.8, 22.6], [3.8, 20.4], [7.8, 20.4], [7.8, 22.6], [7.8, 20.4]]);
+});
+
+test('diagonal timber braces and end-wall posts stop the camera at body height', () => {
+  for (const point of [[3.8, 23.0], [7.8, 23.0], [11.8, 23.0], [-.3, 21.35]]) assert.equal(canStand(...point), false, `Timber ${point}`);
 });

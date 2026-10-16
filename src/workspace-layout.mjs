@@ -10,7 +10,7 @@ export const desks = deskIslands.flatMap((island, islandIndex) =>
     x: island.x + side * .405, z: island.z + (row - (island.rows - 1) / 2) * 1.62,
     rotation: side * Math.PI / 2, side, islandIndex,
   }))).flat());
-export const trussPositions = [-.25, 3.8, 7.8, 11.8, 17.05];
+export const trussPositions = [3.8, 7.8, 11.8];
 export const workspacePlants = [
   { x: 3.95, z: 19.5, size: 1.05 }, { x: 7.9, z: 19.45, size: .75 },
   { x: 11.9, z: 19.45, size: .8 }, { x: .1, z: 23.5, size: .8 },
@@ -25,7 +25,9 @@ export const workspaceObstacles = [
     [d.x - .4, d.x + .4, d.z - .8, d.z + .8],
     [d.x + d.side * .85 - .28, d.x + d.side * .85 + .28, d.z - .3, d.z + .3],
   ]),
-  ...trussPositions.flatMap(x => [[x - .16, x + .16, 17.5, 19.8], [x - .16, x + .16, 23.55, 24.3]]),
+  // The sloping south braces occupy the walking envelope before their feet touch the floor.
+  ...trussPositions.flatMap(x => [[x - .16, x + .16, 17.5, 19.8], [x - .16, x + .16, 22.95, 24.3]]),
+  ...[-.38, 17.138].flatMap(x => [17.65, 21.35, 23.7].map(z => [x - .1, x + .1, z - .1, z + .1])),
   ...workspacePlants.map(p => [p.x - .28 * p.size, p.x + .28 * p.size, p.z - .28 * p.size, p.z + .28 * p.size]),
   [14.925, 16.975, 23.43, 24.33], [16.33, 17.23, 20.88, 23.18],
   [15.0, 15.6, 21.65, 23.45], // long coffee table between the sofas

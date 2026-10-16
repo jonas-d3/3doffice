@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { box, cylinder, mesh, rod } from './geometry';
 import { materials as m } from './materials';
-import { lobby } from './layout.mjs';
+import { lobby, workspaceDoor } from './layout.mjs';
 import { lobbyFurniture as furniture } from './lobby-layout.mjs';
 import { partition, roof, slab, type CutawayWall } from './architecture';
 
@@ -152,20 +152,8 @@ export function createLobby(parent: THREE.Object3D) {
   }
   cylinder(ceiling, .065, .065, .025, 2.2, 2.47, 15.81, m.white);
   partition(group, walls, 'x', lobby.minX - .1, lobby.minZ, lobby.maxZ, 1, 2.5);
-  const south = partition(group, walls, 'z', lobby.maxZ + .1, lobby.minX, lobby.maxX, -1, 2.5, [.65, 1.65]);
+  const south = partition(group, walls, 'z', lobby.maxZ + .1, lobby.minX, lobby.maxX, -1, 2.5, [workspaceDoor.minX, workspaceDoor.maxX]);
   logoWall(south);
-  // Only the photographed doorway is represented; the adjoining office is unmodelled.
-  const reveal = new THREE.Group(); south.add(reveal);
-  box(reveal, 1, .05, .22, 1.15, -.005, 16.715, floor);
-  box(reveal, .06, 2.25, .2, .65, 1.125, 16.705, m.white);
-  box(reveal, .06, 2.25, .2, 1.65, 1.125, 16.705, m.white);
-  box(reveal, 1, .06, .2, 1.15, 2.25, 16.705, m.white);
-  // Light neutral infill marks the limit of the model without inventing another room.
-  box(reveal, 1, 2.25, .025, 1.15, 1.125, 16.815, m.wall);
-  const door = new THREE.Group(); reveal.add(door); door.position.set(1.65, 0, 16.73); door.rotation.y = -.12;
-  box(door, .86, 2.18, .045, .43, 1.09, 0, m.white, .006);
-  for (const y of [.6, 1.57]) box(door, .65, .81, .014, .43, y, -.03, m.trim, .005);
-  rod(door, [.65, 1.02, -.06], [.78, 1.02, -.06], .013, brass);
   const northDetails = new THREE.Group(); group.add(northDetails);
   walls.push({ group: northDetails, axis: 'z', position: lobby.minZ, inside: 1 });
   cabinet(northDetails); coatRack(northDetails); lamp(northDetails);
