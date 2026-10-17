@@ -4,6 +4,7 @@ import { createOffice } from './model';
 import { Navigation, type View } from './navigation';
 import { renderMinimap } from './minimap';
 import { TVGame } from './tv-game';
+import { WhiteboardGame } from './whiteboard-game';
 import { Visitor } from './visitor';
 import { EasterEggs } from './easter-eggs';
 import { YoutubeScreen } from './youtube-screen';
@@ -61,6 +62,7 @@ document.querySelector('#zoom-in')!.addEventListener('click', () => navigation.z
 document.querySelector('#zoom-out')!.addEventListener('click', () => navigation.zoom(1.22));
 document.querySelector('#reset')!.addEventListener('click', () => navigation.setView('overview'));
 const dialog = document.querySelector<HTMLDialogElement>('#help-dialog')!;
+const whiteboardGame = new WhiteboardGame(model.whiteboard, model.office, navigation, motionPreference, () => dialog.open || tvGame.active || document.hidden);
 const easterEggs = new EasterEggs(model.office, model.coffee, model.jesperScreen, visitor, navigation, motionPreference, () => dialog.open || tvGame.active || document.hidden);
 document.querySelector('#help')!.addEventListener('click', () => { navigation.clearInput(); dialog.showModal(); });
 dialog.addEventListener('click', event => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } });
@@ -101,6 +103,7 @@ renderer.setAnimationLoop(now => {
   const walk = navigation.isWalking;
   for (const wall of model.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
   for (const roof of model.roofs) roof.visible = walk;
+  if (whiteboardGame.update(dt)) needsRender = true;
   if (easterEggs.update(dt)) needsRender = true;
   if (needsRender || !previousPosition.equals(camera.position) || !previousRotation.equals(camera.quaternion)) {
     model.holbechScreens.render(renderer, scene, model.walls, model.roofs);

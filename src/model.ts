@@ -114,6 +114,11 @@ function details(parent: Parent) {
   const board = new THREE.Group(); board.position.set(-.3, 0, 2.85); board.rotation.y = -.13; parent.add(board);
   box(board, .86, 1.2, .055, 0, 1.45, 0, m.metal, .02);
   box(board, .8, 1.14, .012, 0, 1.45, -.035, m.white, .01);
+  const whiteboard = new THREE.Mesh(new THREE.PlaneGeometry(.8, 1.14), new THREE.MeshBasicMaterial({ toneMapped: false }));
+  whiteboard.position.set(0, 1.45, -.042); board.add(whiteboard);
+  whiteboard.rotation.y = Math.PI;
+  whiteboard.name = 'Space Invaders på whiteboardet';
+  whiteboard.castShadow = whiteboard.receiveShadow = false;
   rod(board, [0, .1, 0], [0, .89, 0], .026);
   for (const x of [-.35, .35]) {
     rod(board, [0, .15, 0], [x, .08, -.25], .021);
@@ -128,6 +133,7 @@ function details(parent: Parent) {
   box(parent, .5, .41, .43, 2.68, .245, 2.46, m.jute, .03);
   box(parent, .52, .78, .47, 3.41, .41, 2.57, m.black, .016);
   for (const y of [.22, .43, .64]) box(parent, .46, .012, .015, 3.41, y, 2.817, m.metal);
+  return whiteboard;
 }
 
 function lamps(parent: Parent) {
@@ -149,7 +155,8 @@ export function createOffice() {
   const furniture = new THREE.Group(); office.add(furniture);
   const fit = placements.office;
   furniture.scale.set(fit.sx, 1, fit.sz); furniture.position.set(fit.x, 0, fit.z);
-  meetingArea(furniture); lounge(furniture); details(furniture); lamps(furniture);
+  meetingArea(furniture); lounge(furniture); lamps(furniture);
+  const whiteboard = details(furniture);
   for (const [x, rotation, inside] of [[-.1, 0, 1], [7.858, Math.PI, -1]]) {
     const wall = windowWall(); wall.position.set(x, 0, 3.1025);
     wall.rotation.y = rotation; wall.scale.z = 6.205 / 7; office.add(wall);
@@ -212,5 +219,5 @@ export function createOffice() {
     for (const wall of result.walls) wall.position = wall.position * (wall.axis === 'x' ? p.sx : p.sz) + p[wall.axis];
     walls.push(...result.walls); roofs.push(result.roof);
   }
-  return { office, walls, roofs, coffee, updateRestroomDoor: toilets.updateDoor, jesperScreen: workspace.jesperScreen, television: workspace.television, updateScreens: workspace.updateScreens, holbechScreens: workspace.holbechScreens, martinScreen: workspace.martinScreen };
+  return { office, walls, roofs, coffee, whiteboard, updateRestroomDoor: toilets.updateDoor, jesperScreen: workspace.jesperScreen, television: workspace.television, updateScreens: workspace.updateScreens, holbechScreens: workspace.holbechScreens, martinScreen: workspace.martinScreen };
 }
