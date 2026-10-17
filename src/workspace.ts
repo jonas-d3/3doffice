@@ -2,8 +2,13 @@ import * as THREE from 'three';
 import { box, cylinder, mesh, rod } from './geometry';
 import { materials as m } from './materials';
 import { plant } from './plants';
-import { desks, deskSize, chairOffset, workspacePlants, workspaceSofas } from './workspace-layout.mjs';
+import { desks, deskIslands, deskSize, chairOffset, workspacePlants, workspaceSofas } from './workspace-layout.mjs';
 import { createWorkspaceShell } from './workspace-shell';
+import { createProximityWallpaper } from './proximity-wallpaper.mjs';
+import pinupUrl from './assets/thrane-pixel-pinup.png';
+import childrenUrl from './assets/thrane-children.png';
+import fckLogoUrl from './assets/fck-logo.png';
+import satyriconLogoUrl from './assets/satyricon-logo.png';
 
 const leather = new THREE.MeshStandardMaterial({ color: '#a4815d', roughness: .8 });
 const upholstery = new THREE.MeshStandardMaterial({ color: '#b49b7a', map: m.sofa.map, roughness: .95 });
@@ -11,6 +16,21 @@ const chairMesh = new THREE.MeshStandardMaterial({ color: '#353e3e', map: m.sofa
 const silver = new THREE.MeshStandardMaterial({ color: '#a7aeae', metalness: .6, roughness: .4 });
 const mat = new THREE.MeshStandardMaterial({ color: '#b8bdb5', transparent: true, opacity: .4, roughness: .9, depthWrite: false });
 const gold = new THREE.MeshStandardMaterial({ color: '#c5ad64', metalness: .65, roughness: .3 });
+
+function logoWallpaper(url: string, background: string, crop?: [number, number, number, number]) {
+  const canvas = document.createElement('canvas'); canvas.width = 1024; canvas.height = 565;
+  const context = canvas.getContext('2d')!;
+  context.fillStyle = background; context.fillRect(0, 0, canvas.width, canvas.height);
+  const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
+  new THREE.ImageLoader().load(url, image => {
+    const [x, y, width, height] = crop ?? [0, 0, image.width, image.height];
+    const scale = Math.min(canvas.width / width, canvas.height / height) * .84;
+    context.drawImage(image, x, y, width, height,
+      (canvas.width - width * scale) / 2, (canvas.height - height * scale) / 2, width * scale, height * scale);
+    texture.needsUpdate = true;
+  });
+  return new THREE.MeshBasicMaterial({ map: texture, toneMapped: false });
+}
 
 function chair(parent: THREE.Object3D, brown: boolean) {
   const cloth = brown ? leather : chairMesh;
@@ -29,20 +49,26 @@ function chair(parent: THREE.Object3D, brown: boolean) {
   }
 }
 
-function monitor(parent: THREE.Object3D, x: number, portrait = false, active = false) {
+function monitor(parent: THREE.Object3D, x: number, portrait = false, active = false, wallpaper?: THREE.Material) {
   const width = portrait ? .34 : .63, height = portrait ? .61 : .36;
   box(parent, .23, .025, .16, x, .795, -.17, m.black);
   rod(parent, [x, .81, -.17], [x, 1.09, -.17], .018, m.black);
   box(parent, width, height, .045, x, 1.17, -.17, m.black, .009);
   box(parent, width - .028, height - .028, .007, x, 1.17, -.143, active ? silver : m.screen);
+  let display: THREE.Mesh | undefined;
+  if (wallpaper) {
+    display = mesh(parent, new THREE.PlaneGeometry(width - .028, height - .028), wallpaper, x, 1.17, -.138);
+    display.castShadow = false; display.receiveShadow = false;
+  }
   if (active) {
     // Abstract application windows: no personal screen content is reproduced.
     box(parent, width * .75, height * .52, .004, x, 1.2, -.137, m.white);
     box(parent, width * .75, .03, .004, x, 1.2 + height * .26, -.134, chairMesh);
   }
+  return display;
 }
 
-export function workstation(parent: THREE.Object3D, desk: typeof desks[number], index: number) {
+export function workstation(parent: THREE.Object3D, desk: typeof desks[number], index: number, wallpaper?: THREE.Material) {
   const group = new THREE.Group(); parent.add(group); group.position.set(desk.x, 0, desk.z); group.rotation.y = desk.rotation;
   box(group, deskSize.width, .035, deskSize.depth, 0, .755, 0, m.black, .009);
   const legOffset = deskSize.width / 2 - .14;
@@ -52,7 +78,8 @@ export function workstation(parent: THREE.Object3D, desk: typeof desks[number], 
   }
   box(group, deskSize.width - .3, .055, .05, 0, .56, -.17, m.metal);
   const portrait = desk.islandIndex === 5 && desk.side === 1;
-  monitor(group, -.34, portrait, portrait); monitor(group, .34, portrait, portrait);
+  const display = monitor(group, -.34, portrait, portrait, wallpaper);
+  monitor(group, .34, portrait, portrait);
   box(group, .42, .018, .15, -.1, .785, .17, index % 4 ? m.black : m.white, .009);
   for (let row = 0; row < 4; row++) box(group, .38, .003, .008, -.1, .796, .117 + row * .029, silver);
   const mouse = mesh(group, new THREE.SphereGeometry(.045, 10, 6), m.black, .22, .802, .18); mouse.scale.set(.6, .4, 1);
@@ -76,6 +103,7 @@ export function workstation(parent: THREE.Object3D, desk: typeof desks[number], 
     rod(group, [.58, .89, -.23], [.58, 1.06, -.23], .014, gold);
     cylinder(group, .08, .025, .13, .58, 1.1, -.23, gold);
   }
+  return display;
 }
 
 function mossWall(parent: THREE.Object3D) {
@@ -130,7 +158,24 @@ function sofa(parent: THREE.Object3D, spec: typeof workspaceSofas[number]) {
 export function createWorkspace(parent: THREE.Object3D) {
   const group = new THREE.Group(); parent.add(group);
   const shell = createWorkspaceShell(group);
-  desks.forEach((desk, index) => workstation(group, desk, index));
+  const pinup = new THREE.TextureLoader().load(pinupUrl);
+  pinup.colorSpace = THREE.SRGBColorSpace;
+  pinup.magFilter = THREE.NearestFilter;
+  const children = new THREE.TextureLoader().load(childrenUrl);
+  children.colorSpace = THREE.SRGBColorSpace;
+  const wallpaper = new THREE.MeshBasicMaterial({ map: pinup, toneMapped: false });
+  let updateScreens = (_cameraPosition: THREE.Vector3) => false;
+  // The FCK design-guide image has generous white margins around the complete logo.
+  const fckWallpaper = logoWallpaper(fckLogoUrl, '#ffffff', [168, 216, 432, 432]);
+  const satyriconWallpaper = logoWallpaper(satyriconLogoUrl, '#000000');
+  desks.forEach((desk, index) => {
+    // Seat references follow ressources/locations.png; north is up on that plan.
+    const isThrane = desk.islandIndex === 5 && desk.side === -1;
+    const isHenrik = desk.islandIndex === 0 && desk.side === 1 && desk.z < deskIslands[0].z;
+    const isLars = desk.islandIndex === 2 && desk.side === 1 && desk.z > deskIslands[2].z;
+    const display = workstation(group, desk, index, isThrane ? wallpaper : isHenrik ? satyriconWallpaper : isLars ? fckWallpaper : undefined);
+    if (isThrane && display) updateScreens = createProximityWallpaper(display, wallpaper, children);
+  });
   for (const p of workspacePlants) {
     const foliage = new THREE.Group(); group.add(foliage);
     foliage.position.set(p.x, 0, p.z); foliage.scale.set(.65, 1, .65);
@@ -144,7 +189,9 @@ export function createWorkspace(parent: THREE.Object3D) {
   const pouf = mesh(group, new THREE.SphereGeometry(1, 24, 12), m.sofa, 15.05, .3, 21.35); pouf.scale.set(.52, .32, .4);
   box(shell.east, .35, .65, 2.1, 17.07, .61, 19.05, m.white, .008);
   box(shell.east, .075, 1.05, 1.9, 17.19, 1.73, 19.05, m.black, .015);
-  box(shell.east, .008, .99, 1.84, 17.147, 1.73, 19.05, m.screen);
+  const television = new THREE.Mesh(new THREE.PlaneGeometry(1.84, .99), new THREE.MeshBasicMaterial({ toneMapped: false }));
+  television.position.set(17.141, 1.73, 19.05); television.rotation.y = -Math.PI / 2;
+  shell.east.add(television);
   for (const z of [18.3, 19.1, 19.8]) box(shell.east, .012, .6, .008, 16.887, .61, z, m.trim);
   // A red framed print and the small bell are prominent end-of-room details.
   const print = new THREE.Group(); shell.east.add(print); print.position.set(17.14, 1.6, 20.6); print.rotation.y = -Math.PI / 2;
@@ -154,5 +201,5 @@ export function createWorkspace(parent: THREE.Object3D) {
   for (const y of [-.12, .12]) for (let i = 0; i < 3; i++) box(print, .035, .16, .008, -.12 + i * .1, y + i * .025, .03, m.white).rotation.z = -.45;
   cylinder(group, .055, .12, .2, 7.9, 2.2, 19.7, gold);
   cylinder(group, .09, .11, .025, 7.9, 2.09, 19.7, gold);
-  return shell;
+  return { ...shell, television, updateScreens };
 }

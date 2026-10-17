@@ -20,6 +20,7 @@ export class Navigation {
   private drag: { id: number; x: number; y: number } | null = null;
   private transition: { from: THREE.Vector3; to: THREE.Vector3; fromTarget: THREE.Vector3; target: THREE.Vector3; elapsed: number } | null = null;
   private direction = new THREE.Vector3();
+  private suspended = false;
 
   get isWalking() { return this.view === 'walk' || this.view === 'hallway' || this.view === 'restrooms' || this.view === 'minecraft' || this.view === 'kitchen' || this.view === 'lobby' || this.view === 'workspace' || this.view === 'day21'; }
 
@@ -33,6 +34,7 @@ export class Navigation {
     this.controls.panSpeed = .7;
     this.controls.addEventListener('start', () => { this.transition = null; });
     canvas.addEventListener('pointerdown', e => {
+      if (this.suspended) return;
       canvas.focus({ preventScroll: true });
       if (!this.isWalking || this.drag || e.button !== 0) return;
       this.drag = { id: e.pointerId, x: e.clientX, y: e.clientY };
@@ -49,6 +51,7 @@ export class Navigation {
     canvas.addEventListener('pointercancel', stopDrag);
     canvas.addEventListener('lostpointercapture', stopDrag);
     canvas.addEventListener('keydown', e => {
+      if (this.suspended) return;
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyQ', 'KeyE', 'ShiftLeft', 'ShiftRight'].includes(e.code)) {
         e.preventDefault(); this.transition = null; this.keys.add(e.code);
       }
@@ -71,6 +74,12 @@ export class Navigation {
   }
 
   clearInput() { this.keys.clear(); this.drag = null; }
+
+  suspend(suspended: boolean) {
+    this.clearInput(); this.transition = null;
+    this.suspended = suspended;
+    this.controls.enabled = !suspended && !this.isWalking;
+  }
 
   setView(view: View, immediate = false) {
     this.clearInput(); this.transition = null;
@@ -174,6 +183,7 @@ export class Navigation {
   }
 
   update(dt: number) {
+    if (this.suspended) return;
     const key = (...codes: string[]) => codes.some(code => this.keys.has(code)) ? 1 : 0;
     if (this.isWalking) {
       this.yaw += (key('KeyE') - key('KeyQ')) * dt * 1.5;

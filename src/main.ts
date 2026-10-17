@@ -3,6 +3,8 @@ import './style.css';
 import { createOffice } from './model';
 import { Navigation, type View } from './navigation';
 import { renderMinimap } from './minimap';
+import { TVGame } from './tv-game';
+import { Visitor } from './visitor';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#scene')!;
 document.querySelector('#reload')!.addEventListener('click', () => location.reload());
@@ -33,6 +35,24 @@ sun.shadow.radius = 3;
 scene.add(sun);
 const model = createOffice();
 scene.add(model.office);
+const visitor = new Visitor();
+scene.add(visitor.group);
+const visitorPause = document.querySelector<HTMLButtonElement>('#visitor-pause')!;
+const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+const updateVisitorButton = () => {
+  visitorPause.textContent = visitor.walk.paused ? 'Start figur' : 'Pause figur';
+  visitorPause.setAttribute('aria-label', visitor.walk.paused ? 'Start figurens rundtur' : 'Sæt figurens rundtur på pause');
+};
+visitor.walk.paused = motionPreference.matches;
+updateVisitorButton();
+visitorPause.addEventListener('click', () => {
+  visitor.walk.paused = !visitor.walk.paused;
+  updateVisitorButton();
+});
+motionPreference.addEventListener('change', () => {
+  if (motionPreference.matches) { visitor.walk.paused = true; updateVisitorButton(); }
+});
+const tvGame = new TVGame(model.television, navigation);
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.ShadowMaterial({ opacity: .12 }));
 ground.rotation.x = -Math.PI / 2; ground.position.y = -.265; ground.receiveShadow = true;
 scene.add(ground);
@@ -59,11 +79,14 @@ fullscreen.addEventListener('click', async () => {
 document.addEventListener('fullscreenchange', () => fullscreen.setAttribute('aria-label', document.fullscreenElement ? 'Afslut fuld skærm' : 'Fuld skærm'));
 canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); renderer.setAnimationLoop(null); document.querySelector<HTMLElement>('#error')!.hidden = false; });
 let needsRender = true;
+// Repaint even when the camera is still after an image texture finishes loading.
+THREE.DefaultLoadingManager.onLoad = () => { needsRender = true; };
 navigation.controls.addEventListener('change', () => { needsRender = true; });
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
+  tvGame.resize();
   needsRender = true;
   if (navigation.view === 'overview') navigation.setView('overview', true);
 });
@@ -74,6 +97,9 @@ renderer.setAnimationLoop(now => {
   const dt = Math.min((now - previous) / 1000, .05); previous = now;
   if (document.hidden) return;
   navigation.update(dt);
+  if (model.updateScreens(camera.position)) needsRender = true;
+  if (!tvGame.active && !dialog.open && visitor.update(dt)) needsRender = true;
+  if (tvGame.update(dt)) needsRender = true;
   const walk = navigation.isWalking;
   for (const wall of model.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
   for (const roof of model.roofs) roof.visible = walk;

@@ -35,6 +35,8 @@ Siden publiceres på https://jonas-d3.github.io/3doffice/dist/. `base` i `vite.c
 
 ## Navigation
 
+En stiliseret 3D-figur inspireret af referencefotoet går automatisk fra Space Invaders gennem køkkenet og Kontoret til Day21 og tilbage. Figuren har blomsterskjorte, beige shorts, skæg, solbriller i kraven, stribede sandaler og en grøn kappe med Apply-logo på ryggen, der bevæger sig med gangen. Arme, ben og knæ animeres efter den tilbagelagte afstand. Ruten er kontrolleret med 30 cm fri radius omkring figuren. **Pause figur / Start figur** stopper og genoptager rundturen; ved reduceret bevægelse starter figuren på pause. Rundturen holder også pause, mens fanen er skjult, hjælpen er åben, eller TV-spillet er aktivt. Figuren er bygget af lokal geometri og en genereret stoftekstur i `src/visitor.ts`; rute og bevægelse ligger i `src/visitor-walk.mjs`.
+
 - Træk for at dreje. Højreklik og træk, eller vælg panoreringsværktøjet, for at panorere.
 - Scroll eller brug +/− for at zoome. Touch: én finger drejer, to fingre panorerer/zoomer.
 - Vælg Overblik, Mødebord eller Lounge for et fast udgangspunkt.
@@ -53,4 +55,8 @@ MØDE 2 (ca. 4,835 × 3,600 m), gangen (ca. 1,100 × 6,900 m), toiletterne (ca. 
 
 Day21s rumskal ligger i `src/day21-shell.ts`, inventaret i `src/day21.ts`, og de fælles møbelplaceringer og kollisionsfelter i `src/day21-layout.mjs`. Bordene genbruger Kontorets justerede proportioner. Videofilen i `ressources/day21/` er lokal reference og er fortsat udeladt fra Git og produktionsbuildet.
 
-Kør `pnpm test` for målforhold, rumplacering, sammenhængende gangruter, døråbninger, møbler og vægkollisioner. `pnpm build` kontrollerer typerne og opdaterer produktionsfilerne. Alle materialer genereres lokalt; siden henter ingen eksterne billeder, skrifttyper eller API-data.
+Kør `pnpm test` for målforhold, rumplacering, sammenhængende gangruter, døråbninger, møbler og vægkollisioner. `pnpm build` kontrollerer typerne og opdaterer produktionsfilerne. Materialer og skærmbilleder leveres lokalt; siden henter ingen eksterne billeder, skrifttyper eller API-data.
+
+Personmarkeringerne i `ressources/locations.png` bruges som referencer til arbejdspladserne. Thrane sidder vest for den midterste bordø i Kontorets nordlige række (øindeks 5, side −1), over for Anja. Hans ene skærm viser en retro pixel-pinup i badedragt fra `src/assets/thrane-pixel-pinup.png`. Når kameraet kommer inden for 4 meter af skærmen, skifter den til en tegnet flok fiktive børn fra `src/assets/thrane-children.png`. Pinup-billedet vender tilbage ved 5 meter; forskellen mellem afstandene forhindrer flimren ved grænsen. Afstanden måles fra skærmens faktiske placering i modellen. Motiverne indlæses lokalt fra start, og deres genereringsprompter ligger i de tilsvarende `.md`-filer i `src/assets/`.
+
+Lars' ene skærm viser FCK-logoet på hvid baggrund; Henrik har Satyricon-logoet på sort baggrund. Lars sidder øst for ø 2 på den sydlige plads, og Henrik øst for ø 0 på den nordlige plads. Logoerne ligger lokalt i `src/assets/`, med kilder i `src/assets/logos.md`.

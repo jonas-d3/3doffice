@@ -29,6 +29,9 @@ h1 { font-size: clamp(1.6rem, 3vw, 2.6rem); font-weight: 470; letter-spacing: -.
 .intro > p:not(.eyebrow) { font-size: .76rem; line-height: 1.8; color: #747c71; }
 .model-note { display: block; font-size: .57rem; color: #73796d; margin-top: 18px; }
 .view-indicator { position: absolute; top: 126px; right: 39px; display: flex; align-items: center; gap: 8px; font-size: .65rem; }
+.visitor-pause { position: absolute; inset-block-start: 160px; inset-inline-end: clamp(22px, 3vw, 39px); min-block-size: 44px; padding-inline: 14px; border: 1px solid oklch(85% .02 130); border-radius: 22px; background: oklch(97% .015 110 / .92); color: oklch(36% .035 150); font-size: .68rem; }
+.visitor-pause:active { scale: .97; }
+@media (hover: hover) and (pointer: fine) { .visitor-pause:hover { background: oklch(91% .025 130); } }
 .side-tools { position: absolute; right: 37px; top: 43%; display: flex; flex-direction: column; align-items: center; gap: 5px; background: #f8f8f1ed; padding: 7px; border: 1px solid #dcdfd3; border-radius: 30px; box-shadow: 0 5px 24px #4a59420a; }
 .side-tools .icon-button { border: 0; background: transparent; width: 35px; height: 35px; }
 .side-tools .active { background: #e2e9db; color: #31573b; }
@@ -88,3 +91,22 @@ dd { margin: 6px 0 0; font-size: .77rem; line-height: 1.7; color: #67705f; }
 }
 @media (max-height: 550px) and (min-width: 600px) { .intro { top: 90px; } .intro p:not(.eyebrow), .model-note, .map-card { display: none; } .side-tools { top: 105px; } .bottom-panel { bottom: 15px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+
+.tv-play { position: absolute; translate: -50% -50%; min-inline-size: 88px; min-block-size: 44px; padding: 8px 16px; border: 2px solid oklch(39% .04 160); border-radius: 3px; background: oklch(93% .03 115); color: oklch(39% .04 160); font: bold .9rem monospace; }
+body[data-playing] #app > :not(#scene, #tv-dialog) { visibility: hidden; }
+#tv-dialog { position: fixed; inset: 0; inline-size: 100%; block-size: 100dvh; max-inline-size: none; max-block-size: none; margin: 0; padding: clamp(16px, 3vmin, 32px); border: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: auto; touch-action: manipulation; }
+#tv-dialog[open] { display: flex; flex-direction: column; justify-content: space-between; }
+#tv-dialog::backdrop { background: transparent; backdrop-filter: none; }
+.tv-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#tv-title { margin: 0; padding: 10px 16px; border-radius: 10px; background: oklch(96% .015 110 / .95); font-size: clamp(1rem, 2.5vw, 1.4rem); }
+.tv-button { min-block-size: 44px; padding: 10px 20px; border: 1px solid oklch(75% .03 130); border-radius: 10px; background: oklch(96% .015 110); color: oklch(30% .03 155); font-size: .85rem; }
+.tv-controls { align-self: center; max-inline-size: 100%; padding: 12px 20px; border-radius: 16px; background: oklch(96% .015 110 / .97); text-align: center; }
+.tv-controls p { margin-block: 0 10px; font-size: .75rem; }
+.tv-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+#tv-jump { background: oklch(39% .04 160); color: oklch(98% .01 110); min-inline-size: 150px; }
+#tv-instructions { margin-block: 10px 0; font-size: .68rem; }
+.tv-play:active, .tv-button:active { scale: .97; }
+@media (hover: hover) and (pointer: fine) {
+  .tv-play:hover, .tv-button:hover:not(:disabled) { background: oklch(88% .04 130); }
+  #tv-jump:hover { background: oklch(33% .04 160); }
+}
