@@ -9,6 +9,8 @@ import pinupUrl from './assets/thrane-pixel-pinup.png';
 import childrenUrl from './assets/thrane-children.png';
 import fckLogoUrl from './assets/fck-logo.png';
 import satyriconLogoUrl from './assets/satyricon-logo.png';
+import wiibroePilsnerUrl from './assets/wiibroe-pilsner.png';
+import wiibroe2026Url from './assets/wiibroe-2026.jpg';
 
 const leather = new THREE.MeshStandardMaterial({ color: '#a4815d', roughness: .8 });
 const upholstery = new THREE.MeshStandardMaterial({ color: '#b49b7a', map: m.sofa.map, roughness: .95 });
@@ -49,26 +51,41 @@ function chair(parent: THREE.Object3D, brown: boolean) {
   }
 }
 
-function monitor(parent: THREE.Object3D, x: number, portrait = false, active = false, wallpaper?: THREE.Material) {
+function monitor(parent: THREE.Object3D, x: number, portrait = false, active = false, wallpaper?: THREE.Material, upper = false) {
   const width = portrait ? .34 : .63, height = portrait ? .61 : .36;
-  box(parent, .23, .025, .16, x, .795, -.17, m.black);
-  rod(parent, [x, .81, -.17], [x, 1.09, -.17], .018, m.black);
-  box(parent, width, height, .045, x, 1.17, -.17, m.black, .009);
-  box(parent, width - .028, height - .028, .007, x, 1.17, -.143, active ? silver : m.screen);
+  const y = upper ? 1.56 : 1.17;
+  if (!upper) box(parent, .23, .025, .16, x, .795, -.17, m.black);
+  rod(parent, [x, upper ? 1.09 : .81, -.20], [x, y - .08, -.20], .018, m.black);
+  const panel = new THREE.Group(); parent.add(panel); panel.position.set(x, y, -.17);
+  if (upper) panel.rotation.x = .06;
+  box(panel, width, height, .045, 0, 0, 0, m.black, .009);
+  box(panel, width - .028, height - .028, .007, 0, 0, .027, active ? silver : m.screen);
   let display: THREE.Mesh | undefined;
   if (wallpaper) {
-    display = mesh(parent, new THREE.PlaneGeometry(width - .028, height - .028), wallpaper, x, 1.17, -.138);
+    display = mesh(panel, new THREE.PlaneGeometry(width - .028, height - .028), wallpaper, 0, 0, .032);
     display.castShadow = false; display.receiveShadow = false;
   }
   if (active) {
     // Abstract application windows: no personal screen content is reproduced.
-    box(parent, width * .75, height * .52, .004, x, 1.2, -.137, m.white);
-    box(parent, width * .75, .03, .004, x, 1.2 + height * .26, -.134, chairMesh);
+    box(panel, width * .75, height * .52, .004, 0, .03, .033, m.white);
+    box(panel, width * .75, .03, .004, 0, .03 + height * .26, .036, chairMesh);
   }
   return display;
 }
 
-export function workstation(parent: THREE.Object3D, desk: typeof desks[number], index: number, wallpaper?: THREE.Material) {
+function laptop(parent: THREE.Object3D) {
+  const group = new THREE.Group(); parent.add(group); group.position.set(-.51, .79, .18);
+  box(group, .32, .016, .23, 0, 0, 0, silver, .006);
+  box(group, .27, .003, .095, 0, .01, -.035, m.black, .003);
+  for (let row = 0; row < 4; row++) box(group, .25, .002, .004, 0, .012, -.067 + row * .022, silver);
+  box(group, .095, .002, .055, 0, .01, .065, chairMesh, .003);
+  const lid = new THREE.Group(); group.add(lid); lid.position.set(0, .008, -.11); lid.rotation.x = -.16;
+  box(lid, .32, .21, .013, 0, .105, 0, m.black, .006);
+  box(lid, .293, .178, .003, 0, .107, .009, m.screen);
+  cylinder(lid, .002, .002, .002, 0, .2, .009, silver).rotation.x = Math.PI / 2;
+}
+
+export function workstation(parent: THREE.Object3D, desk: typeof desks[number], index: number, wallpaper?: THREE.Material | [THREE.Material, THREE.Material], fourScreens = false) {
   const group = new THREE.Group(); parent.add(group); group.position.set(desk.x, 0, desk.z); group.rotation.y = desk.rotation;
   box(group, deskSize.width, .035, deskSize.depth, 0, .755, 0, m.black, .009);
   const legOffset = deskSize.width / 2 - .14;
@@ -78,12 +95,18 @@ export function workstation(parent: THREE.Object3D, desk: typeof desks[number], 
   }
   box(group, deskSize.width - .3, .055, .05, 0, .56, -.17, m.metal);
   const portrait = desk.islandIndex === 5 && desk.side === 1;
-  const display = monitor(group, -.34, portrait, portrait, wallpaper);
-  monitor(group, .34, portrait, portrait);
+  const wallpapers = Array.isArray(wallpaper) ? wallpaper : [wallpaper];
+  const display = monitor(group, -.34, portrait, portrait, wallpapers[0]);
+  monitor(group, .34, portrait, portrait, wallpapers[1]);
+  if (fourScreens) {
+    monitor(group, -.34, false, false, undefined, true);
+    monitor(group, .34, false, false, undefined, true);
+  }
   box(group, .42, .018, .15, -.1, .785, .17, index % 4 ? m.black : m.white, .009);
   for (let row = 0; row < 4; row++) box(group, .38, .003, .008, -.1, .796, .117 + row * .029, silver);
   const mouse = mesh(group, new THREE.SphereGeometry(.045, 10, 6), m.black, .22, .802, .18); mouse.scale.set(.6, .4, 1);
-  if (index % 3 === 0) {
+  if (fourScreens) laptop(group);
+  else if (index % 3 === 0) {
     box(group, .3, .016, .22, -.53, .79, .15, silver);
     box(group, .3, .2, .014, -.53, .89, .045, m.black).rotation.x = -.12;
   }
@@ -168,12 +191,17 @@ export function createWorkspace(parent: THREE.Object3D) {
   // The FCK design-guide image has generous white margins around the complete logo.
   const fckWallpaper = logoWallpaper(fckLogoUrl, '#ffffff', [168, 216, 432, 432]);
   const satyriconWallpaper = logoWallpaper(satyriconLogoUrl, '#000000');
+  const wiibroeWallpapers: [THREE.Material, THREE.Material] = [
+    logoWallpaper(wiibroePilsnerUrl, '#f3edda'),
+    logoWallpaper(wiibroe2026Url, '#172d21'),
+  ];
   desks.forEach((desk, index) => {
     // Seat references follow ressources/locations.png; north is up on that plan.
     const isThrane = desk.islandIndex === 5 && desk.side === -1;
     const isHenrik = desk.islandIndex === 0 && desk.side === 1 && desk.z < deskIslands[0].z;
     const isLars = desk.islandIndex === 2 && desk.side === 1 && desk.z > deskIslands[2].z;
-    const display = workstation(group, desk, index, isThrane ? wallpaper : isHenrik ? satyriconWallpaper : isLars ? fckWallpaper : undefined);
+    const isDavid = desk.islandIndex === 0 && desk.side === -1 && desk.z < deskIslands[0].z;
+    const display = workstation(group, desk, index, isThrane ? wallpaper : isHenrik ? satyriconWallpaper : isLars ? fckWallpaper : isDavid ? wiibroeWallpapers : undefined, isThrane || isLars);
     if (isThrane && display) updateScreens = createProximityWallpaper(display, wallpaper, children);
   });
   for (const p of workspacePlants) {
