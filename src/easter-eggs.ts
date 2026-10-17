@@ -5,6 +5,8 @@ import type { JesperScreen } from './jesper-screen';
 import type { Navigation } from './navigation';
 import type { Visitor } from './visitor';
 
+const creeperHeightScale = 1.4;
+
 function createCreeper(parent: THREE.Object3D) {
   const group = new THREE.Group(); group.name = 'Den diskrete creeper'; parent.add(group);
   const green = new THREE.MeshStandardMaterial({ color: '#598d39', roughness: 1 });
@@ -23,6 +25,8 @@ function createCreeper(parent: THREE.Object3D) {
     box(group, .041, .041, .006, ((i * 3) % 8 - 3.5) * .042, .67 + ((i * 5) % 8 - 3.5) * .042, -.172, i % 3 ? pale : black);
   }
   group.position.set(creeperStart.x, 0, creeperStart.z);
+  // Grow vertically without widening the footprint in the narrow chair aisles.
+  group.scale.y = creeperHeightScale;
   group.rotation.y = -Math.PI / 2;
   return group;
 }
@@ -40,7 +44,7 @@ export class EasterEggs {
   private direction = new THREE.Vector3();
   private frustum = new THREE.Frustum();
   private matrix = new THREE.Matrix4();
-  private sphere = new THREE.Sphere(new THREE.Vector3(), .5);
+  private sphere = new THREE.Sphere(new THREE.Vector3(), .5 * creeperHeightScale);
   private gesture: { id: number; x: number; y: number; moved: boolean } | null = null;
   private cup = new THREE.Group();
   private label = document.createElement('canvas');
@@ -164,11 +168,11 @@ export class EasterEggs {
     const camera = this.navigation.camera; camera.updateMatrixWorld();
     this.matrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse); this.frustum.setFromProjectionMatrix(this.matrix);
     const follower = this.follower;
-    this.sphere.center.set(follower.x, .43, follower.z);
-    // Check each frame so the 100 ms stop delay starts as soon as it is seen.
+    this.sphere.center.set(follower.x, .43 * creeperHeightScale, follower.z);
+    // Check each frame so the 250 ms stop delay starts as soon as it is seen.
     // A wall or a desk can hide it even when it is inside the camera's frustum.
     const watched = this.frustum.intersectsSphere(this.sphere) && [.74, .4, .13].some(height => {
-      this.point.set(follower.x, height, follower.z);
+      this.point.set(follower.x, height * creeperHeightScale, follower.z);
       return this.frustum.containsPoint(this.point) && this.clearSight(this.point, this.creeper);
     });
     if (follower.update(dt, watched, camera.position, true)) {

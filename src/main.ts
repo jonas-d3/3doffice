@@ -40,20 +40,12 @@ scene.add(model.office);
 const youtube = new YoutubeScreen(model.martinScreen, scene, canvas);
 const visitor = new Visitor();
 scene.add(visitor.group, visitor.deskCups);
-const visitorPause = document.querySelector<HTMLButtonElement>('#visitor-pause')!;
 const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
-const updateVisitorButton = () => {
-  visitorPause.textContent = visitor.walk.paused ? 'Start figur' : 'Pause figur';
-  visitorPause.setAttribute('aria-label', visitor.walk.paused ? 'Start figurens rundtur' : 'Sæt figurens rundtur på pause');
-};
 visitor.walk.paused = motionPreference.matches;
-updateVisitorButton();
-visitorPause.addEventListener('click', () => {
-  visitor.walk.paused = !visitor.walk.paused;
-  updateVisitorButton();
-});
 motionPreference.addEventListener('change', () => {
-  if (motionPreference.matches) { visitor.walk.paused = true; model.jesperScreen.settleCatch(); updateVisitorButton(); needsRender = true; }
+  visitor.walk.paused = motionPreference.matches;
+  if (motionPreference.matches) model.jesperScreen.settleCatch();
+  needsRender = true;
 });
 const tvGame = new TVGame(model.television, navigation);
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.ShadowMaterial({ opacity: .12 }));

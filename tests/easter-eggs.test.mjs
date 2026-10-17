@@ -19,26 +19,41 @@ test('the creeper only starts following after its first sighting and keeps follo
   assert.ok(creeper.distance > firstDistance + .5, 'Does not need another sighting to keep following');
 });
 
-test('looking back gives exactly 100 ms of movement before freezing, at different frame rates', () => {
+test('looking back gives exactly 250 ms of movement before freezing, at different frame rates', () => {
   for (const dt of [1 / 30, 1 / 60, 1 / 144]) {
-    const creeper = new CreeperFollow(), player = { x: 5.585, z: 7.9 };
+    const creeper = new CreeperFollow(), player = { x: 1.95, z: 10.65 };
     creeper.update(dt, true, player, true);
     for (let i = 0; i < 4; i++) creeper.update(dt, false, player, true);
     const before = creeper.distance;
     creeper.update(dt, true, player, true);
     assert.ok(creeper.distance > before, 'A glimpse of movement remains after looking back');
     for (let i = 0; i < 2 / dt; i++) creeper.update(dt, true, player, true);
-    assert.ok(Math.abs(creeper.distance - before - .125) < 1e-7, 'Moves at 1.25 m/s for exactly 100 ms');
+    assert.ok(Math.abs(creeper.distance - before - .2) < 1e-7, 'Moves at its close-range pace for exactly 250 ms');
     const stopped = [creeper.x, creeper.z, creeper.heading];
     creeper.update(dt, true, { x: .48, z: 10.55 }, true);
     assert.deepEqual([creeper.x, creeper.z, creeper.heading], stopped, 'Also freezes its orientation');
     creeper.update(dt, false, player, true);
-    assert.ok(creeper.distance > before + .125, 'Looking away releases it again');
+    assert.ok(creeper.distance > before + .2, 'Looking away releases it again');
+  }
+});
+
+test('the creeper gains ground faster at a distance and slows down before reaching the player', () => {
+  for (const dt of [1 / 30, 1 / 60, 1 / 144]) {
+    const creeper = new CreeperFollow(), player = { x: .48, z: 10.55 };
+    creeper.update(dt, true, player, true);
+    for (let i = 0; i < Math.round(1.5 / dt); i++) creeper.update(dt, false, player, true);
+    assert.ok(creeper.distance > 1.4, 'A one-and-a-half-second glance away makes a noticeable difference');
+    assert.ok(creeper.distance < 1.7, 'Catch-up speed stays consistent across frame rates');
+    const before = creeper.distance;
+    creeper.update(dt, false, player, true);
+    assert.ok(Math.abs((creeper.distance - before) / dt - .8) < 1e-7, 'Returns to a slow stalk within two metres');
+    for (let i = 0; i < Math.round(2 / dt); i++) creeper.update(dt, false, player, true);
+    assert.ok(Math.abs(Math.hypot(creeper.x - player.x, creeper.z - player.z) - 1.4) < 1e-7, 'Leaves enough space to see its face even after catching up');
   }
 });
 
 test('the creeper pauses without arming or consuming its stop delay', () => {
-  const creeper = new CreeperFollow(), player = { x: 5.585, z: 7.9 };
+  const creeper = new CreeperFollow(), player = { x: 2.1, z: 10.65 };
   creeper.update(.1, true, player, false);
   creeper.update(.1, false, player, true);
   assert.equal(creeper.distance, 0, 'Disabled views cannot discover it');
@@ -48,7 +63,7 @@ test('the creeper pauses without arming or consuming its stop delay', () => {
   for (const dt of [.1, 10, NaN, -1]) creeper.update(dt, true, player, false);
   assert.equal(creeper.distance, before);
   creeper.update(.05, true, player, true);
-  assert.ok(Math.abs(creeper.distance - before - .0625) < 1e-7);
+  assert.ok(Math.abs(creeper.distance - before - .04) < 1e-7);
 });
 
 test('the creeper follows changing player positions through doorways and around furniture without teleporting', () => {
@@ -60,17 +75,19 @@ test('the creeper follows changing player positions through doorways and around 
   creeper.update(.05, true, { x: .48, z: 10.55 }, true);
   for (const [x, z] of destinations) {
     const player = { x, z };
-    for (let i = 0; i < 2000 && Math.hypot(creeper.x - x, creeper.z - z) > .95; i++) {
+    for (let i = 0; i < 2000 && Math.hypot(creeper.x - x, creeper.z - z) > 1.45; i++) {
       const before = { x: creeper.x, z: creeper.z };
       creeper.update(.05, false, player, true);
       const travel = Math.hypot(creeper.x - before.x, creeper.z - before.z);
-      assert.ok(travel <= .0625 + 1e-8, 'Continuous walking, never a jump');
+      assert.ok(travel <= .08 + 1e-8, 'Continuous walking at up to 1.6 m/s, never a jump');
       assert.ok(canStand(creeper.x, creeper.z, creeperRadius), `Blocked at ${creeper.x}, ${creeper.z}`);
       assert.ok(canWalkBetween(before, creeper, creeperRadius), 'The entire step clears walls and furniture');
     }
-    assert.ok(Math.hypot(creeper.x - x, creeper.z - z) <= .95, `Reaches player at ${x}, ${z}`);
+    assert.ok(Math.hypot(creeper.x - x, creeper.z - z) <= 1.45, `Reaches player at ${x}, ${z}`);
     for (let i = 0; i < 30; i++) creeper.update(.05, false, player, true);
-    assert.ok(Math.hypot(creeper.x - x, creeper.z - z) >= .89, 'Leaves space around the player');
+    // A doorway may bring it inside the normal stand-off before the player
+    // becomes reachable in a straight line, but it must still leave body room.
+    assert.ok(Math.hypot(creeper.x - x, creeper.z - z) >= .89, 'Leaves space around the player even at a doorway');
   }
 });
 
@@ -80,7 +97,7 @@ test('the creeper redirects to a player who moves before it finishes the old rou
   for (let i = 0; i < 20; i++) creeper.update(.05, false, first, true);
   const player = { x: .48, z: 10.55 };
   for (let i = 0; i < 120; i++) creeper.update(.05, false, player, true);
-  assert.ok(Math.hypot(creeper.x - player.x, creeper.z - player.z) < .95);
+  assert.ok(Math.hypot(creeper.x - player.x, creeper.z - player.z) < 1.45);
 });
 
 test('a path cannot cut a door jamb even when both endpoints are on clear floor', () => {

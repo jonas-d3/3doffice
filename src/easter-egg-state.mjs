@@ -3,7 +3,7 @@ import { day21, workspace } from './layout.mjs';
 
 export const creeperStart = { x: 3.9, z: 10.65 };
 export const creeperRadius = .18;
-const followSpeed = 1.25, followDistance = .9, stopDelay = .1;
+const followSpeed = .8, catchUpSpeed = 1.6, followDistance = 1.4, stopDelay = .25;
 
 // A small floor grid shares the player's collision map. Cache its static edges
 // lazily, then smooth each route into straight walks through rooms and doors.
@@ -94,7 +94,11 @@ export class CreeperFollow {
     if (this.replanIn <= 0 && (Math.hypot(player.x - this.destination.x, player.z - this.destination.z) > .3 || !this.path.length)) {
       this.path = routeTo(this, player); this.destination = { x: player.x, z: player.z }; this.replanIn = .5;
     }
-    let remaining = followSpeed * time, moved = false;
+    // Gain ground when far away, then return to a slow stalk within two metres.
+    const gap = Math.hypot(player.x - this.x, player.z - this.z);
+    const urgency = Math.max(0, Math.min(1, (gap - 2) / 3));
+    const frameStart = { x: this.x, z: this.z };
+    let remaining = (followSpeed + (catchUpSpeed - followSpeed) * urgency) * time, moved = false;
     while (remaining > 1e-8 && this.path.length) {
       const target = this.path[0], dx = target.x - this.x, dz = target.z - this.z;
       const distance = Math.hypot(dx, dz);
@@ -106,6 +110,9 @@ export class CreeperFollow {
       if (travel <= 1e-8) break;
       const next = { x: this.x + dx / distance * travel, z: this.z + dz / distance * travel };
       if (!clearWalk(this, next)) { this.path = []; break; }
+      // A fast frame can span a corner; leave that turn for the next frame if
+      // the straight line between rendered positions would clip an obstacle.
+      if (moved && !clearWalk(frameStart, next)) break;
       this.x = next.x; this.z = next.z; this.heading = Math.atan2(dx, dz);
       this.distance += travel; remaining -= travel; moved = true;
     }
