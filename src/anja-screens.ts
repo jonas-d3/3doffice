@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import fridgeUrl from './assets/anja-fridge-webcam.png';
-import elevatorUrl from './assets/anja-elevator-webcam.png';
+import fridgeUrl from './assets/anja-fridge-webcam.webp';
+import elevatorUrl from './assets/anja-elevator-webcam.webp';
 
 const green = '#7df0b6', ink = '#173c3b';
 const clock = new Intl.DateTimeFormat('da-DK', { timeZone: 'Europe/Copenhagen', hour: '2-digit', minute: '2-digit', second: '2-digit' });
