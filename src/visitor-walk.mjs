@@ -40,6 +40,10 @@ export class VisitorWalk {
   placingProgress = 0;
   restroomDoorClosure = 0;
 
+  get coffeeCupWaiting() {
+    return this.coffeePresses === 3 && (this.coffeeState === 'fetching' || this.coffeeState.startsWith('toilet-'));
+  }
+
   routeTo(junction) {
     // Finish any detour before joining the main route.
     const departure = this.coffeeTrip.map(point => ({ x: point.x, z: point.z, drink: false, place: false }));
@@ -61,8 +65,14 @@ export class VisitorWalk {
   }
 
   orderCoffee() {
-    if (this.coffeeState !== 'idle') return this.coffeePresses;
-    if (++this.coffeePresses < 3) return this.coffeePresses;
+    if (this.coffeePresses === 3) return this.coffeePresses;
+    this.coffeePresses++;
+    // A prepared cup waits at the machine until he finishes the toilet visit.
+    if (this.coffeePresses === 3 && this.coffeeState === 'idle') this.fetchCoffee();
+    return this.coffeePresses;
+  }
+
+  fetchCoffee() {
     const path = this.routeTo(coffeeJunction);
     this.coffeeTrip = [...path.points,
       { x: coffeeJunction.x, z: coffeePickup.z, drink: false },
@@ -73,7 +83,6 @@ export class VisitorWalk {
     // Always take the short run into Kontoret, regardless of where he came from.
     this.coffeeResume = 5;
     this.coffeeState = 'fetching'; this.waiting = 0;
-    return this.coffeePresses;
   }
 
   deliverCoffee() {
@@ -112,7 +121,7 @@ export class VisitorWalk {
         if (this.coffeeState === 'placing') {
           this.placingProgress = 1 - this.waiting / placingDuration;
           if (this.waiting === 0) {
-            this.cupsDelivered++; this.visitRestroom();
+            this.cupsDelivered++; this.coffeePresses = 0; this.visitRestroom();
           }
         } else if (this.coffeeState === 'drinking' && this.waiting === 0) {
           this.coffeeState = 'boosted'; this.boostRemaining = coffeeRunDistance;
@@ -139,9 +148,12 @@ export class VisitorWalk {
           if (this.coffeeTrip[0].drink) { this.coffeeState = 'drinking'; this.waiting = 1.8; }
           if (this.coffeeTrip[0].place) { this.coffeeState = 'placing'; this.waiting = placingDuration; this.placingProgress = 0; }
           if (this.coffeeTrip[0].restroom) { this.coffeeState = 'toilet-closing'; this.waiting = doorDuration; }
-          if (this.coffeeTrip[0].finishRestroom) { this.coffeeState = 'idle'; this.coffeePresses = 0; }
           this.coffeeTrip.shift();
           if (!this.coffeeTrip.length) this.target = this.coffeeResume;
+          if (target.finishRestroom) {
+            this.coffeeState = 'idle';
+            if (this.coffeePresses === 3) this.fetchCoffee();
+          }
         } else {
           this.waiting = visitorRoute[this.target].pause;
           this.target = (this.target + 1) % visitorRoute.length;

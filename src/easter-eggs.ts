@@ -138,7 +138,7 @@ export class EasterEggs {
     c.fillStyle = '#142d26'; c.fillRect(0, 0, 512, 128);
     c.fillStyle = '#c7e8ac'; c.font = 'bold 45px monospace'; c.textAlign = 'center';
     const walk = this.visitor.walk;
-    c.fillText(walk.coffeeState === 'idle' ? (walk.coffeePresses ? `${walk.coffeePresses} / 3 SHOTS` : 'KAFFE?') : 'DEPLOY DOBBELT', 256, 79);
+    c.fillText(walk.coffeePresses < 3 ? (walk.coffeePresses ? `${walk.coffeePresses} / 3 SHOTS` : 'KAFFE?') : 'DEPLOY DOBBELT', 256, 79);
     this.labelTexture.needsUpdate = true; this.dirty = true;
   }
 
@@ -149,7 +149,7 @@ export class EasterEggs {
     } else {
       const walk = this.visitor.walk;
       walk.orderCoffee();
-      this.cup.visible = walk.coffeeState === 'fetching'; this.paintCoffee();
+      this.cup.visible = walk.coffeeCupWaiting; this.paintCoffee();
     }
   }
 
@@ -158,7 +158,7 @@ export class EasterEggs {
     if (this.blocked()) return changed;
     const state = this.visitor.walk.coffeeState;
     if (state !== this.coffeeState) {
-      this.coffeeState = state; this.cup.visible = state === 'fetching'; this.paintCoffee(); changed = true;
+      this.coffeeState = state; this.cup.visible = this.visitor.walk.coffeeCupWaiting; this.paintCoffee(); changed = true;
     }
     if (!this.navigation.isWalking || this.reducedMotion.matches) return changed;
     const camera = this.navigation.camera; camera.updateMatrixWorld();
