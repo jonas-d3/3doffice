@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { canStand, moveWithCollisions, obstacles } from '../src/movement.mjs';
+import { canStand, canWalkBetween, moveWithCollisions, obstacles, setRestroomDoorClosure } from '../src/movement.mjs';
 import { walkingLocation, spaceInvaders, minecraft, kitchen, meeting2 } from '../src/layout.mjs';
 import { planPoint } from '../src/placement.mjs';
 import { lobbyPreset } from '../src/lobby-layout.mjs';
@@ -31,6 +31,24 @@ test('the toilet foyer is reached further down the corridor than Minecraft', () 
 });
 test('both compact toilets remain reachable through their own doors', () => {
   route([[6.9, 9.6], [6.9, 7.85], [6.9, 9.6], [6.9, 10.8], [6.9, 9.6]]);
+});
+test('Davids closed toilet door blocks entry and reopens without trapping him or blocking the foyer', () => {
+  const outside = { x: 6.86, z: 9.605 }, inside = { x: 6.86, z: 10.82 };
+  try {
+    assert.ok(canWalkBetween(outside, inside, .3));
+    for (const closure of [.25, .5, .75, 1]) {
+      setRestroomDoorClosure(closure);
+      assert.ok(canStand(inside.x, inside.z, .3), 'David stays clear of the swinging door');
+      assert.ok(canWalkBetween({ x: 5.585, z: 9.3 }, { x: 5.585, z: 10 }), 'The corridor remains clear');
+    }
+    assert.equal(canWalkBetween(outside, inside, .3), false, 'Cached clearance follows the closed door');
+    assert.ok(moveWithCollisions(outside.x, outside.z, 0, 1.215).z < 10.255);
+    setRestroomDoorClosure(0);
+    assert.ok(canWalkBetween(inside, outside, .3), 'Reopening restores the exit route');
+    route([[5.585, 9.6], [6.9, 9.6], [6.9, 10.8], [6.9, 9.6], [5.585, 9.6]]);
+  } finally {
+    setRestroomDoorClosure(0);
+  }
 });
 test('the kitchen side opening now connects to the lobby below MØDE 2', () => {
   route([[6.4, 15.2], [6.4, 15.95], [4.5, 15.95], [.4, 15.95], [6.4, 15.95]]);

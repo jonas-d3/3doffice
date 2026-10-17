@@ -23,7 +23,7 @@ function landscape(c: CanvasRenderingContext2D) {
   polygon(c, '#ecf0de', [[135, 118], [195, 65], [254, 130], [210, 117], [185, 132], [169, 115]]);
   polygon(c, '#ecf0de', [[397, 121], [460, 58], [535, 124], [481, 109], [455, 127], [438, 108]]);
   polygon(c, '#496f68', [[0, 223], [157, 184], [310, 250], [420, 216], [572, 270], [762, 194], [1024, 218], [1024, height], [0, height]]);
-  // Widen the river towards the viewer and leave the leap clear of the pitch window.
+  // Widen the river towards the viewer.
   const water = c.createLinearGradient(0, 245, 0, height);
   water.addColorStop(0, '#81c6c6'); water.addColorStop(1, '#1f8795');
   c.fillStyle = water; c.beginPath(); c.moveTo(541, 252);
@@ -77,26 +77,29 @@ function salmon(c: CanvasRenderingContext2D, phase: number) {
 }
 
 function pitch(c: CanvasRenderingContext2D, caught: boolean) {
-  c.fillStyle = '#153d3b55'; c.fillRect(666, 333, 334, 211);
-  c.fillStyle = '#f2f1ed'; c.fillRect(658, 325, 334, 211);
-  c.fillStyle = '#b7472b'; c.fillRect(658, 325, 334, 28);
-  text(c, 'P', 669, 346, 20, '#fff9ef');
-  text(c, 'Kundepitch — PowerPoint', 695, 344, 13, '#fff9ef');
-  c.fillStyle = '#deded8'; c.fillRect(658, 353, 334, 24);
-  text(c, 'Hjem    Indsæt    Design', 670, 369, 10, '#53615d');
+  c.fillStyle = '#f2f1ed'; c.fillRect(0, 0, width, height);
+  c.fillStyle = '#b7472b'; c.fillRect(0, 0, width, 60);
+  text(c, 'P', 24, 42, 34, '#fff9ef');
+  text(c, 'Kundepitch — PowerPoint', 77, 39, 27, '#fff9ef');
+  c.fillStyle = '#deded8'; c.fillRect(0, 60, width, 46);
+  text(c, 'Hjem     Indsæt     Design     Overgange     Slideshow', 24, 90, 20, '#53615d');
+  c.fillStyle = '#e4e4df'; c.fillRect(0, 106, 174, 423);
   for (let i = 0; i < 3; i++) {
-    c.fillStyle = i ? '#d4dcd5' : '#b7472b'; c.fillRect(669, 388 + i * 40, 43, 29);
-    c.fillStyle = '#faf9ef'; c.fillRect(672, 391 + i * 40, 37, 23);
+    c.fillStyle = i ? '#d4dcd5' : '#b7472b'; c.fillRect(18, 130 + i * 116, 138, 86);
+    c.fillStyle = '#163e3b'; c.fillRect(23, 135 + i * 116, 128, 76);
+    text(c, String(i + 1), 35, 165 + i * 116, 20, '#f9f3da');
+    c.fillStyle = '#a8d9bf'; c.fillRect(35, 177 + i * 116, 90 - i * 18, 5);
   }
-  c.fillStyle = '#163e3b'; c.fillRect(725, 389, 254, 128);
-  text(c, caught ? 'LEAD LANDET' : 'DEN NÆSTE', 741, 425, 22, '#f9f3da');
-  text(c, caught ? 'Så er der bid.' : 'STORE FANGST', 741, 452, 22, '#f9f3da');
-  text(c, caught ? 'Fra pipeline til bordet' : 'CMS + AI', 742, 491, 15, '#a8d9bf');
-  text(c, 'Slide 1 af 3', 669, 530, 9, '#53615d');
+  c.fillStyle = '#163e3b'; c.fillRect(198, 130, 800, 375);
+  text(c, caught ? 'LEAD LANDET' : 'DEN NÆSTE', 244, 244, 58, '#f9f3da');
+  text(c, caught ? 'Så er der bid.' : 'STORE FANGST', 244, 316, 58, '#f9f3da');
+  text(c, caught ? 'Fra pipeline til bordet' : 'CMS + AI', 246, 436, 34, '#a8d9bf');
+  c.fillStyle = '#deded8'; c.fillRect(0, 529, width, 36);
+  text(c, 'Slide 1 af 3', 22, 553, 18, '#53615d');
 }
 
 export class JesperScreen {
-  readonly material: THREE.MeshBasicMaterial;
+  readonly materials: [THREE.MeshBasicMaterial, THREE.MeshBasicMaterial];
   readonly catchState = new SalmonCatch();
   screen?: THREE.Object3D;
   private fish = new THREE.Group();
@@ -105,6 +108,8 @@ export class JesperScreen {
   private background = document.createElement('canvas');
   private context: CanvasRenderingContext2D;
   private texture: THREE.CanvasTexture;
+  private pitchContext: CanvasRenderingContext2D;
+  private pitchTexture: THREE.CanvasTexture;
   private elapsed = .9; // Keep the fish mid-leap in the reduced-motion still.
   private frame = -1;
   private center = new THREE.Vector3();
@@ -120,7 +125,16 @@ export class JesperScreen {
     background.scale(this.canvas.width / width, this.canvas.height / height); landscape(background);
     this.texture = new THREE.CanvasTexture(this.canvas); this.texture.colorSpace = THREE.SRGBColorSpace;
     this.texture.minFilter = THREE.LinearFilter; this.texture.generateMipmaps = false;
-    this.material = new THREE.MeshBasicMaterial({ map: this.texture, toneMapped: false });
+    const pitchCanvas = document.createElement('canvas');
+    pitchCanvas.width = this.canvas.width; pitchCanvas.height = this.canvas.height;
+    this.pitchContext = pitchCanvas.getContext('2d')!;
+    this.pitchContext.scale(pitchCanvas.width / width, pitchCanvas.height / height);
+    this.pitchTexture = new THREE.CanvasTexture(pitchCanvas); this.pitchTexture.colorSpace = THREE.SRGBColorSpace;
+    this.pitchTexture.minFilter = THREE.LinearFilter; this.pitchTexture.generateMipmaps = false;
+    this.materials = [
+      new THREE.MeshBasicMaterial({ map: this.texture, toneMapped: false }),
+      new THREE.MeshBasicMaterial({ map: this.pitchTexture, toneMapped: false }),
+    ];
     this.fish.name = 'Jespers fangst'; this.fish.visible = false;
     const silver = new THREE.MeshStandardMaterial({ color: '#aac1af', roughness: .36, metalness: .2 });
     const pink = new THREE.MeshStandardMaterial({ color: '#c98383', roughness: .5 });
@@ -137,7 +151,7 @@ export class JesperScreen {
     tail.rotation.z = -Math.PI / 2; tail.scale.z = .25;
     const fin = mesh(this.fish, new THREE.ConeGeometry(.042, .065, 3), dark, -.03, .055, 0);
     fin.scale.z = .2;
-    this.draw();
+    this.draw(); this.drawPitch();
   }
 
   private fishPoint() {
@@ -157,7 +171,7 @@ export class JesperScreen {
     const point = this.fishPoint();
     this.launch.set((point.x / width - .5) * .602, (.5 - point.y / height) * .332, .012);
     this.screen.add(this.fish); this.fish.visible = true;
-    this.poseFish(); this.draw(); return true;
+    this.poseFish(); this.draw(); this.drawPitch(); return true;
   }
 
   settleCatch() {
@@ -187,7 +201,12 @@ export class JesperScreen {
       c.beginPath(); c.moveTo(x, y); c.lineTo(x + 12 + depth * 36, y); c.stroke();
     }
     if (this.catchState.phase === 'idle') salmon(c, this.elapsed % 4.5);
-    pitch(c, this.catchState.phase !== 'idle'); c.restore(); this.texture.needsUpdate = true;
+    c.restore(); this.texture.needsUpdate = true;
+  }
+
+  private drawPitch() {
+    pitch(this.pitchContext, this.catchState.phase !== 'idle');
+    this.pitchTexture.needsUpdate = true;
   }
 
   update(camera: THREE.PerspectiveCamera, dt: number, animate: boolean) {

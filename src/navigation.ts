@@ -132,7 +132,8 @@ export class Navigation {
     const officeVector = (x: number, y: number, z: number) => { const p = planPoint('office', x, z); return new THREE.Vector3(p.x, y, p.z); };
     const positions = {
       overview: direction.multiplyScalar(overviewDistance).add(overviewTarget),
-      meeting: officeVector(1, 3.3, 4.7),
+      // Keep the camera inside the room so the neighboring walls cannot obscure the table.
+      meeting: officeVector(1.5, 3.8, 3.05),
       lounge: officeVector(-.15, 2.8, 3.2),
     };
     const targets = { overview: overviewTarget, meeting: officeVector(-1.8, .8, -.6), lounge: officeVector(2.65, .6, -.2) };

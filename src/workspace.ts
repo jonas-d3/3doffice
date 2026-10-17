@@ -13,6 +13,7 @@ import { HolbechScreens } from './holbech-screens';
 import { HenrikScreens } from './henrik-screens';
 import { ThraneScreens } from './thrane-screens';
 import { LarsScreens } from './lars-screens';
+import { youtubeWallpaper } from './youtube-screen';
 import pinupUrl from './assets/thrane-pixel-pinup.jpg';
 import childrenUrl from './assets/thrane-children.jpg';
 import astroLogoUrl from './assets/astro-logo.png';
@@ -125,7 +126,7 @@ export function workstation(parent: THREE.Object3D, desk: typeof desks[number], 
   const fourScreens = screenLayout !== 'dual';
   const spanWallpaper = screenLayout === 'spanned';
   const display = monitor(group, -.34, portrait, portrait, wallpapers[0], false, spanWallpaper ? [0, 0] : undefined);
-  monitor(group, .34, portrait, portrait, spanWallpaper ? wallpapers[0] : wallpapers[1], false, spanWallpaper ? [1, 0] : undefined);
+  const secondaryDisplay = monitor(group, .34, portrait, portrait, spanWallpaper ? wallpapers[0] : wallpapers[1], false, spanWallpaper ? [1, 0] : undefined);
   if (fourScreens) {
     monitor(group, -.34, false, false, spanWallpaper ? wallpapers[0] : wallpapers[2], true, spanWallpaper ? [0, 1] : undefined);
     monitor(group, .34, false, false, spanWallpaper ? wallpapers[0] : wallpapers[3], true, spanWallpaper ? [1, 1] : undefined);
@@ -154,7 +155,7 @@ export function workstation(parent: THREE.Object3D, desk: typeof desks[number], 
     rod(group, [.58, .89, -.23], [.58, 1.06, -.23], .014, gold);
     cylinder(group, .08, .025, .13, .58, 1.1, -.23, gold);
   }
-  return display;
+  return { display, secondaryDisplay };
 }
 
 function mossWall(parent: THREE.Object3D) {
@@ -226,6 +227,8 @@ export function createWorkspace(parent: THREE.Object3D) {
   const larsScreens = new LarsScreens();
   const thraneWallpapers = [wallpaper, ...thraneScreens.materials];
   const astroWallpaper = logoWallpaper(astroLogoUrl, '#171426', undefined, 'Det kan laves i CSS');
+  const martinWallpapers = [astroWallpaper, youtubeWallpaper()];
+  let martinScreen!: THREE.Mesh;
   const wiibroeWallpapers: [THREE.Material, THREE.Material] = [
     logoWallpaper(wiibroePilsnerUrl, '#f3edda'),
     logoWallpaper(wiibroe2026Url, '#172d21'),
@@ -244,7 +247,8 @@ export function createWorkspace(parent: THREE.Object3D) {
     const isHolbech = desk.islandIndex === 1 && desk.side === 1 && desk.z > deskIslands[1].z;
     const isDavid = desk.islandIndex === 0 && desk.side === -1 && desk.z < deskIslands[0].z;
     const isJesper = desk.islandIndex === 4 && desk.side === 1;
-    const display = workstation(group, desk, index, isAnja ? anjaScreens.materials : isAnnie ? annieWallpapers : isThrane ? thraneWallpapers : isHenrik ? henrikScreens.materials : isLars ? larsScreens.materials : isMartin ? astroWallpaper : isPalm ? palmScreens.materials : isNicolai ? nicolaiScreens.materials : isHolbech ? holbechScreens.materials : isDavid ? wiibroeWallpapers : isJesper ? jesperScreen.material : undefined, isLars || isThrane ? 'quad' : 'dual');
+    const { display, secondaryDisplay } = workstation(group, desk, index, isAnja ? anjaScreens.materials : isAnnie ? annieWallpapers : isThrane ? thraneWallpapers : isHenrik ? henrikScreens.materials : isLars ? larsScreens.materials : isMartin ? martinWallpapers : isPalm ? palmScreens.materials : isNicolai ? nicolaiScreens.materials : isHolbech ? holbechScreens.materials : isDavid ? wiibroeWallpapers : isJesper ? jesperScreen.materials : undefined, isLars || isThrane ? 'quad' : 'dual');
+    if (isMartin && secondaryDisplay) { martinScreen = secondaryDisplay; martinScreen.name = 'martin-youtube-screen'; }
     if (isThrane && display) {
       updateThraneScreen = createProximityWallpaper(display, wallpaper, children);
       thraneScreens.screen = display;
@@ -283,7 +287,7 @@ export function createWorkspace(parent: THREE.Object3D) {
   cylinder(group, .055, .12, .2, 7.9, 2.2, 19.7, gold);
   cylinder(group, .09, .11, .025, 7.9, 2.09, 19.7, gold);
   return {
-    ...shell, television, holbechScreens, jesperScreen,
+    ...shell, television, holbechScreens, jesperScreen, martinScreen,
     updateScreens(camera: THREE.PerspectiveCamera, dt: number, animate: boolean) {
       const thraneChanged = updateThraneScreen(camera.position);
       const thraneAnimated = thraneScreens.update(camera, dt, animate);

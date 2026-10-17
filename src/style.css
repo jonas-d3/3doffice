@@ -9,6 +9,8 @@ canvas { display: block; width: 100%; height: 100dvh; touch-action: none; cursor
 canvas:active { cursor: grabbing; }
 :focus-visible { outline: 3px solid #247453; outline-offset: 4px; }
 canvas:focus-visible { outline-offset: -5px; }
+.youtube-layer { position: absolute; inset: 0; pointer-events: none; }
+.youtube-screen { border: 0; background: oklch(18% 0 none); backface-visibility: hidden; }
 [hidden] { display: none !important; }
 svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .header { position: absolute; inset: 30px 38px auto; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }

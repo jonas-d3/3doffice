@@ -91,7 +91,7 @@ test('a path cannot cut a door jamb even when both endpoints are on clear floor'
   assert.ok(canWalkBetween({ x: 6, z: 9.8 }, { x: 5.9, z: 9.8 }, creeperRadius));
 });
 
-test('three coffee presses send the visitor to collect a cup, then boost one lap, leave the cup at Thrane and reset the machine', () => {
+test('three coffee presses trigger a short office run and reset the machine when the cup is placed', () => {
   const visitor = new VisitorWalk();
   assert.equal(visitor.orderCoffee(), 1);
   assert.equal(visitor.orderCoffee(), 2);
@@ -99,10 +99,19 @@ test('three coffee presses send the visitor to collect a cup, then boost one lap
   assert.equal(visitor.orderCoffee(), 3);
   assert.equal(visitor.coffeeState, 'fetching');
   assert.equal(visitor.orderCoffee(), 3, 'Does not restart an active order');
-  const states = new Set(); let fastest = 0;
+  const states = new Set(); let fastest = 0, boostedDistance = 0, placedAtDesk = false;
   for (let i = 0; i < 11000; i++) {
-    const before = visitor.distance;
+    const before = visitor.distance, state = visitor.coffeeState;
     visitor.update(.05);
+    if (state === 'boosted') {
+      boostedDistance += visitor.distance - before;
+      assert.ok(visitor.x > 0, 'The short coffee run does not go through Day21');
+    }
+    if (state === 'placing' && visitor.cupsDelivered === 1) {
+      placedAtDesk = Math.hypot(visitor.x - coffeeDropoff.x, visitor.z - coffeeDropoff.z) < .02;
+      assert.equal(visitor.coffeeState, 'toilet-running', 'Runs to the toilet immediately after placing the cup');
+      assert.equal(visitor.coffeePresses, 0, 'The machine resets as soon as the cup is placed');
+    }
     fastest = Math.max(fastest, visitor.distance - before);
     assert.ok(canStand(visitor.x, visitor.z, visitorRadius), `Coffee path at ${visitor.x}, ${visitor.z}`);
     states.add(visitor.coffeeState);
@@ -114,8 +123,10 @@ test('three coffee presses send the visitor to collect a cup, then boost one lap
   assert.equal(visitor.coffeePresses, 0);
   assert.ok(states.has('returning'));
   assert.ok(states.has('placing'));
+  for (const state of ['toilet-running', 'toilet-closing', 'toilet-waiting', 'toilet-opening', 'toilet-leaving']) assert.ok(states.has(state), state);
   assert.equal(visitor.cupsDelivered, 1);
-  assert.ok(Math.hypot(visitor.x - coffeeDropoff.x, visitor.z - coffeeDropoff.z) < .02);
+  assert.ok(placedAtDesk);
+  assert.ok(boostedDistance > 10 && boostedDistance <= 25, `A short office run, not the old 158-metre lap: ${boostedDistance}`);
   assert.ok(fastest > .12, 'Coffee visibly increases walking speed');
 });
 
@@ -139,7 +150,7 @@ test('coffee collection works from distant and returning route segments and pres
   }
 });
 
-test('successive coffee runs leave one more cup each, including orders made while David leaves the desk', () => {
+test('successive coffee runs leave one more cup each, including orders made just after David leaves the toilet', () => {
   const visitor = new VisitorWalk();
   for (let cup = 1; cup <= 4; cup++) {
     assert.equal(visitor.orderCoffee(), 1);
@@ -150,7 +161,7 @@ test('successive coffee runs leave one more cup each, including orders made whil
       const previous = { x: visitor.x, z: visitor.z };
       visitor.update(.05);
       assert.ok(canWalkBetween(previous, visitor, visitorRadius), `Coffee run ${cup} stays clear of furniture`);
-      if (visitor.coffeeState !== 'idle') assert.equal(visitor.orderCoffee(), 3, 'Busy presses cannot start another order');
+      if (visitor.cupsDelivered < cup) assert.equal(visitor.orderCoffee(), 3, 'Busy presses cannot start another order before delivery');
       assert.ok(visitor.cupsDelivered === cup - 1 || visitor.cupsDelivered === cup);
       placed = visitor.coffeeState === 'idle';
     }
@@ -172,7 +183,116 @@ test('placing a cup pauses with David and completes once, also with reduced moti
   visitor.paused = false;
   for (let i = 0; i < 100; i++) visitor.update(.05, true);
   assert.equal(visitor.cupsDelivered, 1);
-  assert.equal(visitor.coffeeState, 'idle');
+  assert.equal(visitor.coffeeState, 'toilet-running');
+});
+
+test('David runs to the toilet, closes the door for 30 seconds, then opens it before leaving', () => {
+  for (const dt of [1 / 30, 1 / 60, 1 / 144]) {
+    const visitor = new VisitorWalk();
+    visitor.orderCoffee(); visitor.orderCoffee(); visitor.orderCoffee();
+    let fastest = 0;
+    for (let i = 0; i < 300 / dt && visitor.coffeeState !== 'toilet-waiting'; i++) {
+      const previous = { x: visitor.x, z: visitor.z }, before = visitor.distance, state = visitor.coffeeState;
+      visitor.update(dt);
+      assert.ok(canWalkBetween(previous, visitor, visitorRadius), 'The entire toilet route clears walls and furniture');
+      if (state === 'toilet-running') fastest = Math.max(fastest, (visitor.distance - before) / dt);
+    }
+    assert.equal(visitor.coffeeState, 'toilet-waiting');
+    assert.ok(fastest > 3, 'Runs to the toilet rather than walking');
+    assert.equal(visitor.restroomDoorClosure, 1);
+    assert.equal(visitor.orderCoffee(), 1);
+    assert.equal(visitor.orderCoffee(), 2);
+    assert.equal(visitor.orderCoffee(), 3, 'A new coffee can wait during the toilet visit');
+    const position = [visitor.x, visitor.z, visitor.distance];
+    let elapsed = 0;
+    while (visitor.coffeeState === 'toilet-waiting' && elapsed < 31) {
+      assert.equal(visitor.restroomDoorClosure, 1);
+      assert.deepEqual([visitor.x, visitor.z, visitor.distance], position);
+      assert.equal(visitor.orderCoffee(), 3, 'An order cannot interrupt the toilet visit');
+      visitor.update(dt); elapsed += dt;
+    }
+    assert.ok(Math.abs(elapsed - 30) <= dt + 1e-7, `Door remains fully closed for 30 seconds at ${1 / dt} fps: ${elapsed}`);
+    assert.equal(visitor.coffeeState, 'toilet-opening');
+    while (visitor.coffeeState === 'toilet-opening') {
+      assert.deepEqual([visitor.x, visitor.z, visitor.distance], position);
+      visitor.update(dt);
+    }
+    assert.equal(visitor.restroomDoorClosure, 0);
+    assert.equal(visitor.coffeeState, 'toilet-leaving');
+  }
+});
+
+test('a coffee ordered after delivery waits for the entire toilet visit, then gets collected exactly once', () => {
+  for (const orderAt of ['toilet-running', 'toilet-closing', 'toilet-waiting', 'toilet-opening', 'toilet-leaving']) {
+    const visitor = new VisitorWalk();
+    visitor.orderCoffee(); visitor.orderCoffee(); visitor.orderCoffee();
+    for (let i = 0; i < 10000 && visitor.coffeeState !== orderAt; i++) visitor.update(.05);
+    assert.equal(visitor.coffeeState, orderAt);
+    assert.equal(visitor.coffeePresses, 0);
+    assert.equal(visitor.coffeeCupWaiting, false);
+    const before = [visitor.x, visitor.z, visitor.waiting, visitor.restroomDoorClosure];
+    assert.equal(visitor.orderCoffee(), 1);
+    assert.equal(visitor.orderCoffee(), 2);
+    assert.equal(visitor.orderCoffee(), 3);
+    assert.equal(visitor.coffeeCupWaiting, true, 'The prepared cup is visible at the machine');
+    assert.equal(visitor.coffeeState, orderAt, 'The new order does not interrupt David');
+    assert.deepEqual([visitor.x, visitor.z, visitor.waiting, visitor.restroomDoorClosure], before);
+    for (let i = 0; i < 5; i++) assert.equal(visitor.orderCoffee(), 3, 'Only one cup can wait');
+    visitor.paused = true;
+    for (let i = 0; i < 100; i++) visitor.update(.05);
+    assert.deepEqual([visitor.x, visitor.z, visitor.waiting, visitor.restroomDoorClosure], before);
+    visitor.paused = false;
+    let fetched = false, drank = false;
+    for (let i = 0; i < 10000 && visitor.cupsDelivered < 2; i++) {
+      const previous = { x: visitor.x, z: visitor.z };
+      visitor.update(.05);
+      assert.ok(canWalkBetween(previous, visitor, visitorRadius));
+      if (visitor.coffeeState === 'fetching') {
+        fetched = true;
+        assert.equal(visitor.restroomDoorClosure, 0, 'He opens the door before collecting the new coffee');
+      }
+      if (visitor.coffeeState === 'drinking') {
+        drank = true;
+        assert.equal(visitor.coffeeCupWaiting, false, 'He removes the prepared cup from the machine');
+      }
+    }
+    assert.ok(fetched && drank);
+    assert.equal(visitor.cupsDelivered, 2);
+    assert.equal(visitor.coffeePresses, 0, 'The second delivery resets the machine again');
+    for (let i = 0; i < 2000; i++) visitor.update(.05);
+    assert.equal(visitor.cupsDelivered, 2, 'Extra presses did not queue extra cups');
+  }
+});
+
+test('partial coffee orders survive the end of the toilet visit', () => {
+  for (const presses of [1, 2]) {
+    const visitor = new VisitorWalk();
+    visitor.orderCoffee(); visitor.orderCoffee(); visitor.orderCoffee();
+    for (let i = 0; i < 10000 && visitor.coffeeState !== 'toilet-waiting'; i++) visitor.update(.05);
+    assert.equal(visitor.coffeeState, 'toilet-waiting');
+    for (let i = 1; i <= presses; i++) assert.equal(visitor.orderCoffee(), i);
+    for (let i = 0; i < 3000 && visitor.coffeeState !== 'idle'; i++) visitor.update(.05);
+    assert.equal(visitor.coffeeState, 'idle');
+    assert.equal(visitor.coffeePresses, presses);
+    for (let i = presses + 1; i <= 3; i++) assert.equal(visitor.orderCoffee(), i);
+    assert.equal(visitor.coffeeState, 'fetching');
+  }
+});
+
+test('pausing freezes both the toilet door and the 30-second visit, including reduced motion', () => {
+  for (const reducedMotion of [false, true]) {
+    const visitor = new VisitorWalk();
+    visitor.orderCoffee(); visitor.orderCoffee(); visitor.orderCoffee();
+    for (const state of reducedMotion ? ['toilet-waiting'] : ['toilet-closing', 'toilet-waiting', 'toilet-opening']) {
+      for (let i = 0; i < 20000 && visitor.coffeeState !== state; i++) visitor.update(.05, reducedMotion);
+      assert.equal(visitor.coffeeState, state);
+      visitor.paused = true;
+      const before = [visitor.x, visitor.z, visitor.restroomDoorClosure, visitor.waiting];
+      for (let i = 0; i < 1000; i++) visitor.update(.05, reducedMotion);
+      assert.deepEqual([visitor.x, visitor.z, visitor.restroomDoorClosure, visitor.waiting], before);
+      visitor.paused = false;
+    }
+  }
 });
 
 test('cups accumulate in separate positions on Thranes desk and stack after filling the free spots', () => {

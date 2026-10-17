@@ -4,6 +4,8 @@ import { lobbyFurniture } from './lobby-layout.mjs';
 import { workspaceObstacles } from './workspace-layout.mjs';
 import { day21Obstacles } from './day21-layout.mjs';
 
+const restroomDoorObstacle = [7.215, 7.255, 9.485, 10.275];
+
 // Photo furniture is fitted with the same transforms as the rendered rooms.
 export const obstacles = [
   ...workspaceObstacles,
@@ -48,7 +50,7 @@ export const obstacles = [
   [7.26, 7.76, 7.52, 8.18], // upper basin
   [7.26, 7.76, 10.72, 11.38], // lower basin
   [6.46, 6.51, 7.805, 8.555], // open upper toilet door
-  [6.46, 6.51, 10.255, 11.005], // open lower toilet door
+  restroomDoorObstacle, // lower toilet door swings into the foyer
   [7.61, 7.76, 6.765, 7.215], // upper radiator
   [6.335, 6.49, 11.525, 11.975], // lower radiator
 ];
@@ -75,6 +77,18 @@ export function canStand(x, z, radius = .17) {
 // Exact swept clearance for the creeper's smoothed paths. Point samples alone
 // can miss a tiny diagonal slice of a door jamb or furniture corner.
 const clearanceMaps = new Map();
+
+export function setRestroomDoorClosure(closure) {
+  const progress = Math.max(0, Math.min(1, closure));
+  const angle = (1 - progress * progress * (3 - 2 * progress)) * Math.PI / 2;
+  const door = restrooms.rightDoor, width = door.maxX - door.minX;
+  const z = (door.minZ + door.maxZ) / 2;
+  const dx = Math.cos(angle) * width, dz = Math.sin(angle) * width;
+  // Conservative bounds keep navigation out of the moving leaf as well.
+  restroomDoorObstacle.splice(0, 4, door.maxX - dx - .02, door.maxX + .02, z - dz - .02, z + .02);
+  clearanceMaps.clear();
+}
+
 function segmentInterval(a, b, bounds) {
   let enter = 0, leave = 1;
   for (let axis = 0; axis < 2; axis++) {

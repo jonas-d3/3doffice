@@ -221,7 +221,8 @@ export class Visitor {
     }
     const phase = this.walk.distance * Math.PI * 2 / 1.15;
     this.stride = THREE.MathUtils.damp(this.stride, this.walk.moving ? 1 : 0, 12, dt);
-    this.capeLift = THREE.MathUtils.damp(this.capeLift, this.walk.coffeeState === 'boosted' && this.walk.moving && !reducedMotion ? 1 : 0, 5, dt);
+    const running = this.walk.coffeeState === 'boosted' || this.walk.coffeeState === 'toilet-running';
+    this.capeLift = THREE.MathUtils.damp(this.capeLift, running && this.walk.moving && !reducedMotion ? 1 : 0, 5, dt);
     this.poseCape(phase);
     this.group.position.set(this.walk.x, 0, this.walk.z);
     this.group.rotation.y = this.walk.heading;

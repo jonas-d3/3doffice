@@ -6,6 +6,7 @@ import { renderMinimap } from './minimap';
 import { TVGame } from './tv-game';
 import { Visitor } from './visitor';
 import { EasterEggs } from './easter-eggs';
+import { YoutubeScreen } from './youtube-screen';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#scene')!;
 document.querySelector('#reload')!.addEventListener('click', () => location.reload());
@@ -36,6 +37,7 @@ sun.shadow.radius = 3;
 scene.add(sun);
 const model = createOffice();
 scene.add(model.office);
+const youtube = new YoutubeScreen(model.martinScreen, scene, canvas);
 const visitor = new Visitor();
 scene.add(visitor.group, visitor.deskCups);
 const visitorPause = document.querySelector<HTMLButtonElement>('#visitor-pause')!;
@@ -89,6 +91,7 @@ addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
   tvGame.resize();
+  youtube.resize();
   needsRender = true;
   if (navigation.view === 'overview') navigation.setView('overview', true);
 });
@@ -101,6 +104,7 @@ renderer.setAnimationLoop(now => {
   navigation.update(dt);
   if (model.updateScreens(camera, dt, !motionPreference.matches && !dialog.open && !tvGame.active)) needsRender = true;
   if (!tvGame.active && !dialog.open && visitor.update(dt, motionPreference.matches)) needsRender = true;
+  if (model.updateRestroomDoor(visitor.walk.restroomDoorClosure)) needsRender = true;
   if (tvGame.update(dt)) needsRender = true;
   const walk = navigation.isWalking;
   for (const wall of model.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
@@ -111,6 +115,7 @@ renderer.setAnimationLoop(now => {
     renderer.render(scene, camera);
     previousPosition.copy(camera.position); previousRotation.copy(camera.quaternion); needsRender = false;
   }
+  youtube.update(camera, !dialog.open && !tvGame.active);
 });
 }
 

@@ -3,6 +3,7 @@ import { materials as m, cushionMaterials } from './materials';
 import { mesh, box, cylinder, rod } from './geometry';
 import { restrooms as layout } from './layout.mjs';
 import { partition, roof as makeRoof } from './architecture';
+import { setRestroomDoorClosure } from './movement.mjs';
 
 const ceramic = new THREE.MeshStandardMaterial({ color: '#fffdf3', roughness: .2 });
 const chrome = new THREE.MeshStandardMaterial({ color: '#bac4c4', metalness: .7, roughness: .22 });
@@ -124,6 +125,7 @@ export function createRestrooms(parent: THREE.Object3D) {
   const walls: CutawayWall[] = [];
   const roof = new THREE.Group(); group.add(roof);
   const h = layout.height;
+  let visitDoor!: THREE.Group;
   for (const room of [layout.left, layout.foyer, layout.right]) {
     floor(group, room);
     roof.add(makeRoof(group, room, h));
@@ -139,9 +141,10 @@ export function createRestrooms(parent: THREE.Object3D) {
   for (const [door, inside] of [[layout.leftDoor, -1], [layout.rightDoor, 1]] as const) {
     const z = (door.minZ + door.maxZ) / 2;
     partition(group, walls, 'z', z, 6.235, 8.058, inside, h, [door.minX, door.maxX]);
-    // Open leaves rest against the west side; each opening remains 75 cm wide.
+    // The visited toilet opens into the foyer, clear of David while it closes.
     const leaf = new THREE.Group(); group.add(leaf);
-    leaf.position.set(door.minX, 0, z); leaf.rotation.y = inside < 0 ? Math.PI / 2 : -Math.PI / 2;
+    leaf.position.set(door.minX, 0, z); leaf.rotation.y = Math.PI / 2;
+    if (door === layout.rightDoor) { visitDoor = leaf; leaf.position.x = door.maxX; leaf.name = 'Davids toiletdør'; }
     box(leaf, .75, 2.16, .04, .375, 1.08, 0, doorPaint, .006);
     rod(leaf, [.55, 1.02, -.04], [.68, 1.02, -.04], .016, brass);
   }
@@ -166,5 +169,13 @@ export function createRestrooms(parent: THREE.Object3D) {
   radiator(group, 7.67, 6.99, -Math.PI / 2, .45);
   radiator(group, 6.42, 11.75, Math.PI / 2, .45);
   roof.visible = false;
-  return { walls, roof };
+  const updateDoor = (closure: number) => {
+    const angle = (1 + THREE.MathUtils.smoothstep(closure, 0, 1)) * Math.PI / 2;
+    if (visitDoor.rotation.y === angle) return false;
+    visitDoor.rotation.y = angle;
+    setRestroomDoorClosure(closure);
+    return true;
+  };
+  setRestroomDoorClosure(0);
+  return { walls, roof, updateDoor };
 }
