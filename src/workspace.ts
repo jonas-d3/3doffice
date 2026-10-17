@@ -51,7 +51,7 @@ function chair(parent: THREE.Object3D, brown: boolean) {
   }
 }
 
-function monitor(parent: THREE.Object3D, x: number, portrait = false, active = false, wallpaper?: THREE.Material, upper = false) {
+function monitor(parent: THREE.Object3D, x: number, portrait = false, active = false, wallpaper?: THREE.Material, upper = false, quadrant?: [number, number]) {
   const width = portrait ? .34 : .63, height = portrait ? .61 : .36;
   const y = upper ? 1.56 : 1.17;
   if (!upper) box(parent, .23, .025, .16, x, .795, -.17, m.black);
@@ -62,7 +62,13 @@ function monitor(parent: THREE.Object3D, x: number, portrait = false, active = f
   box(panel, width - .028, height - .028, .007, 0, 0, .027, active ? silver : m.screen);
   let display: THREE.Mesh | undefined;
   if (wallpaper) {
-    display = mesh(panel, new THREE.PlaneGeometry(width - .028, height - .028), wallpaper, 0, 0, .032);
+    const geometry = new THREE.PlaneGeometry(width - .028, height - .028);
+    if (quadrant) {
+      // UVs start at the bottom left; all four panels share one complete wallpaper.
+      const uv = geometry.getAttribute('uv');
+      for (let i = 0; i < uv.count; i++) uv.setXY(i, (uv.getX(i) + quadrant[0]) / 2, (uv.getY(i) + quadrant[1]) / 2);
+    }
+    display = mesh(panel, geometry, wallpaper, 0, 0, .032);
     display.castShadow = false; display.receiveShadow = false;
   }
   if (active) {
@@ -85,7 +91,7 @@ function laptop(parent: THREE.Object3D) {
   cylinder(lid, .002, .002, .002, 0, .2, .009, silver).rotation.x = Math.PI / 2;
 }
 
-export function workstation(parent: THREE.Object3D, desk: typeof desks[number], index: number, wallpaper?: THREE.Material | [THREE.Material, THREE.Material], fourScreens = false) {
+export function workstation(parent: THREE.Object3D, desk: typeof desks[number], index: number, wallpaper?: THREE.Material | [THREE.Material, THREE.Material], screenLayout: 'dual' | 'quad' | 'spanned' = 'dual') {
   const group = new THREE.Group(); parent.add(group); group.position.set(desk.x, 0, desk.z); group.rotation.y = desk.rotation;
   box(group, deskSize.width, .035, deskSize.depth, 0, .755, 0, m.black, .009);
   const legOffset = deskSize.width / 2 - .14;
@@ -96,11 +102,13 @@ export function workstation(parent: THREE.Object3D, desk: typeof desks[number], 
   box(group, deskSize.width - .3, .055, .05, 0, .56, -.17, m.metal);
   const portrait = desk.islandIndex === 5 && desk.side === 1;
   const wallpapers = Array.isArray(wallpaper) ? wallpaper : [wallpaper];
-  const display = monitor(group, -.34, portrait, portrait, wallpapers[0]);
-  monitor(group, .34, portrait, portrait, wallpapers[1]);
+  const fourScreens = screenLayout !== 'dual';
+  const spanWallpaper = screenLayout === 'spanned';
+  const display = monitor(group, -.34, portrait, portrait, wallpapers[0], false, spanWallpaper ? [0, 0] : undefined);
+  monitor(group, .34, portrait, portrait, spanWallpaper ? wallpapers[0] : wallpapers[1], false, spanWallpaper ? [1, 0] : undefined);
   if (fourScreens) {
-    monitor(group, -.34, false, false, undefined, true);
-    monitor(group, .34, false, false, undefined, true);
+    monitor(group, -.34, false, false, spanWallpaper ? wallpapers[0] : undefined, true, spanWallpaper ? [0, 1] : undefined);
+    monitor(group, .34, false, false, spanWallpaper ? wallpapers[0] : undefined, true, spanWallpaper ? [1, 1] : undefined);
   }
   box(group, .42, .018, .15, -.1, .785, .17, index % 4 ? m.black : m.white, .009);
   for (let row = 0; row < 4; row++) box(group, .38, .003, .008, -.1, .796, .117 + row * .029, silver);
@@ -201,7 +209,7 @@ export function createWorkspace(parent: THREE.Object3D) {
     const isHenrik = desk.islandIndex === 0 && desk.side === 1 && desk.z < deskIslands[0].z;
     const isLars = desk.islandIndex === 2 && desk.side === 1 && desk.z > deskIslands[2].z;
     const isDavid = desk.islandIndex === 0 && desk.side === -1 && desk.z < deskIslands[0].z;
-    const display = workstation(group, desk, index, isThrane ? wallpaper : isHenrik ? satyriconWallpaper : isLars ? fckWallpaper : isDavid ? wiibroeWallpapers : undefined, isThrane || isLars);
+    const display = workstation(group, desk, index, isThrane ? wallpaper : isHenrik ? satyriconWallpaper : isLars ? fckWallpaper : isDavid ? wiibroeWallpapers : undefined, isLars ? 'spanned' : isThrane ? 'quad' : 'dual');
     if (isThrane && display) updateScreens = createProximityWallpaper(display, wallpaper, children);
   });
   for (const p of workspacePlants) {
