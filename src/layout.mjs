@@ -40,7 +40,7 @@ export function walkingLocation(x, z) {
     { bounds: kitchen, name: 'Køkken' }, { bounds: lobby, name: 'Lille gang ved køkkenet' },
     { bounds: workspace, name: 'Kontoret' }, { bounds: workspaceDoor, name: 'Kontoret · indgang' },
     { bounds: day21, name: 'Day21' }, { bounds: day21Door, name: 'Day21 · indgang' },
-    { bounds: day21Meeting, name: 'Day21 · glasrum' }, { bounds: day21MeetingDoor, name: 'Day21 · glasrum' },
+    { bounds: day21Meeting, name: 'Tetris' }, { bounds: day21MeetingDoor, name: 'Tetris' },
     { bounds: day21Nook, name: 'Day21 · sofakrog' },
     { bounds: restrooms.left, name: 'Venstre toilet' }, { bounds: restrooms.right, name: 'Højre toilet' },
     { bounds: restrooms.foyer, name: 'Toiletentré' },

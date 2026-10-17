@@ -73,7 +73,7 @@ export class Invaders {
       return;
     }
     if (fire && this.fireIn <= 0) {
-      this.shots.push({ x: this.playerX, y: invadersSize.playerY - 28, enemy: false }); this.fireIn = .15;
+      this.shots.push({ x: this.playerX, y: invadersSize.playerY - 28, enemy: false }); this.fireIn = .06;
     }
     this.marchIn -= step;
     if (this.marchIn <= 0) {

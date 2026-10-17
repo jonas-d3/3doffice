@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { day21, day21Door, workspace, walkingLocation } from '../src/layout.mjs';
 import { canStand, moveWithCollisions } from '../src/movement.mjs';
-import { day21Preset } from '../src/day21-layout.mjs';
+import { day21Preset, tetrisPreset } from '../src/day21-layout.mjs';
 
 function route(points) {
   let [x, z] = points[0];
@@ -28,6 +28,11 @@ test('the entrance jambs and outside walls remain solid', () => {
   for (const p of [[-.7, 17.97], [-.7, 19.13], [-.7, 20], [-28.2, 19], [-20, 24.5], [-20, 17.5]]) {
     assert.equal(canStand(...p), false, `Wall ${p}`);
   }
+});
+test('the Tetris preset is inside the named room and reachable around the meeting table', () => {
+  assert.ok(canStand(tetrisPreset.x, tetrisPreset.z));
+  assert.equal(walkingLocation(tetrisPreset.x, tetrisPreset.z), 'Tetris');
+  route([[-15.35, 18.8], [-15.35, 17.3], [-13.6, 17.3], [tetrisPreset.x, tetrisPreset.z]]);
 });
 test('glass room, open work area and north nook are reachable without crossing glass', () => {
   route([[-4.35, 18.8], [-4.35, 21.05], [-5.7, 21.05], [-5.7, 23.4], [-5.7, 21.05], [-4.35, 21.05], [-4.35, 18.8]]);

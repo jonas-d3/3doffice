@@ -28,7 +28,7 @@ test('the ship stays on the board and holding fire respects its cooldown', () =>
   assert.ok(game.playerX <= invadersSize.width - 50);
   game.shields = [];
   advance(game, .2, { fire: true });
-  assert.equal(game.shots.filter(shot => !shot.enemy).length, 2);
+  assert.equal(game.shots.filter(shot => !shot.enemy).length, 3);
 });
 
 test('a shot erases one alien and earns points once', () => {

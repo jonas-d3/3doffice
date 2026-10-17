@@ -55,3 +55,4 @@ export const day21Obstacles = [
   [-3.0, -2.4, 17.8, 18.4], // small white table by entry
 ];
 export const day21Preset = { x: -1.85, z: 18.8, yaw: -Math.PI / 2, pitch: -.055 };
+export const tetrisPreset = { x: -13.6, z: 16.155, yaw: Math.PI / 2, pitch: -.15 };

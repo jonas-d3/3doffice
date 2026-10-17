@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import { Invaders, invadersSize } from './invaders.mjs';
+import { drawingArea } from './whiteboard-play.mjs';
 
 const ink = '#343a40', paper = '#fffef9', blue = '#1864ab', green = '#2b8a3e', violet = '#6741a5', red = '#c92a2a';
 type Point = [number, number];
+type ScreenOptions = { hovered?: boolean; showDrawingArea?: boolean; autoFire?: boolean; pauseHint?: string };
 
 export class InvadersScreen {
   readonly canvas = document.createElement('canvas');
@@ -68,10 +70,30 @@ export class InvadersScreen {
     c.restore();
   }
 
-  draw(game: Invaders, best: number, reducedMotion: boolean, ship: Point[], drawing: Point[], retry: boolean, autoFire = false, pauseHint = 'Kom tilbage til tavlen for at fortsætte') {
+  draw(game: Invaders, best: number, reducedMotion: boolean, ship: Point[][], drawing: Point[][], currentStroke: Point[], options: ScreenOptions = {}) {
     const c = this.c;
+    const { hovered = false, showDrawingArea = false, autoFire = false, pauseHint = 'Kom tilbage til tavlen for at fortsætte' } = options;
     const canDraw = ['ready', 'over', 'won'].includes(game.status);
     c.fillStyle = paper; c.fillRect(0, 0, 800, 1140);
+    if (hovered) {
+      this.stroke([[12, 12], [788, 12], [788, 1128], [12, 1128]], blue, 5, true);
+    }
+    if (canDraw) {
+      // The idle board is blank. Hover (or proximity on touchscreens) reveals
+      // the drawing invitation, which stays visible once ink has been added.
+      if (showDrawingArea || drawing.length || currentStroke.length || game.status !== 'ready') {
+        this.text(game.status === 'over' ? 'De overtog mødet!' : game.status === 'won' ? 'Tavlen er reddet!' : 'Tegn dit rumskib', 400, 520, 40, blue, 'center', -.015);
+        this.text(`${drawing.length}/5 streger · alle former virker`, 400, 561, 28, ink, 'center');
+        const { left, right, top, bottom } = drawingArea;
+        c.save(); c.setLineDash([8, 10]);
+        this.stroke([[left, top], [right, top], [right, bottom], [left, bottom]], '#a3afb6', 2, true);
+        c.restore();
+        if (game.status !== 'ready') this.text(`${game.score} point · tegn et nyt rumskib`, 400, 845, 27, ink, 'center');
+      }
+      for (const stroke of [...drawing, currentStroke]) if (stroke.length > 1) this.stroke(stroke, blue, 4);
+      this.texture.needsUpdate = true;
+      return;
+    }
     this.text('SPACE INVADERS', 400, 90, 62, ink, 'center', -.015);
     this.stroke([[95, 113], [300, 117], [511, 111], [699, 115]], blue, 3);
     this.text('mødet må vente ...', 400, 155, 27, violet, 'center', .015);
@@ -91,7 +113,7 @@ export class InvadersScreen {
       }
     }
     const x = game.playerX, y = invadersSize.playerY;
-    if (ship.length && !canDraw) this.stroke(ship.map(([sx, sy]) => [x + sx, y + sy]), blue, 3.5, true, true);
+    for (const stroke of ship) this.stroke(stroke.map(([sx, sy]) => [x + sx, y + sy]), blue, 3.5);
     if (game.recovery > 0 && game.status === 'running') {
       this.stroke([[x - 37, y + 20], [x - 38, y - 18], [x, y - 40], [x + 38, y - 18], [x + 37, y + 20]], blue, 1.5);
     }
@@ -103,16 +125,7 @@ export class InvadersScreen {
     this.text(`REKORD ${String(best).padStart(4, '0')}`, 751, 1031, 25, ink, 'right');
     this.text(autoFire ? 'Automatisk ild · mikrofonen er slukket' : 'Sig “skyd”, “bang” eller “piyv”', 400, 1080, 27, blue, 'center');
     this.text('Gå til siderne · gå væk for at holde pause', 400, 1120, 23, ink, 'center');
-    if (canDraw) {
-      c.fillStyle = paper; c.fillRect(90, 478, 620, 320);
-      this.text(game.status === 'over' ? 'De overtog mødet!' : game.status === 'won' ? 'Tavlen er reddet!' : 'Tegn dit rumskib!', 400, 524, 42, blue, 'center', -.015);
-      this.text(retry ? 'En lukket trekant — prøv igen' : game.status === 'ready' ? 'Tegn en trekant i feltet ↓' : `${game.score} point · tegn en ny trekant ↓`, 400, 567, 28, retry ? red : ink, 'center');
-      c.save(); c.setLineDash([8, 10]);
-      this.stroke([[103, 583], [697, 583], [697, 786], [103, 786]], '#a3afb6', 2, true);
-      if (!drawing.length) this.stroke([[400, 610], [485, 757], [315, 757]], '#a3afb6', 2, true);
-      c.restore();
-      if (drawing.length > 1) this.stroke(drawing, retry ? red : blue, 4);
-    } else if (game.status === 'paused') {
+    if (game.status === 'paused') {
       c.fillStyle = paper; c.fillRect(90, 502, 620, 155);
       this.text('Tuschpause.', 400, 565, 42, blue, 'center');
       this.text(pauseHint, 400, 620, 27, ink, 'center');

@@ -20,6 +20,22 @@
         </div>
       </dialog>
       <p id="whiteboard-status" class="visually-hidden" role="status"></p>
+      <section id="tetris-controls" aria-label="Tetris på glasruden" hidden>
+        <p id="tetris-status" role="status"></p>
+        <div class="tetris-actions" role="group" aria-label="Styr brikkerne">
+          <button type="button" data-tetris="left" aria-label="Flyt brikken til venstre">←</button>
+          <button type="button" data-tetris="rotate" aria-label="Drej brikken">↻</button>
+          <button type="button" data-tetris="right" aria-label="Flyt brikken til højre">→</button>
+          <button type="button" data-tetris="down" aria-label="Flyt brikken ned">↓</button>
+          <button type="button" data-tetris="drop">Slip · Space</button>
+        </div>
+        <div class="tetris-actions">
+          <button type="button" id="tetris-pause">Pause · P</button>
+          <button type="button" id="tetris-restart" hidden>Spil igen</button>
+          <button type="button" id="tetris-close">Gå videre · Esc</button>
+        </div>
+        <p id="tetris-instructions">← → flyt · ↑ drej · ↓ ned · Space: slip</p>
+      </section>
       <section id="whiteboard-audio" class="whiteboard-audio" aria-label="Lydskud på whiteboardet" hidden>
         <p id="whiteboard-audio-message" role="status">Dit rumskib er klar. Aktivér mikrofonen for at skyde.</p>
         <div class="whiteboard-audio-actions">
@@ -30,7 +46,7 @@
           <meter id="whiteboard-level" min="0" max="1" value="0" aria-label="Lydniveau i forhold til skudgrænsen"></meter>
           <label>Følsomhed <input id="whiteboard-sensitivity" type="range" min="0.5" max="2" step="0.1" value="1"></label>
         </div>
-        <small id="whiteboard-audio-hint">Korte lyde giver ét skud. Mikrofonen slukker, når du går væk.</small>
+        <small id="whiteboard-audio-hint">Korte lyde giver ét skud; “brrrr” giver salver. Mikrofonen slukker, når du går væk.</small>
       </section>
       <header class="header">
         <h1 class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Apply Agency</h1>
@@ -59,6 +75,7 @@
           <button data-view="lobby" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V3h16v18M8 21V7h8v14M4 17h4m8 0h4M11 12h2"/></svg>Lille gang</button>
           <button data-view="workspace" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M5 12v8m14-8v8M7 4h10v6H7zM12 10v2M9 20h6"/></svg>Kontoret</button>
           <button data-view="day21" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V5h18v16M3 12h18M8 5v16m8-16v16M3 21h18"/></svg>Day21</button>
+          <button data-view="tetris" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v7h7v8H1v-8h7zM8 11h8M8 11v8m8-8v8"/></svg>Tetris</button>
           <span class="tab-divider"></span><button data-view="walk" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13" cy="4" r="2"/><path d="m9 21 3-7-3-3 3-4 3 5 4 1M5 12l4-4M12 14l5 7"/></svg>Gå rundt</button>
         </nav>
         <p id="navigation-hint"><span>Træk for at dreje</span><b>·</b><span>Højreklik + træk for at panorere</span><b>·</b><span>Scroll for at zoome</span></p>
@@ -74,6 +91,7 @@
           <dt>Gå rundt</dt><dd>Vælg “Gå rundt”. Gå med WASD, piletaster eller skærmpile.</dd>
           <dt>Kig rundt</dt><dd>Træk, eller brug Q / E.</dd>
           <dt>Tilbage til overblik</dt><dd>Esc, H eller hus-ikonet.</dd>
+          <dt>Tetris</dt><dd>Tryk på den midterste siderude inde i Tetris-rummet, eller kig på den og tryk Enter. Pile flytter og drejer, Space slipper brikken, P pauser, og Esc giver styringen tilbage til gåturen. Der er også knapper til touch.</dd>
         </dl>
       </dialog>
     </main>

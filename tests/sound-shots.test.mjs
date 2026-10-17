@@ -18,22 +18,32 @@ test('calibrates to room noise without firing, then fires once for each short ut
   }
 });
 
-test('a sustained sound, a momentary click, or a short gap cannot produce a barrage', () => {
+test('a momentary click or a tiny gap does not trigger extra shots', () => {
   const detector = new SoundShotDetector(); listen(detector, 1, .004);
   assert.equal(detector.update(.01, .3), false, 'ignore an isolated transient');
   listen(detector, .2, .004);
-  assert.equal(listen(detector, 2, .1), 1);
-  listen(detector, .05, .004);
-  assert.equal(listen(detector, 1, .1), 0, 'a tiny gap inside a word does not rearm');
+  assert.equal(listen(detector, .05, .1), 1);
+  listen(detector, .01, .004, 100);
+  assert.equal(listen(detector, .05, .1), 0, 'a tiny gap inside a word does not rearm');
   listen(detector, .2, .004);
   assert.equal(listen(detector, .15, .1), 1);
 });
 
-test('successive short sounds can fire 180 milliseconds apart', () => {
+test('rapid ratatat sounds can fire 80 milliseconds apart', () => {
   const detector = new SoundShotDetector(); listen(detector, 1, .004, 100);
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 10; i++) {
     assert.equal(listen(detector, .04, .1, 100), 1);
-    assert.equal(listen(detector, .14, .004, 100), 0);
+    assert.equal(listen(detector, .04, .004, 100), 0);
+  }
+});
+
+test('a sustained brrrr produces a rapid salvo and silence stops it immediately', () => {
+  for (const fps of [30, 60, 144]) {
+    const detector = new SoundShotDetector(); listen(detector, 1, .004, fps);
+    const shots = listen(detector, 1, .1, fps);
+    assert.ok(shots >= 9 && shots <= 12, `${fps} fps: ${shots} shots`);
+    assert.equal(listen(detector, .4, .004, fps), 0);
+    assert.equal(listen(detector, .1, .1, fps), 1, 'a short bang still gives one shot');
   }
 });
 

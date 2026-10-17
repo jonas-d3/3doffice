@@ -8,6 +8,7 @@ import { WhiteboardGame } from './whiteboard-game';
 import { Visitor } from './visitor';
 import { EasterEggs } from './easter-eggs';
 import { YoutubeScreen } from './youtube-screen';
+import { TetrisGame } from './tetris-game';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#scene')!;
 document.querySelector('#reload')!.addEventListener('click', () => location.reload());
@@ -62,8 +63,9 @@ document.querySelector('#zoom-in')!.addEventListener('click', () => navigation.z
 document.querySelector('#zoom-out')!.addEventListener('click', () => navigation.zoom(1.22));
 document.querySelector('#reset')!.addEventListener('click', () => navigation.setView('overview'));
 const dialog = document.querySelector<HTMLDialogElement>('#help-dialog')!;
-const whiteboardGame = new WhiteboardGame(model.whiteboard, model.office, navigation, motionPreference, () => dialog.open || tvGame.active || document.hidden);
-const easterEggs = new EasterEggs(model.office, model.coffee, model.jesperScreen, visitor, navigation, motionPreference, () => dialog.open || tvGame.active || document.hidden);
+const tetrisGame = new TetrisGame(model.tetrisGlass, model.office, navigation, () => dialog.open || tvGame.active || document.hidden);
+const whiteboardGame = new WhiteboardGame(model.whiteboard, model.office, navigation, motionPreference, () => dialog.open || tvGame.active || tetrisGame.active || document.hidden);
+const easterEggs = new EasterEggs(model.office, model.coffee, model.jesperScreen, visitor, navigation, motionPreference, () => dialog.open || tvGame.active || tetrisGame.active || document.hidden);
 document.querySelector('#help')!.addEventListener('click', () => { navigation.clearInput(); dialog.showModal(); });
 dialog.addEventListener('click', event => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } });
 const fullscreen = document.querySelector<HTMLButtonElement>('#fullscreen')!;
@@ -85,6 +87,7 @@ addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
   tvGame.resize();
+  tetrisGame.resize();
   youtube.resize();
   needsRender = true;
   if (navigation.view === 'overview') navigation.setView('overview', true);
@@ -100,6 +103,7 @@ renderer.setAnimationLoop(now => {
   if (!tvGame.active && !dialog.open && visitor.update(dt, motionPreference.matches)) needsRender = true;
   if (model.updateRestroomDoor(visitor.walk.restroomDoorClosure)) needsRender = true;
   if (tvGame.update(dt)) needsRender = true;
+  if (tetrisGame.update(dt)) needsRender = true;
   const walk = navigation.isWalking;
   for (const wall of model.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
   for (const roof of model.roofs) roof.visible = walk;

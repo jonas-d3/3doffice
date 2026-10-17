@@ -64,7 +64,15 @@ export function createDay21Shell(parent: THREE.Object3D) {
   rod(east, [room.maxX - .095, 1.02, door.maxZ + .83], [room.maxX - .095, 1.02, door.maxZ + 1.0], .013);
   const meetingFront = glazing(parent, 'z', meeting.maxZ + .1, meeting.minX, meeting.maxX, [meetingDoor.minX, meetingDoor.maxX]);
   walls.push({ group: meetingFront, axis: 'z', position: meeting.maxZ, inside: -1 });
-  glazing(parent, 'x', meeting.maxX + .1, meeting.minZ, meeting.maxZ);
+  const meetingSide = glazing(parent, 'x', meeting.maxX + .1, meeting.minZ, meeting.maxZ);
+  // Middle pane of Tetris' side wall, facing into the meeting room.
+  const tetrisGlass = new THREE.Mesh(new THREE.PlaneGeometry(.83, 2.3), new THREE.MeshBasicMaterial({
+    transparent: true, depthWrite: false, side: THREE.DoubleSide, forceSinglePass: true, toneMapped: false,
+  }));
+  tetrisGlass.position.set(meeting.maxX + .085, 1.25, (meeting.minZ + meeting.maxZ) / 2);
+  tetrisGlass.rotation.y = -Math.PI / 2;
+  tetrisGlass.renderOrder = 2;
+  meetingSide.add(tetrisGlass);
   glazing(parent, 'z', day21GlassRoom.minZ, day21GlassRoom.minX, day21GlassRoom.maxX, [day21GlassDoor.minX, day21GlassDoor.maxX]);
   glazing(parent, 'x', day21GlassRoom.minX, day21GlassRoom.minZ, day21GlassRoom.maxZ);
   // A folded glass leaf runs beside the entrance instead of across the passage.
@@ -115,5 +123,5 @@ export function createDay21Shell(parent: THREE.Object3D) {
   box(ceiling, 3.8, .16, 2.2, -14.8, 3.25, 20.05, paleTimber);
   for (let x = -16.6; x < -12.9; x += .18) rod(ceiling, [x, 3.3, 18.95], [x, 4.12, 18.95], .014, m.white);
   box(ceiling, 3.8, .065, .075, -14.8, 4.16, 18.95, paleTimber);
-  return { walls, roof: ceiling, west, south, northWest, northEast };
+  return { walls, roof: ceiling, west, south, northWest, northEast, tetrisGlass };
 }

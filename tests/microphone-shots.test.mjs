@@ -27,7 +27,9 @@ test('local microphone samples fire after calibration; stopping releases hardwar
   setLevel(.1);
   let shots = 0;
   for (let i = 0; i < 90; i++) if (mic.update(1 / 60)) shots++;
-  assert.equal(shots, 1);
+  assert.ok(shots >= 15 && shots <= 18, `${shots} shots in a sustained 1.5 second sound`);
+  setLevel(.004);
+  for (let i = 0; i < 30; i++) assert.equal(mic.update(1 / 60), false);
   mic.stop();
   assert.equal(track.readyState, 'ended'); assert.equal(context.state, 'closed');
   assert.equal(mic.state, 'off'); assert.equal(mic.update(.1), false);

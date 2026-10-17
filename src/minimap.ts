@@ -30,6 +30,7 @@ export function renderMinimap() {
     + rect(day21GlassRoom, '#d6e0d9') + rect(day21Stairs, '#a1a78f')
     + [...desks, ...day21Desks].map(d => rect({ minX: d.x - deskSize.depth / 2, maxX: d.x + deskSize.depth / 2, minZ: d.z - deskSize.width / 2, maxZ: d.z + deskSize.width / 2 }, '#a1a78f')).join('')
     + label({ ...day21, maxZ: 19.5 }, ['DAY21 · 27,088 m'])
+    + label(day21Meeting, ['TETRIS'])
     + label({ ...workspace, minZ: 19.85, maxZ: 20.85 }, ['KONTORET · 17,758 × 6,970 m'])
     + '<g id="map-camera"><path d="m-7-10 7-8 7 8" fill="#4c786235" stroke="none"/><circle r="3.5" fill="#35664b" stroke="#fff" stroke-width="1.5"/></g>';
 }

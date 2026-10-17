@@ -1,11 +1,10 @@
 import * as THREE from 'three';
-import { WalkInInvaders } from './whiteboard-play.mjs';
+import { inDrawingArea, WalkInInvaders } from './whiteboard-play.mjs';
 import { InvadersScreen } from './invaders-screen';
 import { MicrophoneShots } from './microphone-shots';
 import type { Navigation } from './navigation';
 
 type Point = [number, number];
-const inDrawingArea = ([x, y]: Point) => x > 100 && x < 700 && y > 580 && y < 790;
 
 export class WhiteboardGame {
   private play = new WalkInInvaders();
@@ -28,8 +27,10 @@ export class WhiteboardGame {
   private projected = new THREE.Vector3();
   private offset = new THREE.Vector3();
   private gesture: { id: number; position: THREE.Vector3; rotation: THREE.Quaternion } | null = null;
+  private pointer: { clientX: number; clientY: number } | null = null;
   private drawing: Point[] = [];
-  private retry = false;
+  private hovered = false;
+  private touchInput = matchMedia('(any-pointer: coarse)');
   private dirty = true;
   private best = 0;
   private lastStatus = '';
@@ -78,16 +79,14 @@ export class WhiteboardGame {
       if (!point || !inDrawingArea(point)) return;
       event.preventDefault(); event.stopImmediatePropagation();
       navigation.clearInput(); canvas.focus({ preventScroll: true });
-      const end = this.drawing.at(-1);
-      if (this.retry || !end || Math.hypot(point[0] - end[0], point[1] - end[1]) > 45) this.drawing = [];
-      this.drawing.push(point); this.retry = false;
+      this.drawing = [point];
       this.gesture = { id: event.pointerId, position: navigation.camera.position.clone(), rotation: navigation.camera.quaternion.clone() };
       canvas.setPointerCapture(event.pointerId); canvas.dataset.whiteboardPen = 'true'; this.dirty = true;
     }, { capture: true });
     canvas.addEventListener('pointermove', event => {
+      this.pointer = event.pointerType === 'touch' ? null : { clientX: event.clientX, clientY: event.clientY };
       if (!this.gesture) {
-        const point = this.play.canDraw && this.nearby ? this.boardPoint(event, false) : null;
-        if (point && inDrawingArea(point)) canvas.dataset.whiteboardPen = 'true'; else delete canvas.dataset.whiteboardPen;
+        this.updateHover(this.nearby && this.focused && !this.blocked() ? this.boardPoint(event, true) : null);
         return;
       }
       if (event.pointerId !== this.gesture.id) return;
@@ -102,19 +101,18 @@ export class WhiteboardGame {
       event.preventDefault(); event.stopImmediatePropagation();
       const point = this.boardPoint(event, true);
       if (!point || !inDrawingArea(point) || !this.available()) { this.cancelDrawing(); return; }
-      this.drawing.push(point); this.releasePointer();
-      if (this.play.launch(this.drawing, this.lateralPosition())) { this.drawing = []; this.retry = false; }
-      else {
-        const first = this.drawing[0], last = this.drawing.at(-1)!;
-        this.retry = this.drawing.length > 3 && Math.hypot(first[0] - last[0], first[1] - last[1]) < 40;
-      }
+      if (this.drawing.length < 512) this.drawing.push(point);
+      this.releasePointer();
+      this.play.addStroke(this.drawing, this.lateralPosition());
+      this.drawing = [];
+      this.updateHover(event.pointerType === 'touch' ? null : point);
       this.dirty = true;
     }, { capture: true });
     const cancel = () => { if (this.gesture) this.cancelDrawing(); };
     canvas.addEventListener('pointercancel', cancel); canvas.addEventListener('lostpointercapture', cancel);
-    canvas.addEventListener('pointerleave', () => { if (!this.gesture) delete canvas.dataset.whiteboardPen; });
+    canvas.addEventListener('pointerleave', () => { this.pointer = null; this.updateHover(null); });
     addEventListener('blur', () => {
-      this.focused = false; this.cancelDrawing(); this.microphone.stop(); this.play.update(0, false, 0); this.dirty = true;
+      this.focused = false; this.pointer = null; this.updateHover(null); this.cancelDrawing(); this.microphone.stop(); this.play.update(0, false, 0); this.dirty = true;
     });
     addEventListener('focus', () => { this.focused = true; this.sightIn = 0; });
     document.addEventListener('visibilitychange', () => {
@@ -133,7 +131,14 @@ export class WhiteboardGame {
     delete canvas.dataset.whiteboardPen;
   }
 
-  private cancelDrawing() { this.releasePointer(); this.drawing = []; this.retry = false; this.dirty = true; }
+  private cancelDrawing() { this.releasePointer(); this.drawing = []; this.dirty = true; }
+
+  private updateHover(point: Point | null) {
+    const hovered = point !== null;
+    if (hovered !== this.hovered) { this.hovered = hovered; this.dirty = true; }
+    if (point && this.play.canDraw && inDrawingArea(point)) this.navigation.canvas.dataset.whiteboardPen = 'true';
+    else delete this.navigation.canvas.dataset.whiteboardPen;
+  }
 
   private firstHit() {
     return this.ray.intersectObjects(this.surfaces, false).find(hit => {
@@ -143,7 +148,7 @@ export class WhiteboardGame {
     });
   }
 
-  private boardPoint(event: PointerEvent, checkObstacles: boolean): Point | null {
+  private boardPoint(event: { clientX: number; clientY: number }, checkObstacles: boolean): Point | null {
     const rect = this.navigation.canvas.getBoundingClientRect();
     this.navigation.camera.updateMatrixWorld();
     this.ray.setFromCamera(new THREE.Vector2((event.clientX - rect.left) / rect.width * 2 - 1, 1 - (event.clientY - rect.top) / rect.height * 2), this.navigation.camera);
@@ -168,8 +173,11 @@ export class WhiteboardGame {
 
   update(dt: number) {
     this.sightIn -= dt;
-    if (this.sightIn <= 0) { this.nearby = this.available(); this.sightIn = .12; }
+    const checkSight = this.sightIn <= 0;
+    if (checkSight) { this.nearby = this.available(); this.sightIn = .12; }
     const present = this.nearby && this.focused && this.navigation.isWalking && !this.blocked();
+    if (!present) this.updateHover(null);
+    else if (checkSight && this.pointer && !this.gesture) this.updateHover(this.boardPoint(this.pointer, true));
     if (this.gesture && (!present || this.gesture.position.distanceToSquared(this.navigation.camera.position) > .0001 || this.gesture.rotation.angleTo(this.navigation.camera.quaternion) > .01)) this.cancelDrawing();
     if ((!present || this.play.canDraw) && this.microphone.active) this.microphone.stop();
     const fire = present && !this.play.canDraw && this.microphone.update(dt);
@@ -180,14 +188,14 @@ export class WhiteboardGame {
     this.audioPanel.hidden = !present || this.play.canDraw;
     this.level.value = this.microphone.level;
     this.best = Math.max(this.best, game.score);
-    const state = `${game.status}/${game.wave}/${game.lives}/${present}/${this.retry}/${this.microphone.state}/${this.autoFire}`;
+    const state = `${game.status}/${game.wave}/${game.lives}/${present}/${this.play.drawing.length}/${this.microphone.state}/${this.autoFire}`;
     if (state !== this.lastStatus) {
       this.lastStatus = state; this.dirty = true;
       if (game.status !== 'running') {
         try { localStorage.setItem('office-whiteboard-best', String(this.best)); } catch { /* Keep this visit's record. */ }
       }
       this.status.textContent = !present ? '' : this.play.canDraw
-        ? (this.retry ? 'Tegn en lukket trekant i feltet på tavlen. Prøv igen.' : 'Tegn dit rumskib som en trekant i feltet på tavlen. Aktivér derefter mikrofonen, og sig skyd, bang eller piyv. Gå til siderne for at styre.')
+        ? `Tegn dit eget rumskib i kassen på tavlen. ${this.play.drawing.length} af 5 streger. Fem streger starter spillet; alle former kan bruges.`
         : `Whiteboard invasion: bølge ${game.wave} af 3, ${game.lives} liv. Gå til siderne for at styre. Du kan gå væk når som helst.`;
       const mic = this.microphone;
       this.micButton.disabled = mic.state === 'unsupported';
@@ -200,16 +208,18 @@ export class WhiteboardGame {
         : mic.state === 'listening' ? 'Mikrofon tændt · sig “skyd”, “bang” eller “piyv”'
         : mic.message || 'Dit rumskib er klar. Aktivér mikrofonen for at skyde.';
       this.audioHint.textContent = mic.state === 'listening'
-        ? 'Ét skud pr. kort lyd. Justér følsomheden, hvis den skyder for let eller slet ikke.'
-        : 'Korte lyde giver ét skud. Mikrofonen slukker, når du går væk.';
+        ? 'Prøv “ratatat” eller et langt “brrrr” for salver. Justér følsomheden efter behov.'
+        : 'Korte lyde giver ét skud; “brrrr” giver salver. Mikrofonen slukker, når du går væk.';
     }
     if (game.status === 'running') {
       this.drawIn -= dt;
       if (this.drawIn <= 0) { this.dirty = true; this.drawIn = 1 / 30; }
     }
     if (!this.dirty) return false;
-    this.screen.draw(game, this.best, this.reducedMotion.matches, this.play.ship, this.drawing, this.retry, this.autoFire,
-      present ? 'Aktivér mikrofonen, når du er klar' : undefined);
+    this.screen.draw(game, this.best, this.reducedMotion.matches, this.play.ship, this.play.drawing, this.drawing, {
+      hovered: this.hovered, showDrawingArea: this.hovered || (present && this.touchInput.matches),
+      autoFire: this.autoFire, pauseHint: present ? 'Aktivér mikrofonen, når du er klar' : undefined,
+    });
     this.dirty = false; return true;
   }
 }

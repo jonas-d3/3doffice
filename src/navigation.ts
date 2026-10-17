@@ -5,10 +5,10 @@ import { walkingLocation, mapPoint } from './layout.mjs';
 import { planPoint } from './placement.mjs';
 import { lobbyPreset } from './lobby-layout.mjs';
 import { workspacePreset } from './workspace-layout.mjs';
-import { day21Preset } from './day21-layout.mjs';
+import { day21Preset, tetrisPreset } from './day21-layout.mjs';
 
-export type View = 'overview' | 'meeting' | 'lounge' | 'walk' | 'hallway' | 'restrooms' | 'minecraft' | 'kitchen' | 'lobby' | 'workspace' | 'day21';
-const names = { overview: 'Overblik', meeting: 'Mødebord', lounge: 'Lounge', walk: 'Space Invaders · MØDE 4', hallway: 'Toiletgangen', restrooms: 'Toiletentré', minecraft: 'Minecraft · MØDE 3', kitchen: 'Køkken', lobby: 'Lille gang ved køkkenet', workspace: 'Kontoret', day21: 'Day21' };
+export type View = 'overview' | 'meeting' | 'lounge' | 'walk' | 'hallway' | 'restrooms' | 'minecraft' | 'kitchen' | 'lobby' | 'workspace' | 'day21' | 'tetris';
+const names = { overview: 'Overblik', meeting: 'Mødebord', lounge: 'Lounge', walk: 'Space Invaders · MØDE 4', hallway: 'Toiletgangen', restrooms: 'Toiletentré', minecraft: 'Minecraft · MØDE 3', kitchen: 'Køkken', lobby: 'Lille gang ved køkkenet', workspace: 'Kontoret', day21: 'Day21', tetris: 'Tetris' };
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export class Navigation {
@@ -22,7 +22,7 @@ export class Navigation {
   private direction = new THREE.Vector3();
   private suspended = false;
 
-  get isWalking() { return this.view === 'walk' || this.view === 'hallway' || this.view === 'restrooms' || this.view === 'minecraft' || this.view === 'kitchen' || this.view === 'lobby' || this.view === 'workspace' || this.view === 'day21'; }
+  get isWalking() { return this.view === 'walk' || this.view === 'hallway' || this.view === 'restrooms' || this.view === 'minecraft' || this.view === 'kitchen' || this.view === 'lobby' || this.view === 'workspace' || this.view === 'day21' || this.view === 'tetris'; }
 
   constructor(readonly camera: THREE.PerspectiveCamera, readonly canvas: HTMLCanvasElement) {
     this.controls = new OrbitControls(camera, canvas);
@@ -99,8 +99,9 @@ export class Navigation {
     document.querySelector('#navigation-hint')!.innerHTML = walking
       ? '<span>W A S D / pile: gå</span><b>·</b><span>Træk / Q E: kig rundt</span><b>·</b><span>Esc: overblik</span>'
       : '<span>Træk: drej</span><b>·</b><span>Højretræk / to fingre: panorer</span><b>·</b><span>Scroll / knib: zoom</span>';
-    if (view === 'walk' || view === 'hallway' || view === 'restrooms' || view === 'minecraft' || view === 'kitchen' || view === 'lobby' || view === 'workspace' || view === 'day21') {
+    if (view === 'walk' || view === 'hallway' || view === 'restrooms' || view === 'minecraft' || view === 'kitchen' || view === 'lobby' || view === 'workspace' || view === 'day21' || view === 'tetris') {
       const preset = {
+        tetris: tetrisPreset,
         day21: day21Preset,
         workspace: workspacePreset,
         lobby: lobbyPreset,
