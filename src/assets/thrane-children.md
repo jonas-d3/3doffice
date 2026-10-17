@@ -2,7 +2,7 @@
 
 Generated with the built-in `image_gen` tool on 2026-10-16. All characters are fictional. This is a playful illustration, not a picture of the colleague's actual children.
 
-Asset: `thrane-children.png`.
+Asset: `thrane-children.jpg`.
 
 ## Final prompt
 

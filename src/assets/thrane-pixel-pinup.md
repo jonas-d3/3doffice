@@ -2,7 +2,7 @@
 
 Generated with the built-in `image_gen` tool on 2026-10-16. The user approved a retro pixel pinup in a swimsuit. The image is an invented adult character, not a portrayal of a colleague.
 
-Asset: `thrane-pixel-pinup.png`.
+Asset: `thrane-pixel-pinup.jpg`.
 
 ## Final prompt
 
