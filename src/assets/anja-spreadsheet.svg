@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="1120" viewBox="0 0 600 1120">
+  <defs>
+    <pattern id="cells" x="48" y="240" width="132" height="56" patternUnits="userSpaceOnUse">
+      <rect width="132" height="56" fill="white"/>
+      <path d="M132 0H0V56" fill="none" stroke="#cfd8d3" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="1120" fill="#f1f4f2"/>
+  <g font-family="Arial, sans-serif" font-size="24" fill="#33483e">
+    <rect width="600" height="110" fill="#217346"/>
+    <text x="28" y="45" font-size="28" font-weight="bold" fill="white">Indkøb og budget</text>
+    <text x="28" y="88" fill="#e6f4eb">Filer    Start    Indsæt    Data</text>
+    <rect y="110" width="600" height="70" fill="#e4ece7"/>
+    <text x="28" y="155">Calibri    12     B    I    U    ∑</text>
+    <rect x="16" y="190" width="568" height="42" fill="white" stroke="#c6d1ca"/>
+    <text x="28" y="220">D8</text>
+    <text x="104" y="220" fill="#217346">fx</text>
+    <text x="154" y="220">=SUM(D3:D7)</text>
+    <rect x="48" y="240" width="528" height="784" fill="url(#cells)"/>
+    <rect x="48" y="240" width="528" height="56" fill="#e0e8e3"/>
+    <path d="M48 296H576M48 240V1024" stroke="#bac8bf" stroke-width="2"/>
+    <g text-anchor="middle" fill="#65776b">
+      <text x="114" y="278">A</text><text x="246" y="278">B</text><text x="378" y="278">C</text><text x="510" y="278">D</text>
+      <text x="24" y="334">1</text><text x="24" y="390">2</text><text x="24" y="446">3</text><text x="24" y="502">4</text>
+      <text x="24" y="558">5</text><text x="24" y="614">6</text><text x="24" y="670">7</text><text x="24" y="726">8</text>
+      <text x="24" y="782">9</text><text x="24" y="838">10</text><text x="24" y="894">11</text><text x="24" y="950">12</text><text x="24" y="1006">13</text>
+    </g>
+    <rect x="48" y="296" width="528" height="56" fill="#e6f1e9"/>
+    <text x="64" y="333" font-size="27" font-weight="bold">UGENS INDKØB</text>
+    <rect x="48" y="352" width="528" height="56" fill="#217346"/>
+    <g fill="white" font-weight="bold"><text x="62" y="389">Vare</text><text x="193" y="389">Antal</text><text x="326" y="389">Pris</text><text x="458" y="389">I alt</text></g>
+    <g><text x="62" y="446">Frugt</text><text x="62" y="502">Mælk</text><text x="62" y="558">Kaffe</text><text x="62" y="614">Brød</text><text x="62" y="670">Grønt</text></g>
+    <g text-anchor="end">
+      <text x="292" y="446">4</text><text x="424" y="446">25,00</text><text x="560" y="446">100,00</text>
+      <text x="292" y="502">6</text><text x="424" y="502">15,00</text><text x="560" y="502">90,00</text>
+      <text x="292" y="558">2</text><text x="424" y="558">45,00</text><text x="560" y="558">90,00</text>
+      <text x="292" y="614">3</text><text x="424" y="614">30,00</text><text x="560" y="614">90,00</text>
+      <text x="292" y="670">5</text><text x="424" y="670">20,00</text><text x="560" y="670">100,00</text>
+    </g>
+    <rect x="48" y="688" width="528" height="56" fill="#dceee2"/>
+    <text x="62" y="726" font-weight="bold">Total</text><text x="560" y="726" text-anchor="end" font-weight="bold">470,00</text>
+    <rect x="444" y="688" width="132" height="56" fill="none" stroke="#21834e" stroke-width="4"/>
+    <rect x="570" y="738" width="12" height="12" fill="#21834e"/>
+    <path d="M0 1040H600" stroke="#c9d4cd" stroke-width="2"/>
+    <rect x="40" y="1040" width="160" height="48" fill="white"/>
+    <text x="65" y="1073" font-weight="bold" fill="#217346">Indkøb</text><text x="234" y="1073">Budget</text><text x="404" y="1073">+</text>
+    <path d="M40 1088H200" stroke="#217346" stroke-width="4"/>
+    <text x="24" y="1112" font-size="17" fill="#77877c">Klar</text><text x="510" y="1112" font-size="17" fill="#77877c">100 %</text>
+  </g>
+</svg>

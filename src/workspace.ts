@@ -5,12 +5,20 @@ import { plant } from './plants';
 import { desks, deskIslands, deskSize, chairOffset, workspacePlants, workspaceSofas } from './workspace-layout.mjs';
 import { createWorkspaceShell } from './workspace-shell';
 import { createProximityWallpaper } from './proximity-wallpaper.mjs';
+import { PalmScreens } from './palm-screens';
+import { NicolaiScreens } from './nicolai-screens';
+import { AnjaScreens } from './anja-screens';
+import { JesperScreen } from './jesper-screen';
+import { HolbechScreens } from './holbech-screens';
+import { HenrikScreens } from './henrik-screens';
 import pinupUrl from './assets/thrane-pixel-pinup.jpg';
 import childrenUrl from './assets/thrane-children.jpg';
 import fckLogoUrl from './assets/fck-logo.png';
-import satyriconLogoUrl from './assets/satyricon-logo.png';
+import astroLogoUrl from './assets/astro-logo.png';
 import wiibroePilsnerUrl from './assets/wiibroe-pilsner.png';
 import wiibroe2026Url from './assets/wiibroe-2026.jpg';
+import graphsUrl from './assets/annie-graphs.svg';
+import diagramsUrl from './assets/annie-diagrams.svg';
 
 const leather = new THREE.MeshStandardMaterial({ color: '#a4815d', roughness: .8 });
 const upholstery = new THREE.MeshStandardMaterial({ color: '#b49b7a', map: m.sofa.map, roughness: .95 });
@@ -19,19 +27,30 @@ const silver = new THREE.MeshStandardMaterial({ color: '#a7aeae', metalness: .6,
 const mat = new THREE.MeshStandardMaterial({ color: '#b8bdb5', transparent: true, opacity: .4, roughness: .9, depthWrite: false });
 const gold = new THREE.MeshStandardMaterial({ color: '#c5ad64', metalness: .65, roughness: .3 });
 
-function logoWallpaper(url: string, background: string, crop?: [number, number, number, number]) {
+function logoWallpaper(url: string, background: string, crop?: [number, number, number, number], caption?: string) {
   const canvas = document.createElement('canvas'); canvas.width = 1024; canvas.height = 565;
   const context = canvas.getContext('2d')!;
   context.fillStyle = background; context.fillRect(0, 0, canvas.width, canvas.height);
+  const imageHeight = caption ? canvas.height - 150 : canvas.height;
+  if (caption) {
+    context.fillStyle = '#f5edff'; context.font = '700 64px Arial, sans-serif'; context.textAlign = 'center';
+    context.fillText(caption, canvas.width / 2, canvas.height - 65, canvas.width * .86);
+  }
   const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
   new THREE.ImageLoader().load(url, image => {
     const [x, y, width, height] = crop ?? [0, 0, image.width, image.height];
-    const scale = Math.min(canvas.width / width, canvas.height / height) * .84;
+    const scale = Math.min(canvas.width / width, imageHeight / height) * .84;
     context.drawImage(image, x, y, width, height,
-      (canvas.width - width * scale) / 2, (canvas.height - height * scale) / 2, width * scale, height * scale);
+      (canvas.width - width * scale) / 2, (imageHeight - height * scale) / 2, width * scale, height * scale);
     texture.needsUpdate = true;
   });
   return new THREE.MeshBasicMaterial({ map: texture, toneMapped: false });
+}
+
+function screenWallpaper(url: string) {
+  const map = new THREE.TextureLoader().load(url);
+  map.colorSpace = THREE.SRGBColorSpace;
+  return new THREE.MeshBasicMaterial({ map, toneMapped: false });
 }
 
 function chair(parent: THREE.Object3D, brown: boolean) {
@@ -71,7 +90,7 @@ function monitor(parent: THREE.Object3D, x: number, portrait = false, active = f
     display = mesh(panel, geometry, wallpaper, 0, 0, .032);
     display.castShadow = false; display.receiveShadow = false;
   }
-  if (active) {
+  if (active && !wallpaper) {
     // Abstract application windows: no personal screen content is reproduced.
     box(panel, width * .75, height * .52, .004, 0, .03, .033, m.white);
     box(panel, width * .75, .03, .004, 0, .03 + height * .26, .036, chairMesh);
@@ -195,22 +214,42 @@ export function createWorkspace(parent: THREE.Object3D) {
   const children = new THREE.TextureLoader().load(childrenUrl);
   children.colorSpace = THREE.SRGBColorSpace;
   const wallpaper = new THREE.MeshBasicMaterial({ map: pinup, toneMapped: false });
-  let updateScreens = (_cameraPosition: THREE.Vector3) => false;
+  let updateThraneScreen = (_cameraPosition: THREE.Vector3) => false;
+  const palmScreens = new PalmScreens();
+  const nicolaiScreens = new NicolaiScreens();
+  const anjaScreens = new AnjaScreens();
+  const jesperScreen = new JesperScreen();
+  const holbechScreens = new HolbechScreens();
+  const henrikScreens = new HenrikScreens();
   // The FCK design-guide image has generous white margins around the complete logo.
   const fckWallpaper = logoWallpaper(fckLogoUrl, '#ffffff', [168, 216, 432, 432]);
-  const satyriconWallpaper = logoWallpaper(satyriconLogoUrl, '#000000');
+  const astroWallpaper = logoWallpaper(astroLogoUrl, '#171426', undefined, 'Det kan laves i CSS');
   const wiibroeWallpapers: [THREE.Material, THREE.Material] = [
     logoWallpaper(wiibroePilsnerUrl, '#f3edda'),
     logoWallpaper(wiibroe2026Url, '#172d21'),
   ];
+  const annieWallpapers: [THREE.Material, THREE.Material] = [screenWallpaper(graphsUrl), screenWallpaper(diagramsUrl)];
   desks.forEach((desk, index) => {
     // Seat references follow ressources/locations.png; north is up on that plan.
     const isThrane = desk.islandIndex === 5 && desk.side === -1;
+    const isAnja = desk.islandIndex === 5 && desk.side === 1;
+    const isAnnie = desk.islandIndex === 1 && desk.side === -1 && desk.z > deskIslands[1].z;
     const isHenrik = desk.islandIndex === 0 && desk.side === 1 && desk.z < deskIslands[0].z;
     const isLars = desk.islandIndex === 2 && desk.side === 1 && desk.z > deskIslands[2].z;
+    const isMartin = desk.islandIndex === 2 && desk.side === 1 && desk.z < deskIslands[2].z;
+    const isPalm = desk.islandIndex === 1 && desk.side === 1 && desk.z < deskIslands[1].z;
+    const isNicolai = desk.islandIndex === 1 && desk.side === -1 && desk.z < deskIslands[1].z;
+    const isHolbech = desk.islandIndex === 1 && desk.side === 1 && desk.z > deskIslands[1].z;
     const isDavid = desk.islandIndex === 0 && desk.side === -1 && desk.z < deskIslands[0].z;
-    const display = workstation(group, desk, index, isThrane ? wallpaper : isHenrik ? satyriconWallpaper : isLars ? fckWallpaper : isDavid ? wiibroeWallpapers : undefined, isLars ? 'spanned' : isThrane ? 'quad' : 'dual');
-    if (isThrane && display) updateScreens = createProximityWallpaper(display, wallpaper, children);
+    const isJesper = desk.islandIndex === 4 && desk.side === 1;
+    const display = workstation(group, desk, index, isAnja ? anjaScreens.materials : isAnnie ? annieWallpapers : isThrane ? wallpaper : isHenrik ? henrikScreens.materials : isLars ? fckWallpaper : isMartin ? astroWallpaper : isPalm ? palmScreens.materials : isNicolai ? nicolaiScreens.materials : isHolbech ? holbechScreens.materials : isDavid ? wiibroeWallpapers : isJesper ? jesperScreen.material : undefined, isLars ? 'spanned' : isThrane ? 'quad' : 'dual');
+    if (isThrane && display) updateThraneScreen = createProximityWallpaper(display, wallpaper, children);
+    if (isPalm) palmScreens.screen = display;
+    if (isNicolai) nicolaiScreens.screen = display;
+    if (isAnja) anjaScreens.screen = display;
+    if (isJesper) jesperScreen.screen = display;
+    if (isHenrik) henrikScreens.screen = display;
+    if (isHolbech && display) holbechScreens.decorate(display);
   });
   for (const p of workspacePlants) {
     const foliage = new THREE.Group(); group.add(foliage);
@@ -237,5 +276,16 @@ export function createWorkspace(parent: THREE.Object3D) {
   for (const y of [-.12, .12]) for (let i = 0; i < 3; i++) box(print, .035, .16, .008, -.12 + i * .1, y + i * .025, .03, m.white).rotation.z = -.45;
   cylinder(group, .055, .12, .2, 7.9, 2.2, 19.7, gold);
   cylinder(group, .09, .11, .025, 7.9, 2.09, 19.7, gold);
-  return { ...shell, television, updateScreens };
+  return {
+    ...shell, television, holbechScreens,
+    updateScreens(camera: THREE.PerspectiveCamera, dt: number, animate: boolean) {
+      const thraneChanged = updateThraneScreen(camera.position);
+      const palmChanged = palmScreens.update(camera, dt, animate);
+      const nicolaiChanged = nicolaiScreens.update(camera, dt, animate);
+      const anjaChanged = anjaScreens.update(camera, dt, animate);
+      const jesperChanged = jesperScreen.update(camera, dt, animate);
+      const henrikChanged = henrikScreens.update(camera, dt, animate);
+      return thraneChanged || palmChanged || nicolaiChanged || anjaChanged || jesperChanged || henrikChanged;
+    },
+  };
 }

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="565" viewBox="0 0 1024 565">
+  <rect width="1024" height="565" fill="#eef2f6"/>
+  <g font-family="Arial, sans-serif">
+    <rect width="1024" height="70" fill="#203b57"/>
+    <text x="28" y="46" font-size="30" font-weight="bold" fill="white">ANALYSE</text>
+    <text x="770" y="44" font-size="22" fill="#d5e3ee">Kvartalsoversigt</text>
+    <rect x="24" y="90" width="308" height="92" rx="8" fill="white"/>
+    <rect x="350" y="90" width="322" height="92" rx="8" fill="white"/>
+    <rect x="690" y="90" width="310" height="92" rx="8" fill="white"/>
+    <g fill="#6b7c8d" font-size="19"><text x="44" y="118">UDVIKLING</text><text x="370" y="118">AKTIVITET</text><text x="710" y="118">MÅLOPFYLDELSE</text></g>
+    <g font-size="38" font-weight="bold"><text x="44" y="160" fill="#258f82">+18,6 %</text><text x="370" y="160" fill="#3767bd">1.248</text><text x="710" y="160" fill="#7760b0">92 %</text></g>
+    <rect x="24" y="202" width="590" height="336" rx="8" fill="white"/>
+    <rect x="632" y="202" width="368" height="336" rx="8" fill="white"/>
+    <g fill="#263e56" font-size="25" font-weight="bold"><text x="44" y="241">Udvikling over tid</text><text x="652" y="241">Pr. måned</text></g>
+    <g stroke="#e0e7ee" stroke-width="2"><path d="M80 285H580M80 345H580M80 405H580M80 465H580M677 285H966M677 345H966M677 405H966M677 465H966"/></g>
+    <path d="M80 438 151 409 222 426 293 362 364 380 435 315 506 331 577 279V465H80Z" fill="#deedf9"/>
+    <path d="M80 438 151 409 222 426 293 362 364 380 435 315 506 331 577 279" fill="none" stroke="#3b82c4" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M80 451 151 434 222 399 293 421 364 392 435 365 506 376 577 339" fill="none" stroke="#2da793" stroke-width="6" stroke-linejoin="round"/>
+    <g fill="#3b82c4"><circle cx="151" cy="409" r="6"/><circle cx="293" cy="362" r="6"/><circle cx="435" cy="315" r="6"/><circle cx="577" cy="279" r="6"/></g>
+    <g fill="#6b7c8d" font-size="18"><text x="37" y="291">100</text><text x="47" y="351">75</text><text x="47" y="411">50</text><text x="47" y="471">25</text><text x="80" y="495">Jan</text><text x="222" y="495">Mar</text><text x="364" y="495">Maj</text><text x="548" y="495">Aug</text></g>
+    <rect x="685" y="380" width="45" height="85" rx="3" fill="#85b7e0"/>
+    <rect x="744" y="343" width="45" height="122" rx="3" fill="#62a2d4"/>
+    <rect x="803" y="360" width="45" height="105" rx="3" fill="#498cc6"/>
+    <rect x="862" y="312" width="45" height="153" rx="3" fill="#3679b9"/>
+    <rect x="921" y="276" width="45" height="189" rx="3" fill="#2da793"/>
+    <g fill="#6b7c8d" font-size="18"><text x="689" y="495">Apr</text><text x="748" y="495">Maj</text><text x="808" y="495">Jun</text><text x="869" y="495">Jul</text><text x="925" y="495">Aug</text></g>
+    <path d="M80 521H108" stroke="#3b82c4" stroke-width="5"/><path d="M270 521H298" stroke="#2da793" stroke-width="5"/>
+    <g font-size="17" fill="#6b7c8d"><text x="120" y="527">Aktuelt</text><text x="310" y="527">Forrige periode</text></g>
+  </g>
+</svg>

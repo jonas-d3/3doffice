@@ -80,7 +80,7 @@ document.addEventListener('fullscreenchange', () => fullscreen.setAttribute('ari
 canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); renderer.setAnimationLoop(null); document.querySelector<HTMLElement>('#error')!.hidden = false; });
 let needsRender = true;
 // Repaint even when the camera is still after an image texture finishes loading.
-THREE.DefaultLoadingManager.onLoad = () => { needsRender = true; };
+THREE.DefaultLoadingManager.onLoad = () => { needsRender = true; model.holbechScreens.dirty = true; };
 navigation.controls.addEventListener('change', () => { needsRender = true; });
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
@@ -97,13 +97,14 @@ renderer.setAnimationLoop(now => {
   const dt = Math.min((now - previous) / 1000, .05); previous = now;
   if (document.hidden) return;
   navigation.update(dt);
-  if (model.updateScreens(camera.position)) needsRender = true;
+  if (model.updateScreens(camera, dt, !motionPreference.matches && !dialog.open && !tvGame.active)) needsRender = true;
   if (!tvGame.active && !dialog.open && visitor.update(dt)) needsRender = true;
   if (tvGame.update(dt)) needsRender = true;
   const walk = navigation.isWalking;
   for (const wall of model.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
   for (const roof of model.roofs) roof.visible = walk;
   if (needsRender || !previousPosition.equals(camera.position) || !previousRotation.equals(camera.quaternion)) {
+    model.holbechScreens.render(renderer, scene, model.walls, model.roofs);
     renderer.render(scene, camera);
     previousPosition.copy(camera.position); previousRotation.copy(camera.quaternion); needsRender = false;
   }

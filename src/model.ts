@@ -84,7 +84,7 @@ function lounge(parent: Parent) {
   }
   box(parent, 1.01, .22, .94, 2.15, .27, -1.73, m.sofa, .07);
   box(parent, .97, .2, .9, 2.15, .46, -1.74, m.sofa, .08);
-  box(parent, 1.1, .57, .17, 2.2, .62, -2.19, m.sofa, .07);
+  box(parent, 2, .57, .17, 2.65, .62, -2.19, m.sofa, .07);
   box(parent, .14, .58, .98, 1.68, .62, -1.74, m.sofa, .06);
   box(parent, .86, .18, .17, 3.04, .65, 1.9, m.sofa, .065);
   box(parent, 1.22, .055, 1.15, 1.8, .47, -.05, m.oak, .025);
@@ -210,5 +210,5 @@ export function createOffice() {
     for (const wall of result.walls) wall.position = wall.position * (wall.axis === 'x' ? p.sx : p.sz) + p[wall.axis];
     walls.push(...result.walls); roofs.push(result.roof);
   }
-  return { office, walls, roofs, television: workspace.television, updateScreens: workspace.updateScreens };
+  return { office, walls, roofs, television: workspace.television, updateScreens: workspace.updateScreens, holbechScreens: workspace.holbechScreens };
 }

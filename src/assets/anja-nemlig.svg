@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="1120" viewBox="0 0 600 1120">
+  <rect width="600" height="1120" fill="#f6f4ef"/>
+  <g font-family="Arial, sans-serif">
+    <rect width="600" height="58" fill="#e1e5e9"/>
+    <rect x="70" y="12" width="460" height="34" rx="17" fill="white"/>
+    <text x="110" y="36" font-size="22" fill="#4a5158">nemlig.com</text>
+    <rect y="58" width="600" height="114" fill="white"/>
+    <text x="30" y="134" font-size="58" font-weight="bold" fill="#111">nemlig<tspan fill="#ef7621">.com</tspan></text>
+    <rect x="24" y="192" width="552" height="62" rx="10" fill="white" stroke="#d3d1cc" stroke-width="2"/>
+    <circle cx="54" cy="221" r="12" fill="none" stroke="#585b58" stroke-width="4"/>
+    <path d="m63 230 10 10" stroke="#585b58" stroke-width="4"/>
+    <text x="94" y="232" font-size="25" fill="#646763">Søg efter varer</text>
+    <rect x="24" y="278" width="552" height="198" rx="12" fill="#e87525"/>
+    <text x="52" y="334" font-size="27" fill="#fff4dd">GOD MAD. NEM HVERDAG.</text>
+    <text x="52" y="388" font-size="46" font-weight="bold" fill="white">Frisk til døren</text>
+    <text x="52" y="438" font-size="26" fill="white">Fyld kurven med dine favoritter</text>
+    <text x="26" y="534" font-size="34" font-weight="bold" fill="#252b24">Frugt &amp; grønt</text>
+    <rect x="24" y="558" width="266" height="342" rx="12" fill="white"/>
+    <rect x="310" y="558" width="266" height="342" rx="12" fill="white"/>
+    <ellipse cx="155" cy="736" rx="73" ry="10" fill="#ecece7"/>
+    <path d="M156 615 C100 580 74 630 90 679 C108 734 145 733 156 717 C174 736 208 720 220 674 C234 625 203 591 156 615" fill="#cb3d32"/>
+    <path d="M157 620 Q151 589 170 580" fill="none" stroke="#745137" stroke-width="9"/>
+    <ellipse cx="187" cy="593" rx="25" ry="11" transform="rotate(-24 187 593)" fill="#548345"/>
+    <text x="44" y="790" font-size="27" font-weight="bold" fill="#30352e">Danske æbler</text>
+    <text x="44" y="827" font-size="23" fill="#73766c">Sprøde og saftige</text>
+    <rect x="44" y="850" width="226" height="34" rx="17" fill="#ef7621"/>
+    <text x="157" y="875" text-anchor="middle" font-size="24" font-weight="bold" fill="white">+ Læg i kurv</text>
+    <ellipse cx="440" cy="736" rx="82" ry="10" fill="#ecece7"/>
+    <path d="M397 632 Q416 689 505 705 Q462 749 402 699 Q374 674 379 635Z" fill="#edca45"/>
+    <path d="M420 615 Q438 673 520 682 Q478 721 423 683 Q392 659 400 619Z" fill="#f7d958"/>
+    <text x="330" y="790" font-size="27" font-weight="bold" fill="#30352e">Bananer</text>
+    <text x="330" y="827" font-size="23" fill="#73766c">Økologiske</text>
+    <rect x="330" y="850" width="226" height="34" rx="17" fill="#ef7621"/>
+    <text x="443" y="875" text-anchor="middle" font-size="24" font-weight="bold" fill="white">+ Læg i kurv</text>
+    <rect x="24" y="926" width="552" height="92" rx="12" fill="#e6ecdf"/>
+    <text x="48" y="965" font-size="28" font-weight="bold" fill="#3e593b">Dine faste favoritter</text>
+    <text x="48" y="1000" font-size="24" fill="#52664c">Alt til ugens indkøb</text>
+    <rect y="1050" width="600" height="70" fill="#fff"/>
+    <text x="30" y="1095" font-size="24" fill="#565e53">Varer</text>
+    <text x="240" y="1095" font-size="24" fill="#565e53">Favoritter</text>
+    <text x="480" y="1095" font-size="24" font-weight="bold" fill="#db641b">Kurv</text>
+  </g>
+</svg>
