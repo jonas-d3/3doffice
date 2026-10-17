@@ -114,7 +114,8 @@ body[data-tetris-playing] :is(.bottom-panel, .walk-pad, .side-tools, .map-card, 
 @media (hover: hover) and (pointer: fine) {
   #tetris-controls button:hover:not(:disabled) { background: oklch(89% .035 150); }
 }
-.whiteboard-audio { position: absolute; inset-block-start: 140px; inset-inline: 16px; margin-inline: auto; inline-size: fit-content; max-inline-size: min(27rem, calc(100% - 32px)); padding: 12px 16px; border: 1px solid oklch(78% .025 130); border-radius: 12px; background: oklch(98% .012 100 / .97); text-align: center; color: oklch(31% .035 155); }
+.whiteboard-audio { position: absolute; inset-block-start: 170px; inset-inline-end: 16px; inline-size: clamp(17rem, 32vw, 23rem); max-inline-size: calc(100% - 32px); max-block-size: calc(100dvh - 340px); overflow: auto; padding: 12px 16px; border: 1px solid oklch(78% .025 130); border-radius: 12px; background: oklch(98% .012 100 / .97); text-align: center; color: oklch(31% .035 155); }
+body:has(#whiteboard-audio:not([hidden])) .side-tools { visibility: hidden; }
 .whiteboard-audio p { margin: 0 0 8px; font-size: .85rem; text-wrap: pretty; }
 .whiteboard-audio-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .whiteboard-audio button { min-block-size: 44px; padding: 8px 12px; border: 1px solid oklch(72% .035 155); border-radius: 8px; background: oklch(95% .02 110); font-size: .75rem; }
@@ -129,3 +130,5 @@ body[data-tetris-playing] :is(.bottom-panel, .walk-pad, .side-tools, .map-card, 
   .whiteboard-audio button:hover:not(:disabled) { background: oklch(88% .035 130); }
   #whiteboard-mic:hover:not(:disabled) { background: oklch(32% .04 160); }
 }
+.whiteboard-head-controls { margin-block-start: 12px; padding-block-start: 12px; border-block-start: 1px solid oklch(86% .02 130); }
+.whiteboard-audio button:focus-visible { outline: 3px solid oklch(49% .13 240); outline-offset: 3px; }

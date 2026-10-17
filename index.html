@@ -36,7 +36,7 @@
         </div>
         <p id="tetris-instructions">← → flyt · ↑ drej · ↓ ned · Space: slip</p>
       </section>
-      <section id="whiteboard-audio" class="whiteboard-audio" aria-label="Lydskud på whiteboardet" hidden>
+      <section id="whiteboard-audio" class="whiteboard-audio" aria-label="Styring af whiteboardspillet" hidden>
         <p id="whiteboard-audio-message" role="status">Dit rumskib er klar. Aktivér mikrofonen for at skyde.</p>
         <div class="whiteboard-audio-actions">
           <button id="whiteboard-mic" type="button" aria-describedby="whiteboard-audio-message">Aktivér mikrofon</button>
@@ -47,6 +47,14 @@
           <label>Følsomhed <input id="whiteboard-sensitivity" type="range" min="0.5" max="2" step="0.1" value="1"></label>
         </div>
         <small id="whiteboard-audio-hint">Korte lyde giver ét skud; “brrrr” giver salver. Mikrofonen slukker, når du går væk.</small>
+        <div class="whiteboard-head-controls">
+          <p id="whiteboard-head-message" role="status">Brug hovedet til at styre skibet med dit kamera.</p>
+          <div class="whiteboard-audio-actions">
+            <button id="whiteboard-head" type="button" aria-describedby="whiteboard-head-message whiteboard-head-privacy">Aktivér hovedstyring</button>
+            <button id="whiteboard-head-recenter" type="button" hidden>Nulstil midten</button>
+          </div>
+          <small id="whiteboard-head-privacy">Kameraet bruges kun lokalt og slukker, når du går væk.</small>
+        </div>
       </section>
       <header class="header">
         <h1 class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Apply Agency</h1>

@@ -119,3 +119,14 @@ test('after a finished game, five new strokes start a fresh round', () => {
   play.addStroke(drawing[4], 1);
   assert.equal(play.game.score, 0); assert.equal(play.game.lives, 3); assert.equal(play.game.playerX, 400);
 });
+
+test('head steering controls the drawn ship and switching back to walking does not jump', () => {
+  const play = new WalkInInvaders(() => .5); drawShip(play, 2);
+  play.update(.1, true, 2, { steeringX: 650 }); assert.equal(play.game.playerX, 650);
+  play.update(.1, true, 2); assert.equal(play.game.playerX, 650);
+  play.update(.1, true, 1.9); assert.ok(play.game.playerX < 650);
+  play.update(.1, false, 2, { steeringX: 100, fire: true });
+  const paused = JSON.stringify(play.game);
+  play.update(.1, false, 2, { steeringX: 700, fire: true });
+  assert.equal(JSON.stringify(play.game), paused);
+});

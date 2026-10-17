@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { inDrawingArea, WalkInInvaders } from './whiteboard-play.mjs';
 import { InvadersScreen } from './invaders-screen';
 import { MicrophoneShots } from './microphone-shots';
+import { HeadCamera } from './head-camera';
 import type { Navigation } from './navigation';
 
 type Point = [number, number];
@@ -11,6 +12,10 @@ export class WhiteboardGame {
   private screen = new InvadersScreen(() => { this.dirty = true; });
   private status = document.querySelector<HTMLElement>('#whiteboard-status')!;
   private microphone = new MicrophoneShots();
+  private head = new HeadCamera();
+  private headButton = document.querySelector<HTMLButtonElement>('#whiteboard-head')!;
+  private headRecenter = document.querySelector<HTMLButtonElement>('#whiteboard-head-recenter')!;
+  private headMessage = document.querySelector<HTMLElement>('#whiteboard-head-message')!;
   private audioPanel = document.querySelector<HTMLElement>('#whiteboard-audio')!;
   private audioMessage = document.querySelector<HTMLElement>('#whiteboard-audio-message')!;
   private micButton = document.querySelector<HTMLButtonElement>('#whiteboard-mic')!;
@@ -67,6 +72,15 @@ export class WhiteboardGame {
       this.microphone.stop(); this.autoFire = true;
       navigation.clearInput(); canvas.focus({ preventScroll: true });
     });
+    this.headButton.addEventListener('click', () => {
+      if (!this.available() || this.play.canDraw) return;
+      navigation.clearInput(); canvas.focus({ preventScroll: true });
+      if (this.head.active) this.head.stop(); else void this.head.start(this.play.game.playerX);
+    });
+    this.headRecenter.addEventListener('click', () => {
+      this.head.recenter(this.play.game.playerX);
+      navigation.clearInput(); canvas.focus({ preventScroll: true });
+    });
     document.querySelector<HTMLInputElement>('#whiteboard-sensitivity')!.addEventListener('input', event => {
       this.microphone.detector.sensitivity = Number((event.target as HTMLInputElement).value);
     });
@@ -112,17 +126,19 @@ export class WhiteboardGame {
     canvas.addEventListener('pointercancel', cancel); canvas.addEventListener('lostpointercapture', cancel);
     canvas.addEventListener('pointerleave', () => { this.pointer = null; this.updateHover(null); });
     addEventListener('blur', () => {
-      this.focused = false; this.pointer = null; this.updateHover(null); this.cancelDrawing(); this.microphone.stop(); this.play.update(0, false, 0); this.dirty = true;
+      this.focused = false; this.pointer = null; this.updateHover(null); this.cancelDrawing(); this.stopDevices(); this.play.update(0, false, 0); this.dirty = true;
     });
     addEventListener('focus', () => { this.focused = true; this.sightIn = 0; });
     document.addEventListener('visibilitychange', () => {
       this.sightIn = 0;
-      if (document.hidden) { this.cancelDrawing(); this.microphone.stop(); this.play.update(0, false, 0); this.dirty = true; }
+      if (document.hidden) { this.cancelDrawing(); this.stopDevices(); this.play.update(0, false, 0); this.dirty = true; }
     });
-    addEventListener('pagehide', () => this.microphone.stop());
-    canvas.addEventListener('webglcontextlost', () => this.microphone.stop());
+    addEventListener('pagehide', () => this.stopDevices());
+    canvas.addEventListener('webglcontextlost', () => this.stopDevices());
     reducedMotion.addEventListener('change', () => { this.dirty = true; });
   }
+
+  private stopDevices() { this.microphone.stop(); this.head.stop(); }
 
   private releasePointer() {
     const id = this.gesture?.id; this.gesture = null;
@@ -179,16 +195,19 @@ export class WhiteboardGame {
     if (!present) this.updateHover(null);
     else if (checkSight && this.pointer && !this.gesture) this.updateHover(this.boardPoint(this.pointer, true));
     if (this.gesture && (!present || this.gesture.position.distanceToSquared(this.navigation.camera.position) > .0001 || this.gesture.rotation.angleTo(this.navigation.camera.quaternion) > .01)) this.cancelDrawing();
-    if ((!present || this.play.canDraw) && this.microphone.active) this.microphone.stop();
+    if ((!present || this.play.canDraw) && (this.microphone.active || this.head.active)) this.stopDevices();
+    this.head.update(dt);
     const fire = present && !this.play.canDraw && this.microphone.update(dt);
     const enabled = this.autoFire || this.microphone.state === 'listening';
-    this.play.update(dt, present && enabled, this.lateralPosition(), { fire, autoFire: this.autoFire });
+    this.play.update(dt, present && enabled && (!this.head.active || this.head.ready), this.lateralPosition(), {
+      fire, autoFire: this.autoFire, steeringX: this.head.ready ? this.head.targetX : undefined,
+    });
     const game = this.play.game;
-    if (this.play.canDraw && this.microphone.active) this.microphone.stop();
+    if (this.play.canDraw && (this.microphone.active || this.head.active)) this.stopDevices();
     this.audioPanel.hidden = !present || this.play.canDraw;
     this.level.value = this.microphone.level;
     this.best = Math.max(this.best, game.score);
-    const state = `${game.status}/${game.wave}/${game.lives}/${present}/${this.play.drawing.length}/${this.microphone.state}/${this.autoFire}`;
+    const state = `${game.status}/${game.wave}/${game.lives}/${present}/${this.play.drawing.length}/${this.microphone.state}/${this.autoFire}/${this.head.state}`;
     if (state !== this.lastStatus) {
       this.lastStatus = state; this.dirty = true;
       if (game.status !== 'running') {
@@ -196,7 +215,17 @@ export class WhiteboardGame {
       }
       this.status.textContent = !present ? '' : this.play.canDraw
         ? `Tegn dit eget rumskib i kassen på tavlen. ${this.play.drawing.length} af 5 streger. Fem streger starter spillet; alle former kan bruges.`
-        : `Whiteboard invasion: bølge ${game.wave} af 3, ${game.lives} liv. Gå til siderne for at styre. Du kan gå væk når som helst.`;
+        : `Whiteboard invasion: bølge ${game.wave} af 3, ${game.lives} liv. ${this.head.active ? 'Bevæg hovedet til siderne for at styre.' : 'Gå til siderne for at styre.'} Du kan gå væk når som helst.`;
+      const head = this.head;
+      this.headButton.disabled = head.state === 'unsupported';
+      this.headButton.textContent = head.state === 'requesting' || head.state === 'loading' ? 'Annuller kamera' : head.active ? 'Sluk hovedstyring' : 'Aktivér hovedstyring';
+      this.headRecenter.hidden = !['tracking', 'calibrating', 'lost'].includes(head.state);
+      this.headMessage.textContent = head.state === 'requesting' ? 'Tillad kameraet i browseren.'
+        : head.state === 'loading' ? 'Kamera tændt · indlæser hovedstyring …'
+        : head.state === 'calibrating' ? 'Kamera tændt · se lige frem og hold hovedet roligt et øjeblik.'
+        : head.state === 'tracking' ? 'Kamera tændt · drej eller flyt hovedet til siderne.'
+        : head.state === 'lost' ? 'Kamera tændt · ansigtet er ude af syne. Se mod kameraet for at fortsætte.'
+        : head.message || 'Brug hovedet til at styre skibet med dit kamera.';
       const mic = this.microphone;
       this.micButton.disabled = mic.state === 'unsupported';
       this.micButton.textContent = mic.state === 'requesting' ? 'Annuller' : mic.active ? 'Sluk mikrofon' : 'Aktivér mikrofon';
@@ -218,7 +247,8 @@ export class WhiteboardGame {
     if (!this.dirty) return false;
     this.screen.draw(game, this.best, this.reducedMotion.matches, this.play.ship, this.play.drawing, this.drawing, {
       hovered: this.hovered, showDrawingArea: this.hovered || (present && this.touchInput.matches),
-      autoFire: this.autoFire, pauseHint: present ? 'Aktivér mikrofonen, når du er klar' : undefined,
+      autoFire: this.autoFire, headSteering: this.head.active,
+      pauseHint: present ? this.head.active && !this.head.ready ? 'Se mod kameraet, og hold hovedet roligt' : 'Aktivér mikrofonen, når du er klar' : undefined,
     });
     this.dirty = false; return true;
   }

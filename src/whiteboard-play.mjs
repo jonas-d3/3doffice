@@ -38,14 +38,22 @@ export class WalkInInvaders {
     return true;
   }
 
-  update(dt, present, lateral, { fire = false, autoFire = false } = {}) {
+  /**
+   * @param {number} dt
+   * @param {boolean} present
+   * @param {number} lateral
+   * @param {{ fire?: boolean, autoFire?: boolean, steeringX?: number }} controls
+   */
+  update(dt, present, lateral, { fire = false, autoFire = false, steeringX } = {}) {
     if (!this.ship.length || this.canDraw) return;
     if (!present) { this.game.pause(); this.anchor = null; this.pendingFire = false; return; }
     if (!this.anchor) this.anchor = { lateral, x: this.game.playerX };
     if (this.game.status === 'paused') this.game.start();
-    const targetX = this.anchor.x + (lateral - this.anchor.lateral) * (345 / .45);
+    const targetX = steeringX ?? this.anchor.x + (lateral - this.anchor.lateral) * (345 / .45);
     this.pendingFire ||= fire;
     this.game.update(dt, { targetX, fire: autoFire || this.pendingFire });
+    // Switching off the camera resumes walking from the current ship position.
+    if (steeringX !== undefined) this.anchor = { lateral, x: this.game.playerX };
     // Keep a sound until the next simulation tick, even on 144/240 Hz displays.
     if (this.game.fireIn > 0 || !this.game.aliens.length) this.pendingFire = false;
   }

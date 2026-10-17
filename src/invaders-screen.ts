@@ -4,7 +4,7 @@ import { drawingArea } from './whiteboard-play.mjs';
 
 const ink = '#343a40', paper = '#fffef9', blue = '#1864ab', green = '#2b8a3e', violet = '#6741a5', red = '#c92a2a';
 type Point = [number, number];
-type ScreenOptions = { hovered?: boolean; showDrawingArea?: boolean; autoFire?: boolean; pauseHint?: string };
+type ScreenOptions = { hovered?: boolean; showDrawingArea?: boolean; autoFire?: boolean; headSteering?: boolean; pauseHint?: string };
 
 export class InvadersScreen {
   readonly canvas = document.createElement('canvas');
@@ -124,7 +124,7 @@ export class InvadersScreen {
     }
     this.text(`REKORD ${String(best).padStart(4, '0')}`, 751, 1031, 25, ink, 'right');
     this.text(autoFire ? 'Automatisk ild · mikrofonen er slukket' : 'Sig “skyd”, “bang” eller “piyv”', 400, 1080, 27, blue, 'center');
-    this.text('Gå til siderne · gå væk for at holde pause', 400, 1120, 23, ink, 'center');
+    this.text(options.headSteering ? 'Styr med hovedet · gå væk for at holde pause' : 'Gå til siderne · gå væk for at holde pause', 400, 1120, 23, ink, 'center');
     if (game.status === 'paused') {
       c.fillStyle = paper; c.fillRect(90, 502, 620, 155);
       this.text('Tuschpause.', 400, 565, 42, blue, 'center');
