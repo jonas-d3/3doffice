@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { box, cylinder, mesh } from './geometry';
 import { VisitorWalk } from './visitor-walk.mjs';
+import { coffeeCupPlacement, thraneDesk } from './coffee-layout.mjs';
 import applyLogoUrl from './assets/apply-monogram.svg';
 
 const capeGreen = '#287248';
@@ -66,15 +67,22 @@ function floralFabric() {
 export class Visitor {
   readonly group = new THREE.Group();
   readonly walk = new VisitorWalk();
+  readonly deskCups = new THREE.Group();
   private body = new THREE.Group();
   private legs: { hip: THREE.Group; knee: THREE.Group }[] = [];
   private arms: THREE.Group[] = [];
   private stride = 0;
   private cape = new THREE.PlaneGeometry(.44, 1.02, 12, 22);
   private dirty = false;
+  private cup = new THREE.Group();
+  private capeLift = 0;
+  private cupTarget = new THREE.Vector3();
 
   constructor() {
-    this.group.name = 'Besøgende i blomsterskjorte';
+    this.group.name = 'David i blomsterskjorte';
+    this.deskCups.name = 'Davids kaffekopper på Thranes bord';
+    this.deskCups.position.set(thraneDesk.x, 0, thraneDesk.z);
+    this.deskCups.rotation.y = thraneDesk.rotation;
     this.group.add(this.body);
     const material = (color: string, roughness = .85) => new THREE.MeshStandardMaterial({ color, roughness });
     const skin = material('#c78f74'), hair = material('#51483c'), hairLight = material('#63594a');
@@ -164,6 +172,14 @@ export class Visitor {
       for (let i = 0; i < 3; i++) box(knee, .124, .008, .011, 0, -.417, .035 + i * .026, stripe, .003);
       this.legs.push({ hip, knee });
     }
+    this.cup.name = 'Deploy dobbelt';
+    const cupProfile = [[0, -.0125], [.034, -.0125], [.046, .0825], [.039, .0825], [.028, -.0045], [0, -.0045]];
+    mesh(this.cup, new THREE.LatheGeometry(cupProfile.map(([x, y]) => new THREE.Vector2(x, y)), 20), white, 0, 0, 0);
+    cylinder(this.cup, .038, .038, .004, 0, .069, 0, hair);
+    const handle = mesh(this.cup, new THREE.TorusGeometry(.027, .007, 8, 16), white, .046, .04, 0);
+    handle.rotation.y = Math.PI / 2;
+    this.cup.position.set(0, -.49, .045); this.cup.visible = false;
+    this.arms[1].add(this.cup);
     // A soft contact shadow keeps him grounded between the building's shadow texels.
     const canvas = document.createElement('canvas'); canvas.width = canvas.height = 64;
     const ctx = canvas.getContext('2d')!, gradient = ctx.createRadialGradient(32, 32, 3, 32, 32, 30);
@@ -184,24 +200,35 @@ export class Visitor {
       const flutter = Math.sin(drop * 9 - phase * 1.7 + u * 3) * drop * drop * .018 * this.stride;
       // Reverse X so the outside faces backwards and the logo reads correctly.
       positions.setXYZ(i, (.5 - u) * (.36 + drop * .07),
-        1.45 - drop * 1.02 + Math.cos(u * Math.PI * 6) * .012 * drop,
-        -.157 - drop * .025 - drop * drop * .14 * this.stride + fold + flutter);
+        1.45 - drop * (1.02 - this.capeLift * .92) + Math.cos(u * Math.PI * 6) * .012 * drop,
+        -.157 - drop * (.025 + this.capeLift * .94) - drop * drop * .14 * this.stride + fold + flutter);
     }
     positions.needsUpdate = true;
     this.cape.computeVertexNormals();
     this.cape.computeBoundingSphere();
   }
 
-  update(dt: number) {
+  update(dt: number, reducedMotion = false) {
     const dirty = this.dirty; this.dirty = false;
     if (this.walk.paused) return dirty;
-    this.walk.update(dt);
+    this.walk.update(dt, reducedMotion);
+    while (this.deskCups.children.length < this.walk.cupsDelivered) {
+      const spot = coffeeCupPlacement(this.deskCups.children.length);
+      const cup = this.cup.clone(); cup.name = `Efterladt kaffekop ${this.deskCups.children.length + 1}`;
+      cup.visible = true; cup.children[1].visible = false; // The delivered cup is empty.
+      cup.position.set(spot.x, spot.y + .0125, spot.z); cup.rotation.set(0, spot.rotation, 0);
+      this.deskCups.add(cup);
+    }
     const phase = this.walk.distance * Math.PI * 2 / 1.15;
     this.stride = THREE.MathUtils.damp(this.stride, this.walk.moving ? 1 : 0, 12, dt);
+    this.capeLift = THREE.MathUtils.damp(this.capeLift, this.walk.coffeeState === 'boosted' && this.walk.moving && !reducedMotion ? 1 : 0, 5, dt);
     this.poseCape(phase);
     this.group.position.set(this.walk.x, 0, this.walk.z);
     this.group.rotation.y = this.walk.heading;
     this.body.rotation.z = Math.cos(phase) * .014 * this.stride;
+    const placing = this.walk.coffeeState === 'placing';
+    const reach = placing ? THREE.MathUtils.smoothstep(this.walk.placingProgress, 0, 1) : 0;
+    this.body.rotation.x = THREE.MathUtils.damp(this.body.rotation.x, reach * .45, 8, dt);
     let lowestFoot = Infinity;
     for (let i = 0; i < 2; i++) {
       const swing = Math.sin(phase + i * Math.PI) * this.stride;
@@ -213,7 +240,19 @@ export class Visitor {
       lowestFoot = Math.min(lowestFoot, .94 - .43 * Math.cos(hip) - .488 * Math.cos(angle)
         - .052 * Math.sin(angle) - .0175 * Math.abs(Math.cos(angle)) - .13 * Math.abs(Math.sin(angle)));
     }
+    this.cup.visible = ['drinking', 'boosted', 'returning', 'placing'].includes(this.walk.coffeeState);
+    this.cup.position.set(0, -.49, .045);
+    if (this.cup.visible) {
+      this.arms[1].rotation.x = this.walk.coffeeState === 'drinking' ? -1.9 : THREE.MathUtils.lerp(-.7, -.25, reach);
+      this.cup.rotation.x = -this.arms[1].rotation.x - this.body.rotation.x;
+    }
     this.body.position.y = .006 - lowestFoot;
+    if (placing) {
+      const spot = coffeeCupPlacement(this.walk.cupsDelivered);
+      this.deskCups.localToWorld(this.cupTarget.set(spot.x, spot.y + .0125, spot.z));
+      this.arms[1].worldToLocal(this.cupTarget);
+      this.cup.position.lerp(this.cupTarget, THREE.MathUtils.smoothstep(this.walk.placingProgress, .2, .95));
+    }
     return true;
   }
 }

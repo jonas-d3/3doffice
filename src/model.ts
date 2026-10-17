@@ -203,12 +203,14 @@ export function createOffice() {
   const day21 = createDay21(office); walls.push(...day21.walls); roofs.push(day21.roof);
 
   const toilets = createRestrooms(office); walls.push(...toilets.walls); roofs.push(toilets.roof);
+  let coffee!: THREE.Group;
   for (const [name, create] of [['minecraft', createMinecraft], ['kitchen', createKitchen]] as const) {
     const parent = new THREE.Group(); office.add(parent);
     const p = placements[name]; parent.scale.set(p.sx, 1, p.sz); parent.position.set(p.x, 0, p.z);
     const result = create(parent);
+    if ('coffee' in result && result.coffee instanceof THREE.Group) coffee = result.coffee;
     for (const wall of result.walls) wall.position = wall.position * (wall.axis === 'x' ? p.sx : p.sz) + p[wall.axis];
     walls.push(...result.walls); roofs.push(result.roof);
   }
-  return { office, walls, roofs, television: workspace.television, updateScreens: workspace.updateScreens, holbechScreens: workspace.holbechScreens };
+  return { office, walls, roofs, coffee, jesperScreen: workspace.jesperScreen, television: workspace.television, updateScreens: workspace.updateScreens, holbechScreens: workspace.holbechScreens };
 }

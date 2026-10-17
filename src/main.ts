@@ -5,6 +5,7 @@ import { Navigation, type View } from './navigation';
 import { renderMinimap } from './minimap';
 import { TVGame } from './tv-game';
 import { Visitor } from './visitor';
+import { EasterEggs } from './easter-eggs';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#scene')!;
 document.querySelector('#reload')!.addEventListener('click', () => location.reload());
@@ -36,7 +37,7 @@ scene.add(sun);
 const model = createOffice();
 scene.add(model.office);
 const visitor = new Visitor();
-scene.add(visitor.group);
+scene.add(visitor.group, visitor.deskCups);
 const visitorPause = document.querySelector<HTMLButtonElement>('#visitor-pause')!;
 const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
 const updateVisitorButton = () => {
@@ -50,7 +51,7 @@ visitorPause.addEventListener('click', () => {
   updateVisitorButton();
 });
 motionPreference.addEventListener('change', () => {
-  if (motionPreference.matches) { visitor.walk.paused = true; updateVisitorButton(); }
+  if (motionPreference.matches) { visitor.walk.paused = true; model.jesperScreen.settleCatch(); updateVisitorButton(); needsRender = true; }
 });
 const tvGame = new TVGame(model.television, navigation);
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.ShadowMaterial({ opacity: .12 }));
@@ -66,6 +67,7 @@ document.querySelector('#zoom-in')!.addEventListener('click', () => navigation.z
 document.querySelector('#zoom-out')!.addEventListener('click', () => navigation.zoom(1.22));
 document.querySelector('#reset')!.addEventListener('click', () => navigation.setView('overview'));
 const dialog = document.querySelector<HTMLDialogElement>('#help-dialog')!;
+const easterEggs = new EasterEggs(model.office, model.coffee, model.jesperScreen, visitor, navigation, motionPreference, () => dialog.open || tvGame.active || document.hidden);
 document.querySelector('#help')!.addEventListener('click', () => { navigation.clearInput(); dialog.showModal(); });
 dialog.addEventListener('click', event => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } });
 const fullscreen = document.querySelector<HTMLButtonElement>('#fullscreen')!;
@@ -98,11 +100,12 @@ renderer.setAnimationLoop(now => {
   if (document.hidden) return;
   navigation.update(dt);
   if (model.updateScreens(camera, dt, !motionPreference.matches && !dialog.open && !tvGame.active)) needsRender = true;
-  if (!tvGame.active && !dialog.open && visitor.update(dt)) needsRender = true;
+  if (!tvGame.active && !dialog.open && visitor.update(dt, motionPreference.matches)) needsRender = true;
   if (tvGame.update(dt)) needsRender = true;
   const walk = navigation.isWalking;
   for (const wall of model.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
   for (const roof of model.roofs) roof.visible = walk;
+  if (easterEggs.update(dt)) needsRender = true;
   if (needsRender || !previousPosition.equals(camera.position) || !previousRotation.equals(camera.quaternion)) {
     model.holbechScreens.render(renderer, scene, model.walls, model.roofs);
     renderer.render(scene, camera);

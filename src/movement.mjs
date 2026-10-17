@@ -56,19 +56,66 @@ export const obstacles = [
 const inside = (room, x, z, insetX, insetZ) => x >= room.minX + insetX && x <= room.maxX - insetX
   && z >= room.minZ + insetZ && z <= room.maxZ - insetZ;
 
+const rooms = [spaceInvaders, hallway, minecraft, kitchen, lobby, workspace, day21, day21Meeting, day21Nook, restrooms.foyer, restrooms.left, restrooms.right];
+const zDoors = [doorway, kitchenDoor, workspaceDoor, day21MeetingDoor, day21NookOpening, restrooms.leftDoor, restrooms.rightDoor];
+const xDoors = [minecraftDoor, restrooms.entrance, kitchenNorthDoor, day21Door];
+
 export function canStand(x, z, radius = .17) {
   if (!Number.isFinite(x) || !Number.isFinite(z)) return false;
-  const inRoom = [spaceInvaders, hallway, minecraft, kitchen, lobby, workspace, day21, day21Meeting, day21Nook, restrooms.foyer, restrooms.left, restrooms.right]
-    .some(room => inside(room, x, z, radius, radius));
+  const inRoom = rooms.some(room => inside(room, x, z, radius, radius));
   // Overlap each threshold with the inset room on both sides, while keeping
   // the camera clear of door jambs. MØDE 2 deliberately has no walkable interior.
-  const inZDoor = [doorway, kitchenDoor, workspaceDoor, day21MeetingDoor, day21NookOpening, restrooms.leftDoor, restrooms.rightDoor]
-    .some(door => inside(door, x, z, radius, -radius));
-  const inXDoor = [minecraftDoor, restrooms.entrance, kitchenNorthDoor, day21Door]
-    .some(door => inside(door, x, z, -radius, radius));
+  const inZDoor = zDoors.some(door => inside(door, x, z, radius, -radius));
+  const inXDoor = xDoors.some(door => inside(door, x, z, -radius, radius));
   if (!inRoom && !inZDoor && !inXDoor) return false;
   return !obstacles.some(([left, right, back, front]) =>
     x > left - radius && x < right + radius && z > back - radius && z < front + radius);
+}
+
+// Exact swept clearance for the creeper's smoothed paths. Point samples alone
+// can miss a tiny diagonal slice of a door jamb or furniture corner.
+const clearanceMaps = new Map();
+function segmentInterval(a, b, bounds) {
+  let enter = 0, leave = 1;
+  for (let axis = 0; axis < 2; axis++) {
+    const origin = axis ? a.z : a.x, delta = (axis ? b.z : b.x) - origin;
+    const min = bounds[axis * 2], max = bounds[axis * 2 + 1];
+    if (Math.abs(delta) < 1e-10) { if (origin < min || origin > max) return null; continue; }
+    const first = (min - origin) / delta, last = (max - origin) / delta;
+    enter = Math.max(enter, Math.min(first, last)); leave = Math.min(leave, Math.max(first, last));
+    if (leave < enter) return null;
+  }
+  return [enter, leave];
+}
+
+export function canWalkBetween(a, b, radius = .17) {
+  if (![a.x, a.z, b.x, b.z].every(Number.isFinite)) return false;
+  if (!clearanceMaps.has(radius)) {
+    const inset = (room, x, z) => [room.minX + x, room.maxX - x, room.minZ + z, room.maxZ - z];
+    clearanceMaps.set(radius, {
+      floor: [...rooms.map(room => inset(room, radius, radius)), ...zDoors.map(door => inset(door, radius, -radius)), ...xDoors.map(door => inset(door, -radius, radius))],
+      solid: obstacles.map(([left, right, back, front]) => [left - radius, right + radius, back - radius, front + radius]),
+    });
+  }
+  const { floor, solid } = clearanceMaps.get(radius);
+  const intervals = [];
+  for (const bounds of floor) {
+    const interval = segmentInterval(a, b, bounds);
+    if (interval) intervals.push(interval);
+  }
+  intervals.sort((a, b) => a[0] - b[0]);
+  let covered = 0;
+  for (const [enter, leave] of intervals) {
+    if (enter > covered + 1e-9) return false;
+    covered = Math.max(covered, leave);
+  }
+  if (covered < 1 - 1e-9) return false;
+  for (const bounds of solid) {
+    if (Math.max(a.x, b.x) <= bounds[0] || Math.min(a.x, b.x) >= bounds[1] || Math.max(a.z, b.z) <= bounds[2] || Math.min(a.z, b.z) >= bounds[3]) continue;
+    const interval = segmentInterval(a, b, bounds);
+    if (interval && interval[1] - interval[0] > 1e-9) return false;
+  }
+  return true;
 }
 
 export function moveWithCollisions(x, z, dx, dz) {

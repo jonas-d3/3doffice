@@ -45,6 +45,16 @@ En stiliseret 3D-figur inspireret af referencefotoet går automatisk fra Space I
 - Escape eller H vender tilbage til overblikket, når 3D-visningen har tastaturfokus.
 - Vægge foran kameraet skjules i overblik. I gå-tilstand er vægge og loft synlige.
 
+## Easter eggs
+
+- **Creeperen:** Den lille grønne creeper i Minecraft-rummet vågner først, når du har set den i gå-tilstand. Derefter følger den din position rundt om vægge og møbler, mens du kigger væk. Når du ser den igen, fortsætter den i cirka 100 ms, før både skridt og retning fryser. Kig væk, og den følger videre; den holder knap en meters afstand.
+- **Deploy dobbelt:** Gå hen til kaffemaskinen i køkkenet, og tryk tre gange direkte på en af dens to runde knapper. Der vises ingen handlingsknap eller kaffebeskeder oven på modellen; kun maskinens eget display skifter. Figuren følger den korteste vej langs sin eksisterende rute, henter koppen, drikker og tager en rundtur i forhøjet tempo med kappen løftet. Efter løberunden går David i normal fart hen til Thranes bord og sætter den tomme kop fra sig. Først da nulstilles maskinen til en ny tur. Kopperne bliver på bordet og stables, når de ledige pladser er fyldt; de ryddes ved genindlæsning. Hvis figuren er sat på pause, venter ordren, til du vælger **Start figur**.
+- **Jesper har bid:** Klik direkte på laksen, mens den springer på Jespers venstre skærm. Laksen springer ud af skærmen og lander på bordet; præsentationen på skærmen viser **LEAD LANDET**. Der vises ingen ekstra knap eller besked oven på modellen. Fangsten bliver liggende, til siden genindlæses.
+
+Kaffeknapperne og laksen aktiveres med klik eller tryk direkte på genstanden, når man står tæt på med fri synslinje. Kameratræk og tofingerbevægelser tæller ikke som klik. Easter eggs bruger lokal geometri og teksturer uden nye afhængigheder eller eksterne kald.
+
+Hjælp, TV-spil og skjulte faner pauser forløbene. Ved reduceret bevægelse står creeperen stille, og laksen placeres direkte på bordet. Figuren starter fortsat på pause; starter man den selv, henter den kaffen uden ekstra fart eller vandret kappe. Ruter og tilstandsskift testes i `tests/easter-eggs.test.mjs`.
+
 ## Model og præcision
 
 MØDE 4 er **7,758 × 6,205 m**, MØDE 3 er **4,835 × 4,362 m**, og køkkenets hovedrum er **6,567 × 3,100 m**, som angivet på PDF-planen. Bredden på passagen neden for MØDE 2 er angivet til **5,107 m**.
@@ -59,11 +69,13 @@ Kør `pnpm test` for målforhold, rumplacering, sammenhængende gangruter, dør�
 
 Personmarkeringerne i `ressources/locations.png` bruges som referencer til arbejdspladserne. Thrane sidder vest for den midterste bordø i Kontorets nordlige række (øindeks 5, side −1), over for Anja. Hans ene skærm viser en retro pixel-pinup i badedragt fra `src/assets/thrane-pixel-pinup.jpg`. Når kameraet kommer inden for 4 meter af skærmen, skifter den til en tegnet flok fiktive børn fra `src/assets/thrane-children.jpg`. Pinup-billedet vender tilbage ved 5 meter; forskellen mellem afstandene forhindrer flimren ved grænsen. Afstanden måles fra skærmens faktiske placering i modellen. Motiverne indlæses lokalt fra start, og deres genereringsprompter ligger i de tilsvarende `.md`-filer i `src/assets/`.
 
-Lars' fire skærme viser tilsammen ét stort FCK-logo på hvid baggrund, fordelt i fire udsnit over opstillingen på 2 × 2 skærme. Lars sidder øst for ø 2 på den sydlige plads. Logoet ligger lokalt i `src/assets/`, med kilde i `src/assets/logos.md`.
+Lars sidder øst for ø 2 på den sydlige plads. Hans fire skærme viser hver sit animerede motiv: **FCK-minikamp** med pixelspillere, scoring og blå/hvid jubel nederst til venstre; **Overdommer Lars** med nedtælling fra 03:30, pointtavle og strafpoint nederst til højre; **AI-kode til bedømmelse** med forstørrelsesglas og stemplet “MENER DU VIRKELIG DET?” øverst til venstre; og **Reflog er din ven**, hvor et slettet commit synker i graven og fiskes op igen, øverst til højre. Motiverne er inspireret af Slack og tegnes lokalt i `src/lars-screens.ts`. Kamp, point og kode er fiktive; der hentes ingen live data og udføres ingen git-kommandoer. Skærmene opdateres ved højst 8 billeder/sekund inden for 8 meter og foran kameraet, og følger de øvrige skærmes pauser ved reduceret bevægelse, åben hjælp, TV-spil og skjult fane.
 
 Henrik sidder øst for ø 0 på den nordlige plads. Hans venstre skærm viser en retro-musikafspiller med 1000mods' *Cheat Death*, det officielle albumcover, en animeret equalizer og en tæller. Den højre viser en hængebro i brand over en terminal med `pnpm deploy`, “DET BRÆNDER” og fiktive statuslinjer. Det er visuelle animationer uden lyd eller rigtige deployments. `src/henrik-screens.ts` opdaterer dem med højst 12 billeder/sekund, når man er tæt på og kigger mod skærmene; de står stille ved reduceret bevægelse, åben hjælp eller aktivt TV-spil, og når fanen er skjult. Coveret ligger lokalt med kilde i `src/assets/logos.md`.
 
 Thrane og Lars har hver fire store skærme i to etager samt en åben bærbar til venstre på bordet. Skærmstativer, let vippede topskærme og den bærbares proportioner er tilnærmet efter kontorvideoen i `ressources/kontoret/2026-10-16 15.31.08.mov` (Thranes opstilling ses omkring 16 sekunder). Thranes skiftende billede sidder på nederste venstre skærm.
+
+Thranes tre øvrige skærme viser **Pedel-Thranes kontrolrum** nederst til højre, **Musikkommando** øverst til venstre og **Tokenbanken** øverst til højre. Kontrolrummet har en animeret serverpark, en fornærmet printer og en terrasselem, der afventer tekniker. Musikcentralen viser en dansende equalizer, volumen 11 ud af 10 og “HØJTTALERE OVERTAGET”. Tokenbanken modtager fiktive ansøgninger om flere credits og stempler dem med “NEJ”. Motiverne er inspireret af Slack og tegnes lokalt i `src/thrane-screens.ts`; de bruger ingen live data og afspiller ingen lyd. Animationerne opdateres ved højst 8 billeder/sekund inden for 8 meter og foran kameraet, og følger de øvrige skærmes pauser ved reduceret bevægelse, åben hjælp, TV-spil og skjult fane.
 
 Davids to store skærme viser Wiibroe: en pilsnerflaske på den venstre og et foto af årgangsøl 2026 med ølglas på den højre. Hans plads er vest for ø 0 på den nordlige plads, over for Henrik. Billederne ligger lokalt i `src/assets/`, med kilder i `src/assets/logos.md`.
 

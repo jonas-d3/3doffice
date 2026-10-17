@@ -60,7 +60,11 @@ function coffeeMachine(parent: THREE.Object3D) {
   box(group, .47, .42, .25, 0, .27, -.06, steel, .024);
   box(group, .43, .16, .1, 0, .4, .115, m.black, .016);
   box(group, .12, .055, .008, -.04, .425, .171, m.glass);
-  for (const x of [-.15, .13]) cylinder(group, .022, .022, .015, x, .405, .176, steel).rotation.x = Math.PI / 2;
+  for (const x of [-.15, .13]) {
+    const button = cylinder(group, .022, .022, .015, x, .405, .176, steel);
+    button.rotation.x = Math.PI / 2;
+    button.userData.coffeeButton = true;
+  }
   cylinder(group, .058, .058, .055, 0, .283, .145, m.black);
   rod(group, [0, .265, .14], [.12, .255, .24], .018, m.black);
   rod(group, [.19, .3, .13], [.2, .12, .21], .009, steel);
@@ -69,6 +73,8 @@ function coffeeMachine(parent: THREE.Object3D) {
   cylinder(group, .06, .05, .1, -.08, .55, -.055, steel);
   cylinder(group, .035, .032, .075, .08, .535, -.03, m.white);
   cylinder(group, .055, .043, .12, .4, .06, .07, steel);
+  group.name = 'Kaffemaskinen';
+  return group;
 }
 
 function drinksFridge(parent: THREE.Object3D, x: number, z: number) {
@@ -185,7 +191,7 @@ export function createKitchen(parent: THREE.Object3D) {
   cylinder(worktop, .025, .03, .16, 6.77, 1.02, 14.32, clearGlass);
   rod(worktop, [6.77, 1.11, 14.32], [6.77, 1.15, 14.32], .008, m.black);
   box(worktop, .18, .015, .1, 6.79, .95, 14.1, m.trim, .006);
-  coffeeMachine(worktop);
+  const coffee = coffeeMachine(worktop);
 
   // Exposed timber posts and diagonal braces around the counter and window.
   for (const x of [3.35, 5.25, 7.32]) beam(worktop, [x, .02, 13.96], [x, height - .08, 13.96]);
@@ -264,5 +270,5 @@ export function createKitchen(parent: THREE.Object3D) {
   cylinder(roof, .07, .065, .035, 4.95, height - .03, cz, m.white);
   for (const x of [3.7, 6.6]) { const light = new THREE.PointLight('#ffe2aa', 2.4, 6, 2); light.position.set(x, 2.55, 12.75); group.add(light); }
   for (const wall of walls) wall.position += group.position[wall.axis];
-  return { walls, roof };
+  return { walls, roof, coffee };
 }

@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { SalmonCatch } from './easter-egg-state.mjs';
+import { mesh } from './geometry';
 
 const width = 1024, height = 565;
 
@@ -74,7 +76,7 @@ function salmon(c: CanvasRenderingContext2D, phase: number) {
   }
 }
 
-function pitch(c: CanvasRenderingContext2D) {
+function pitch(c: CanvasRenderingContext2D, caught: boolean) {
   c.fillStyle = '#153d3b55'; c.fillRect(666, 333, 334, 211);
   c.fillStyle = '#f2f1ed'; c.fillRect(658, 325, 334, 211);
   c.fillStyle = '#b7472b'; c.fillRect(658, 325, 334, 28);
@@ -87,15 +89,18 @@ function pitch(c: CanvasRenderingContext2D) {
     c.fillStyle = '#faf9ef'; c.fillRect(672, 391 + i * 40, 37, 23);
   }
   c.fillStyle = '#163e3b'; c.fillRect(725, 389, 254, 128);
-  text(c, 'DEN NÆSTE', 741, 425, 22, '#f9f3da');
-  text(c, 'STORE FANGST', 741, 452, 22, '#f9f3da');
-  text(c, 'CMS + AI', 742, 491, 15, '#a8d9bf');
+  text(c, caught ? 'LEAD LANDET' : 'DEN NÆSTE', 741, 425, 22, '#f9f3da');
+  text(c, caught ? 'Så er der bid.' : 'STORE FANGST', 741, 452, 22, '#f9f3da');
+  text(c, caught ? 'Fra pipeline til bordet' : 'CMS + AI', 742, 491, 15, '#a8d9bf');
   text(c, 'Slide 1 af 3', 669, 530, 9, '#53615d');
 }
 
 export class JesperScreen {
   readonly material: THREE.MeshBasicMaterial;
+  readonly catchState = new SalmonCatch();
   screen?: THREE.Object3D;
+  private fish = new THREE.Group();
+  private launch = new THREE.Vector3();
   private canvas = document.createElement('canvas');
   private background = document.createElement('canvas');
   private context: CanvasRenderingContext2D;
@@ -116,7 +121,60 @@ export class JesperScreen {
     this.texture = new THREE.CanvasTexture(this.canvas); this.texture.colorSpace = THREE.SRGBColorSpace;
     this.texture.minFilter = THREE.LinearFilter; this.texture.generateMipmaps = false;
     this.material = new THREE.MeshBasicMaterial({ map: this.texture, toneMapped: false });
+    this.fish.name = 'Jespers fangst'; this.fish.visible = false;
+    const silver = new THREE.MeshStandardMaterial({ color: '#aac1af', roughness: .36, metalness: .2 });
+    const pink = new THREE.MeshStandardMaterial({ color: '#c98383', roughness: .5 });
+    const dark = new THREE.MeshStandardMaterial({ color: '#345b52' });
+    const body = mesh(this.fish, new THREE.SphereGeometry(1, 20, 12), silver, 0, 0, 0);
+    body.scale.set(.22, .055, .055);
+    for (const side of [-1, 1]) {
+      const stripe = mesh(this.fish, new THREE.SphereGeometry(1, 16, 8), pink, -.005, -.006, side * .046);
+      stripe.scale.set(.185, .014, .012);
+      const eye = mesh(this.fish, new THREE.SphereGeometry(.009, 10, 8), dark, .172, .017, side * .037);
+      eye.castShadow = false;
+    }
+    const tail = mesh(this.fish, new THREE.ConeGeometry(.071, .1, 3), dark, -.24, 0, 0);
+    tail.rotation.z = -Math.PI / 2; tail.scale.z = .25;
+    const fin = mesh(this.fish, new THREE.ConeGeometry(.042, .065, 3), dark, -.03, .055, 0);
+    fin.scale.z = .2;
     this.draw();
+  }
+
+  private fishPoint() {
+    const phase = this.elapsed % 4.5;
+    const jump = phase < 1.8 ? phase / 1.8 : .5;
+    return { x: 304 + jump * 265, y: 424 - Math.sin(jump * Math.PI) * 185 };
+  }
+
+  hitFish(uv: THREE.Vector2) {
+    if (this.catchState.phase !== 'idle' || this.elapsed % 4.5 >= 1.8) return false;
+    const point = this.fishPoint();
+    return ((uv.x * width - point.x) / 105) ** 2 + (((1 - uv.y) * height - point.y) / 80) ** 2 <= 1;
+  }
+
+  catchFish(reducedMotion: boolean) {
+    if (!this.screen || !this.catchState.start(reducedMotion)) return false;
+    const point = this.fishPoint();
+    this.launch.set((point.x / width - .5) * .602, (.5 - point.y / height) * .332, .012);
+    this.screen.add(this.fish); this.fish.visible = true;
+    this.poseFish(); this.draw(); return true;
+  }
+
+  settleCatch() {
+    if (this.catchState.phase !== 'leaping') return;
+    this.catchState.elapsed = 1.8; this.catchState.phase = 'landed'; this.poseFish();
+  }
+
+  private poseFish() {
+    const t = Math.min(1, this.catchState.elapsed / 1.25);
+    this.fish.position.set(
+      THREE.MathUtils.lerp(this.launch.x, .28, t),
+      THREE.MathUtils.lerp(this.launch.y, -.34, t) + Math.sin(t * Math.PI) * .5,
+      THREE.MathUtils.lerp(this.launch.z, .42, t),
+    );
+    this.fish.scale.setScalar(THREE.MathUtils.lerp(.2, 1, t));
+    const flop = t === 1 ? Math.max(0, 1 - (this.catchState.elapsed - 1.25) / .55) : 0;
+    this.fish.rotation.z = Math.sin(t * Math.PI * 2) * .6 + Math.sin(this.catchState.elapsed * 25) * .22 * flop;
   }
 
   private draw() {
@@ -128,19 +186,22 @@ export class JesperScreen {
       const x = 508 - depth * 75 + Math.sin(i * 4.7) * depth * 195;
       c.beginPath(); c.moveTo(x, y); c.lineTo(x + 12 + depth * 36, y); c.stroke();
     }
-    salmon(c, this.elapsed % 4.5); pitch(c); c.restore(); this.texture.needsUpdate = true;
+    if (this.catchState.phase === 'idle') salmon(c, this.elapsed % 4.5);
+    pitch(c, this.catchState.phase !== 'idle'); c.restore(); this.texture.needsUpdate = true;
   }
 
   update(camera: THREE.PerspectiveCamera, dt: number, animate: boolean) {
     if (!animate || !this.screen) return false;
+    const fishChanged = this.catchState.update(dt, animate);
+    if (fishChanged) this.poseFish();
     this.screen.getWorldPosition(this.center); this.screen.getWorldDirection(this.normal);
     this.offset.copy(camera.position).sub(this.center);
-    if (this.offset.lengthSq() > 8 ** 2 || this.offset.dot(this.normal) <= 0) return false;
+    if (this.offset.lengthSq() > 8 ** 2 || this.offset.dot(this.normal) <= 0) return fishChanged;
     camera.updateMatrixWorld(); this.projected.copy(this.center).project(camera);
-    if (this.projected.z < -1 || this.projected.z > 1 || Math.abs(this.projected.x) > 1.3 || Math.abs(this.projected.y) > 1.3) return false;
+    if (this.projected.z < -1 || this.projected.z > 1 || Math.abs(this.projected.x) > 1.3 || Math.abs(this.projected.y) > 1.3) return fishChanged;
     this.elapsed += dt;
     const frame = Math.floor(this.elapsed * 12);
-    if (frame === this.frame) return false;
+    if (frame === this.frame) return fishChanged;
     this.frame = frame; this.draw(); return true;
   }
 }
