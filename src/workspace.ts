@@ -14,11 +14,11 @@ import { HenrikScreens } from './henrik-screens';
 import { ThraneScreens } from './thrane-screens';
 import { LarsScreens } from './lars-screens';
 import { youtubeWallpaper } from './youtube-screen';
-import pinupUrl from './assets/thrane-pixel-pinup.jpg';
-import childrenUrl from './assets/thrane-children.jpg';
+import pinupUrl from './assets/thrane-pixel-pinup.webp';
+import childrenUrl from './assets/thrane-children.webp';
 import astroLogoUrl from './assets/astro-logo.png';
-import wiibroePilsnerUrl from './assets/wiibroe-pilsner.png';
-import wiibroe2026Url from './assets/wiibroe-2026.jpg';
+import wiibroePilsnerUrl from './assets/wiibroe-pilsner.webp';
+import wiibroe2026Url from './assets/wiibroe-2026.webp';
 import graphsUrl from './assets/annie-graphs.svg';
 import diagramsUrl from './assets/annie-diagrams.svg';
 
@@ -297,7 +297,8 @@ export function createWorkspace(parent: THREE.Object3D) {
       const jesperChanged = jesperScreen.update(camera, dt, animate);
       const henrikChanged = henrikScreens.update(camera, dt, animate);
       const larsChanged = larsScreens.update(camera, dt, animate);
-      return thraneChanged || thraneAnimated || palmChanged || nicolaiChanged || anjaChanged || jesperChanged || henrikChanged || larsChanged;
+      const holbechChanged = holbechScreens.update(camera, dt, animate);
+      return thraneChanged || thraneAnimated || palmChanged || nicolaiChanged || anjaChanged || jesperChanged || henrikChanged || larsChanged || holbechChanged;
     },
   };
 }

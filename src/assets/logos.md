@@ -16,6 +16,8 @@ Downloaded on 2026-10-17 from Carlsberg Danmark. Displayed on David's two deskto
 
 Wiibroe branding and photographs remain the property of their respective owners.
 
+The app imports `wiibroe-pilsner.webp` (187 × 700, quality 80, lossless alpha) and `wiibroe-2026.webp` (1024 × 692, quality 80). Run `pnpm optimize:images` to reproduce them from the originals above. Canvas sizing, fitting and backgrounds remain unchanged.
+
 ## Martin's Astro wallpaper
 
 Downloaded on 2026-10-17 from [Astro's official press resources](https://astro.build/press/).
@@ -31,3 +33,5 @@ Downloaded on 2026-10-17 from [1000mods' official Bandcamp album page](https://1
 - `1000mods-cheat-death.jpg`: [Cheat Death album cover](https://f4.bcbits.com/img/a0752363589_5.jpg), artwork by Eva Mourtzi. Shown without cropping or stretching in the decorative player on Henrik's left monitor, east side of island 0, northern seat. The album page supplies the title track's 5:35 duration. Cover artwork and branding remain the property of their respective owners.
 
 The equalizer, burning suspension bridge, smoke, fire, and fictional deployment terminal are drawn locally in `src/henrik-screens.ts`. No music, remote player, live logs, or Slack data is fetched by the application.
+
+The app imports `1000mods-cheat-death.webp` (512 × 512, quality 80), generated with `pnpm optimize:images`. The original JPEG is retained; the cover still occupies the same 320 × 320 field in the player. See [conversion results](../../docs/plans/performance/results/01-image-optimization/README.md).

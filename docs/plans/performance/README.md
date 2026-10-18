@@ -1,6 +1,6 @@
 # Planer for performance i 3doffice
 
-Status: Klar til implementering. Oprettet 18. oktober 2026. Der er syv planer; det tidligere punkt om billeder er opdelt i optimering og indlæsning efter behov.
+Status: Plan 1 er gennemført; plan 2–7 er klar til implementering. Oprettet 18. oktober 2026. Der er syv planer; det tidligere punkt om billeder er opdelt i optimering og indlæsning efter behov. Se [resultater for plan 1](results/01-image-optimization/README.md).
 
 Det primære mål er et hurtigt, brugbart første overblik. Systemet må gerne hente meget indhold over tid; det valgfrie arbejde skal fordeles efter opstart, så download, evaluering, oprettelse og GPU-upload ikke blokerer den første oplevelse eller efterfølgende input. Samlede bytes er en sekundær måling. Hver plan leveres i små trin med måling og kontrol mellem trinnene.
 

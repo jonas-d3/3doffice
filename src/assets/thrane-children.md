@@ -4,6 +4,8 @@ Generated with the built-in `image_gen` tool on 2026-10-16. All characters are f
 
 Asset: `thrane-children.jpg`.
 
+Runtime asset: `thrane-children.webp` (1024 × 576, quality 80). Generated from the original with `pnpm optimize:images`; the original and prompt remain the source of truth. See [conversion results](../../docs/plans/performance/results/01-image-optimization/README.md).
+
 ## Final prompt
 
 Use case: illustration-story

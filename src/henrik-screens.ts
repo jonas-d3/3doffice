@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import coverUrl from './assets/1000mods-cheat-death.jpg';
+import coverUrl from './assets/1000mods-cheat-death.webp';
 
 const width = 1024, height = 565;
 const cream = '#f8edcf', amber = '#ffb64c', green = '#a8ef9c';

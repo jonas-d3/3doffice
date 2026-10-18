@@ -116,7 +116,7 @@ renderer.setAnimationLoop(now => {
   if (whiteboardGame.update(dt)) needsRender = true;
   if (easterEggs.update(dt)) needsRender = true;
   if (needsRender || !previousPosition.equals(camera.position) || !previousRotation.equals(camera.quaternion)) {
-    model.holbechScreens.render(renderer, scene, model.walls, model.roofs);
+    model.holbechScreens.render(renderer, scene, model.walls, model.roofs, visitor);
     renderer.render(scene, camera);
     previousPosition.copy(camera.position); previousRotation.copy(camera.quaternion); needsRender = false;
   }

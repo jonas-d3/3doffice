@@ -1,5 +1,7 @@
 # Plan 1: Billedoptimering
 
+Status: Gennemført 18. oktober 2026. Se [målinger, kvalitetsvalg og før/efter-billeder](results/01-image-optimization/README.md). Kør `pnpm optimize:images` for at genskabe de valgte assets.
+
 Reducér downloadstørrelse og unødigt store billeddimensioner efter behov. Denne plan er sekundær i forhold til at flytte indlæsningen væk fra opstart og er ingen forudsætning for plan 2. Brug måleprotokollen i [oversigten](README.md). Bevar billedkvaliteten, også når brugeren zoomer direkte fra overblikket ind på skærmen.
 
 ## Udgangspunkt og valg
@@ -22,9 +24,9 @@ Opret et lille script med en eksplicit liste over kilde, output, dimensioner og 
 
 Berørte filer: nyt `scripts/optimize-images.mjs`, `package.json`, `pnpm-lock.yaml`. Omfang: M, tre filer plus genererede assets.
 
-- [ ] Scriptet genererer de fem kandidater deterministisk fra originalerne og rapporterer dimensioner og bytes.
-- [ ] En anden kørsel ændrer ikke indholdet, og originalerne overskrives ikke.
-- [ ] Output bevarer aspektforhold, alpha hvor relevant og korrekt orientering.
+- [x] Scriptet genererer de fem kandidater deterministisk fra originalerne og rapporterer dimensioner og bytes.
+- [x] En anden kørsel ændrer ikke indholdet, og originalerne overskrives ikke.
+- [x] Output bevarer aspektforhold, alpha hvor relevant og korrekt orientering.
 
 Kontrol: kør scriptet to gange; sammenlign filhashes og metadata. Ingen unit-test er nødvendig for selve konverteringslisten.
 
@@ -34,9 +36,9 @@ Skift albumcoveret og Wiibroe-billederne til de valgte outputfiler. Kontrollér 
 
 Berørte filer: `src/henrik-screens.ts`, `src/workspace.ts`, tre billedoutputs og eventuelt `src/assets/logos.md`. Omfang: S i kode.
 
-- [ ] Originalerne hentes ikke længere af produktionsbuildet.
-- [ ] Logoer, tekst, farver og flaskens kontur er læselige på nærmeste normale kameraafstand.
-- [ ] Før/efter-bytes og skærmbilleder er registreret.
+- [x] Originalerne hentes ikke længere af produktionsbuildet.
+- [x] Logoer, tekst, farver og flaskens kontur er læselige på nærmeste normale kameraafstand.
+- [x] Før/efter-bytes og skærmbilleder er registreret.
 
 Kontrol: build, netværkslog og nærbilleder i browseren.
 
@@ -46,9 +48,9 @@ Skift pinup og børnebillede. Sammenlign kvalitet 80 med højere kvalitet/lossle
 
 Berørte filer: `src/workspace.ts`, to billedoutputs og de tilhørende billedbeskrivelser. Omfang: S i kode.
 
-- [ ] Begge billeder vises korrekt, også efter skift frem og tilbage.
-- [ ] De fem valgte outputs er samlet mindre end originalerne ved bevaret kvalitet. Prøvens 349 kB er en reference, ikke et bindende totalbudget; skarphed i overblikszoom og nærvisning prioriteres over yderligere komprimering.
-- [ ] Buildet indeholder kun de importerede varianter, og billedbytes samt decode-/upload-arbejde er registreret særskilt fra tidspunktet for indlæsning.
+- [x] Begge billeder vises korrekt, også efter skift frem og tilbage.
+- [x] De fem valgte outputs er samlet mindre end originalerne ved bevaret kvalitet. Prøvens 349 kB er en reference, ikke et bindende totalbudget; skarphed i overblikszoom og nærvisning prioriteres over yderligere komprimering.
+- [x] Buildet indeholder kun de importerede varianter, og billedbytes samt decode-/upload-arbejde er registreret særskilt fra tidspunktet for indlæsning.
 
 Kontrol: `tests/proximity-wallpaper.test.mjs`, fælles build/test-kontrol og visuel sammenligning ved både overblik og nærvisning.
 

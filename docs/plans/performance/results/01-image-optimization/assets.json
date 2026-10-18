@@ -1,0 +1,97 @@
+{
+  "rows": [
+    {
+      "source": "src/assets/1000mods-cheat-death.jpg",
+      "output": "src/assets/1000mods-cheat-death.webp",
+      "sourceDimensions": [
+        700,
+        700
+      ],
+      "outputDimensions": [
+        512,
+        512
+      ],
+      "sourceBytes": 295666,
+      "outputBytes": 95762,
+      "hasAlpha": false,
+      "space": "srgb",
+      "orientation": null,
+      "hash": "c61697d739e812ece382269ca4533b4a773246e78c061fe2f7377f9f67f7fe33"
+    },
+    {
+      "source": "src/assets/thrane-children.jpg",
+      "output": "src/assets/thrane-children.webp",
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "outputDimensions": [
+        1024,
+        576
+      ],
+      "sourceBytes": 288442,
+      "outputBytes": 121362,
+      "hasAlpha": false,
+      "space": "srgb",
+      "orientation": null,
+      "hash": "a749e9474bb824af555f1b500a74796b3949b09259cf3533fe8cb2d6b3266f31"
+    },
+    {
+      "source": "src/assets/thrane-pixel-pinup.jpg",
+      "output": "src/assets/thrane-pixel-pinup.webp",
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "outputDimensions": [
+        1024,
+        576
+      ],
+      "sourceBytes": 146915,
+      "outputBytes": 82940,
+      "hasAlpha": false,
+      "space": "srgb",
+      "orientation": null,
+      "hash": "e77b424f46cf0d4fceb4c6fa7320bf21eaa4f004d894a432c0a3843ef275c637"
+    },
+    {
+      "source": "src/assets/wiibroe-pilsner.png",
+      "output": "src/assets/wiibroe-pilsner.webp",
+      "sourceDimensions": [
+        187,
+        700
+      ],
+      "outputDimensions": [
+        187,
+        700
+      ],
+      "sourceBytes": 275032,
+      "outputBytes": 32714,
+      "hasAlpha": true,
+      "space": "srgb",
+      "orientation": null,
+      "hash": "292fa599c4d42009fa418a0e967baae740e1419f160270d966f733f4c15561ef",
+      "alphaIdentical": true
+    },
+    {
+      "source": "src/assets/wiibroe-2026.jpg",
+      "output": "src/assets/wiibroe-2026.webp",
+      "sourceDimensions": [
+        1240,
+        838
+      ],
+      "outputDimensions": [
+        1024,
+        692
+      ],
+      "sourceBytes": 150782,
+      "outputBytes": 57886,
+      "hasAlpha": false,
+      "space": "srgb",
+      "orientation": null,
+      "hash": "d694fc38c63a60f41c4204fe63e2d548f5eca28887b1c83038ce592a39f36d33"
+    }
+  ],
+  "srcPixels": 4806724,
+  "outPixels": 2281300
+}

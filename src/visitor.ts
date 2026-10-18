@@ -66,6 +66,7 @@ function floralFabric() {
 
 export class Visitor {
   readonly group = new THREE.Group();
+  readonly viewCamera = new THREE.PerspectiveCamera(67, 768 / 424, .05, 200);
   readonly walk = new VisitorWalk();
   readonly deskCups = new THREE.Group();
   private body = new THREE.Group();
@@ -84,6 +85,10 @@ export class Visitor {
     this.deskCups.position.set(thraneDesk.x, 0, thraneDesk.z);
     this.deskCups.rotation.y = thraneDesk.rotation;
     this.group.add(this.body);
+    // Eyes face +Z on the model; Three.js cameras look along their local -Z.
+    this.viewCamera.position.set(0, 1.702, .13);
+    this.viewCamera.rotation.y = Math.PI;
+    this.body.add(this.viewCamera);
     const material = (color: string, roughness = .85) => new THREE.MeshStandardMaterial({ color, roughness });
     const skin = material('#c78f74'), hair = material('#51483c'), hairLight = material('#63594a');
     const beard = material('#655044'), shorts = material('#c6b083'), seam = material('#ab956f');
