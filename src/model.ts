@@ -219,5 +219,5 @@ export function createOffice() {
     for (const wall of result.walls) wall.position = wall.position * (wall.axis === 'x' ? p.sx : p.sz) + p[wall.axis];
     walls.push(...result.walls); roofs.push(result.roof);
   }
-  return { office, walls, roofs, coffee, whiteboard, tetrisGlass: day21.tetrisGlass, updateRestroomDoor: toilets.updateDoor, jesperScreen: workspace.jesperScreen, television: workspace.television, updateScreens: workspace.updateScreens, holbechScreens: workspace.holbechScreens, martinScreen: workspace.martinScreen };
+  return { office, walls, roofs, coffee, whiteboard, screenFeatures: workspace.screenFeatures, tetrisGlass: day21.tetrisGlass, updateRestroomDoor: toilets.updateDoor, jesperScreen: workspace.jesperScreen, television: workspace.television, updateScreens: workspace.updateScreens, holbechScreens: workspace.holbechScreens, martinScreen: workspace.martinScreen };
 }

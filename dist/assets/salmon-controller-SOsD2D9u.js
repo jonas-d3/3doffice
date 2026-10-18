@@ -1,0 +1,1 @@
+import{W as e,t}from"./index-DS9YqpAz.js";import{n}from"./easter-interaction-CAVKu5sp.js";var r=class{dirty=!1;constructor(r,i,a,o,s){let c=new e;n(r,a,s,i.screen,()=>i.screen.getWorldPosition(c),e=>{e.object===i.screen&&e.uv&&i.hitFish(e.uv)&&i.catchFish(o.matches)&&(this.dirty=!0,t(r))})}update(){let e=this.dirty;return this.dirty=!1,e}};export{r as SalmonController};

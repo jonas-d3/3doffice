@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { sceneSurfaces } from './scene-surfaces';
 import { inDrawingArea, WalkInInvaders } from './whiteboard-play.mjs';
 import { InvadersScreen } from './invaders-screen';
 import { MicrophoneShots } from './microphone-shots';
@@ -59,7 +60,7 @@ export class WhiteboardGame {
     office.updateMatrixWorld(true); board.getWorldPosition(this.center);
     this.normal.set(0, 0, 1).applyNormalMatrix(new THREE.Matrix3().getNormalMatrix(board.matrixWorld));
     this.right.setFromMatrixColumn(board.matrixWorld, 0).setY(0).normalize();
-    office.traverse(object => { if (object instanceof THREE.Mesh) this.surfaces.push(object); });
+    this.surfaces = sceneSurfaces(office);
     const canvas = navigation.canvas;
     this.micButton.addEventListener('click', () => {
       if (!this.available() || this.play.canDraw) return;

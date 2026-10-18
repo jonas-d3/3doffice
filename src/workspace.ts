@@ -5,15 +5,8 @@ import { plant } from './plants';
 import { desks, deskIslands, deskSize, chairOffset, workspacePlants, workspaceSofas } from './workspace-layout.mjs';
 import { createWorkspaceShell } from './workspace-shell';
 import { createProximityWallpaper } from './proximity-wallpaper.mjs';
-import { PalmScreens } from './palm-screens';
-import { NicolaiScreens } from './nicolai-screens';
-import { AnjaScreens } from './anja-screens';
-import { JesperScreen } from './jesper-screen';
-import { HolbechScreens } from './holbech-screens';
-import { HenrikScreens } from './henrik-screens';
-import { ThraneScreens } from './thrane-screens';
-import { LarsScreens } from './lars-screens';
-import { youtubeWallpaper } from './youtube-screen';
+import { youtubeWallpaper } from './youtube-wallpaper';
+import { lazyScreens } from './lazy-screens';
 import { registerImage } from './image-assets';
 import pinupUrl from './assets/thrane-pixel-pinup.webp';
 import childrenUrl from './assets/thrane-children.webp';
@@ -226,14 +219,14 @@ export function createWorkspace(parent: THREE.Object3D) {
   const wallpaper = new THREE.MeshBasicMaterial({ map: pinup, toneMapped: false });
   wallpaper.userData.imageUses = [pinupUse, childrenUse];
   let updateThraneScreen = (_cameraPosition: THREE.Vector3) => false;
-  const palmScreens = new PalmScreens();
-  const nicolaiScreens = new NicolaiScreens();
-  const anjaScreens = new AnjaScreens();
-  const jesperScreen = new JesperScreen();
-  const holbechScreens = new HolbechScreens();
-  const henrikScreens = new HenrikScreens();
-  const thraneScreens = new ThraneScreens();
-  const larsScreens = new LarsScreens();
+  const palmScreens = lazyScreens('Palm', 2, () => import('./palm-screens'), ({ PalmScreens }) => new PalmScreens());
+  const nicolaiScreens = lazyScreens('Nicolai', 2, () => import('./nicolai-screens'), ({ NicolaiScreens }) => new NicolaiScreens());
+  const anjaScreens = lazyScreens('Anja', 2, () => import('./anja-screens'), ({ AnjaScreens }) => new AnjaScreens());
+  const jesperScreen = lazyScreens('Jesper', 2, () => import('./jesper-screen'), ({ JesperScreen }) => new JesperScreen());
+  const holbechScreens = lazyScreens('Holbech', 2, () => import('./holbech-screens'), ({ HolbechScreens }) => new HolbechScreens());
+  const henrikScreens = lazyScreens('Henrik', 2, () => import('./henrik-screens'), ({ HenrikScreens }) => new HenrikScreens());
+  const thraneScreens = lazyScreens('Thrane', 3, () => import('./thrane-screens'), ({ ThraneScreens }) => new ThraneScreens());
+  const larsScreens = lazyScreens('Lars', 4, () => import('./lars-screens'), ({ LarsScreens }) => new LarsScreens());
   const thraneWallpapers = [wallpaper, ...thraneScreens.materials];
   const astroWallpaper = logoWallpaper(astroLogoUrl, '#171426', undefined, 'Det kan laves i CSS');
   const martinWallpapers = [astroWallpaper, youtubeWallpaper()];
@@ -264,11 +257,11 @@ export function createWorkspace(parent: THREE.Object3D) {
     }
     if (isPalm) palmScreens.screen = display;
     if (isNicolai) nicolaiScreens.screen = display;
-    if (isAnja) { anjaScreens.screen = display; anjaScreens.loadImages(); }
+    if (isAnja) anjaScreens.screen = display;
     if (isJesper) jesperScreen.screen = display;
-    if (isHenrik) { henrikScreens.screen = display; henrikScreens.loadImages(); }
+    if (isHenrik) henrikScreens.screen = display;
     if (isLars) larsScreens.screen = display;
-    if (isHolbech && display) holbechScreens.decorate(display);
+    if (isHolbech && display) holbechScreens.screen = display;
   });
   for (const p of workspacePlants) {
     const foliage = new THREE.Group(); group.add(foliage);
@@ -297,6 +290,7 @@ export function createWorkspace(parent: THREE.Object3D) {
   cylinder(group, .09, .11, .025, 7.9, 2.09, 19.7, gold);
   return {
     ...shell, television, holbechScreens, jesperScreen, martinScreen,
+    screenFeatures: [henrikScreens.feature, anjaScreens.feature, palmScreens.feature, nicolaiScreens.feature, thraneScreens.feature, larsScreens.feature, jesperScreen.feature, holbechScreens.feature],
     updateScreens(camera: THREE.PerspectiveCamera, dt: number, animate: boolean) {
       const thraneChanged = updateThraneScreen(camera.position);
       const thraneAnimated = thraneScreens.update(camera, dt, animate);

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { screenPriority } from './feature-triggers.mjs';
 
 const white = '#f1f7f4', mint = '#7ef3bd', muted = '#95b0aa';
 const orange = '#ffc078', violet = '#c1abff', ink = '#302149';
@@ -167,7 +168,7 @@ export class ThraneScreens {
     this.screen.localToWorld(this.center.set(.34, .195, 0));
     this.screen.getWorldDirection(this.normal);
     this.offset.copy(camera.position).sub(this.center);
-    if (this.offset.lengthSq() > 8 ** 2 || this.offset.dot(this.normal) <= 0) return false;
+    if ((this.offset.lengthSq() > 8 ** 2 && !screenPriority(this.screen, camera, innerHeight)) || this.offset.dot(this.normal) <= 0) return false;
     camera.updateMatrixWorld(); this.projected.copy(this.center).project(camera);
     if (this.projected.z < -1 || this.projected.z > 1 || Math.abs(this.projected.x) > 1.3 || Math.abs(this.projected.y) > 1.3) return false;
     this.elapsed += dt;

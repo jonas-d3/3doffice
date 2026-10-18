@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { sceneSurfaces } from './scene-surfaces';
 import { Tetris } from './tetris.mjs';
 import { TetrisScreen } from './tetris-screen';
 import { contains, day21Meeting } from './layout.mjs';
@@ -30,7 +31,7 @@ export class TetrisGame {
     glass.material.map = this.screen.texture; glass.material.needsUpdate = true;
     office.updateMatrixWorld(true); glass.getWorldPosition(this.center);
     this.normal.set(0, 0, 1).transformDirection(glass.matrixWorld);
-    office.traverse(object => { if (object instanceof THREE.Mesh) this.surfaces.push(object); });
+    this.surfaces = sceneSurfaces(office);
     try {
       const best = Number(localStorage.getItem('office-tetris-best'));
       if (Number.isFinite(best) && best > 0) this.best = Math.floor(best);

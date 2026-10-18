@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { screenPriority } from './feature-triggers.mjs';
 import type { CutawayWall } from './architecture';
 import type { Visitor } from './visitor';
 
@@ -14,10 +15,10 @@ function editorFrame(title: string, caption = 'Holbech / bygger kontoret inde i 
 }
 
 export class HolbechScreens {
-  private targets = [0, 1].map(() => new THREE.WebGLRenderTarget(768, 424, { type: THREE.HalfFloatType, samples: 2 }));
+  private targets?: THREE.WebGLRenderTarget[];
   readonly materials: [THREE.MeshBasicMaterial, THREE.MeshBasicMaterial] = [
-    new THREE.MeshBasicMaterial({ map: this.targets[0].texture }),
-    new THREE.MeshBasicMaterial({ map: this.targets[1].texture }),
+    new THREE.MeshBasicMaterial(),
+    new THREE.MeshBasicMaterial(),
   ];
   private overviewCamera = this.camera(-5.4, 12.2, 18, 32, 46, 42);
   private liveDisplay?: THREE.Mesh;
@@ -56,7 +57,7 @@ export class HolbechScreens {
     if (!animate || !this.liveDisplay) return false;
     this.liveDisplay.getWorldPosition(this.center);
     this.liveDisplay.getWorldDirection(this.normal); this.offset.copy(camera.position).sub(this.center);
-    if (this.offset.lengthSq() > 8 ** 2 || this.offset.dot(this.normal) <= 0) return false;
+    if ((this.offset.lengthSq() > 8 ** 2 && !screenPriority(this.liveDisplay, camera, innerHeight)) || this.offset.dot(this.normal) <= 0) return false;
     camera.updateMatrixWorld(); this.projected.copy(this.center).project(camera);
     if (this.projected.z < -1 || this.projected.z > 1 || Math.abs(this.projected.x) > 1.3 || Math.abs(this.projected.y) > 1.3) return false;
     this.elapsed += dt;
@@ -68,6 +69,10 @@ export class HolbechScreens {
 
   render(renderer: THREE.WebGLRenderer, scene: THREE.Scene, walls: CutawayWall[], roofs: THREE.Object3D[], visitor: Visitor) {
     if (!this.dirty && !this.liveDirty) return;
+    if (!this.targets) {
+      this.targets = [0, 1].map(() => new THREE.WebGLRenderTarget(768, 424, { type: THREE.HalfFloatType, samples: 2 }));
+      this.materials.forEach((material, index) => { material.map = this.targets![index].texture; material.needsUpdate = true; });
+    }
     const previousTarget = renderer.getRenderTarget();
     const visibility = [...walls.map(wall => wall.group), ...roofs, visitor.group, ...this.materials]
       .map(object => ({ object, visible: object.visible }));

@@ -144,3 +144,15 @@ body:has(#whiteboard-audio:not([hidden])) .side-tools { visibility: hidden; }
 }
 .whiteboard-head-controls { margin-block-start: 12px; padding-block-start: 12px; border-block-start: 1px solid oklch(86% .02 130); }
 .whiteboard-audio button:focus-visible { outline: 3px solid oklch(49% .13 240); outline-offset: 3px; }
+
+.feature-loading {
+  position: fixed; inset-block-start: 6rem; inset-inline: 1rem; z-index: 10;
+  inline-size: fit-content; max-inline-size: calc(100% - 2rem); margin-inline: auto;
+  display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
+  padding: .75rem; border-radius: .75rem;
+  background: oklch(97% .01 110); color: oklch(27% .03 155);
+  box-shadow: 0 .25rem 1rem oklch(20% 0 none / .15);
+}
+.feature-loading button { min-block-size: 44px; padding-inline: .75rem; }
+.feature-loading button:active { background: oklch(85% .02 155); }
+.feature-loading button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
