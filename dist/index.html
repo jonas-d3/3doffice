@@ -6,9 +6,9 @@
     <meta name="theme-color" content="#eeede8" />
     <meta name="description" content="Udforsk Apply Agency i 3D." />
     <title>Apply Agency</title>
-    <script type="module" crossorigin src="/3doffice/dist/assets/index-CM1_Yqry.js"></script>
+    <script type="module" crossorigin src="/3doffice/dist/assets/index-DbsPCZYt.js"></script>
     <link rel="modulepreload" crossorigin href="/3doffice/dist/assets/three-BaonVORo.js">
-    <link rel="stylesheet" crossorigin href="/3doffice/dist/assets/index-D8iXvNrb.css">
+    <link rel="stylesheet" crossorigin href="/3doffice/dist/assets/index-CM0OgzO2.css">
   </head>
   <body>
     <main id="app">
@@ -98,19 +98,22 @@
       <div class="walk-pad" role="group" aria-label="Bevæg dig i rummet" hidden><button data-move="forward" aria-label="Gå frem">↑</button><button data-move="left" aria-label="Gå til venstre">←</button><button data-move="back" aria-label="Gå tilbage">↓</button><button data-move="right" aria-label="Gå til højre">→</button></div>
       <footer class="bottom-panel">
         <nav class="view-tabs" aria-label="Vælg kameravisning">
-          <button data-view="overview" class="selected" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5zm-9 9 9 5 9-5M3 16l9 5 9-5"/></svg>Overblik</button>
-          <button data-view="meeting" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18v5H3zM5 13v6m14-6v6M8 5V3m8 2V3"/></svg>Mødebord</button>
-          <button data-view="lounge" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11V6h12v5M3 10h4v5h10v-5h4v9H3v-9zm2 9v2m14-2v2"/></svg>Lounge</button>
-          <button data-view="hallway" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V3h14v18M9 21V6h7v15M3 21h18m-8-8h1"/></svg>Gang</button>
-          <button data-view="restrooms" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h6v8H4zM10 9h10v4H7v-2m1 2c0 4 3 5 5 5v3h5v-7M6 6h2"/></svg>Toiletter</button>
-          <button data-view="minecraft" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h9v3h3v3h3v5h-3v-3h-3V8h-3V6H5zM11 8l3 3-9 10-3-3z"/></svg>Minecraft</button>
-          <button data-view="kitchen" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h12v7a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8zm12 1h2a3 3 0 0 1 0 6h-2M3 22h15M7 2v3m5-3v3"/></svg>Køkken</button>
-          <button data-view="lobby" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V3h16v18M8 21V7h8v14M4 17h4m8 0h4M11 12h2"/></svg>Lille gang</button>
-          <button data-view="workspace" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M5 12v8m14-8v8M7 4h10v6H7zM12 10v2M9 20h6"/></svg>Kontoret</button>
-          <button data-view="day21" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V5h18v16M3 12h18M8 5v16m8-16v16M3 21h18"/></svg>Day21</button>
-          <button data-view="tetris" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v7h7v8H1v-8h7zM8 11h8M8 11v8m8-8v8"/></svg>Tetris</button>
-          <button data-view="donkey-kong" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 18-2M3 13l18 2M3 22l18-2M17 5v9M7 13v8M7 16h3m4-8h3"/></svg>Donkey Kong</button>
-          <span class="tab-divider"></span><button data-view="walk" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13" cy="4" r="2"/><path d="m9 21 3-7-3-3 3-4 3 5 4 1M5 12l4-4M12 14l5 7"/></svg>Gå rundt</button>
+          <div class="view-row camera-views" role="group" aria-label="Faste kameravisninger">
+            <button data-view="overview" class="selected" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5zm-9 9 9 5 9-5M3 16l9 5 9-5"/></svg>Overblik</button>
+            <button data-view="meeting" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18v5H3zM5 13v6m14-6v6M8 5V3m8 2V3"/></svg>Mødebord</button>
+            <button data-view="lounge" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11V6h12v5M3 10h4v5h10v-5h4v9H3v-9zm2 9v2m14-2v2"/></svg>Lounge</button>
+          </div>
+          <div class="walking-views" role="group" aria-labelledby="walking-views-label">
+            <span id="walking-views-label" class="view-row-label"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13" cy="4" r="2"/><path d="m9 21 3-7-3-3 3-4 3 5 4 1M5 12l4-4M12 14l5 7"/></svg><span class="visually-hidden">Gå rundt</span></span>
+            <div class="view-row">
+              <button data-view="walk" aria-pressed="false">Space Invaders</button>
+              <button data-view="hallway" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V3h14v18M9 21V6h7v15M3 21h18m-8-8h1"/></svg>Gang</button>
+              <button data-view="minecraft" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h9v3h3v3h3v5h-3v-3h-3V8h-3V6H5zM11 8l3 3-9 10-3-3z"/></svg>Minecraft</button>
+              <button data-view="kitchen" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h12v7a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8zm12 1h2a3 3 0 0 1 0 6h-2M3 22h15M7 2v3m5-3v3"/></svg>Køkken</button>
+              <button data-view="workspace" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M5 12v8m14-8v8M7 4h10v6H7zM12 10v2M9 20h6"/></svg>Kontoret</button>
+              <button data-view="day21" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V5h18v16M3 12h18M8 5v16m8-16v16M3 21h18"/></svg>Day21</button>
+            </div>
+          </div>
         </nav>
         <p id="navigation-hint"><span>Træk for at dreje</span><b>·</b><span>Højreklik + træk for at panorere</span><b>·</b><span>Scroll for at zoome</span></p>
       </footer>
@@ -125,11 +128,11 @@
           <dt>Drej</dt><dd>Træk med musen eller én finger. Tastatur: Q / E.</dd>
           <dt>Panorer</dt><dd>Højretræk eller træk med to fingre. Tastatur: piletaster.</dd>
           <dt>Zoom</dt><dd>Scroll, knib, eller brug + / −.</dd>
-          <dt>Gå rundt</dt><dd>Vælg “Gå rundt”. Gå med WASD, piletaster eller skærmpile.</dd>
+          <dt>Gå rundt</dt><dd>Vælg et rum i nederste menurække, f.eks. “Space Invaders”. Gå med WASD, piletaster eller skærmpile.</dd>
           <dt>Kig rundt</dt><dd>Træk, eller brug Q / E.</dd>
           <dt>Tilbage til overblik</dt><dd>Esc, H eller hus-ikonet.</dd>
           <dt>Tetris</dt><dd>Tryk på den midterste siderude inde i Tetris-rummet, eller kig på den og tryk Enter. Pile flytter og drejer, Space slipper brikken, P pauser, og Esc giver styringen tilbage til gåturen. Der er også knapper til touch.</dd>
-          <dt>Donkey Kong</dt><dd>Vælg Donkey Kong, og klik på spillet på bordet i glasrummet ved Day21. ←/→ går, ↑/↓ klatrer på stiger, og Space hopper. Nå flaget øverst uden at miste dine tre liv. P pauser, og Esc giver styringen tilbage til gåturen. Tønderne bliver i lokalet mellem spil, indtil siden genindlæses.</dd>
+          <dt>Donkey Kong</dt><dd>Gå hen til bordet i glasrummet ved Day21, og klik på spillet. ←/→ går, ↑/↓ klatrer på stiger, og Space hopper. Nå flaget øverst uden at miste dine tre liv. P pauser, og Esc giver styringen tilbage til gåturen. Tønderne bliver i lokalet mellem spil, indtil siden genindlæses.</dd>
         </dl>
       </dialog>
     </main>

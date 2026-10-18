@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="da">
+<meta charset="utf-8">
+<title>Thrane wallpaper regression</title>
+<h1>Thranes skærm: forsinket billedindlæsning</h1>
+<p>Venstre: faktisk skærm. Højre: reference med ny tekstur.</p>
+<div id="preview"></div>
+<pre id="result">Kører …</pre>
+<script type="module">
+// Run pnpm dev, then open /3doffice/dist/tests/browser/thrane-wallpaper.html.
+// Render BOTH placeholders before releasing the image queue to reproduce the bug.
+import * as THREE from 'three';
+import { createWorkspace } from '../../src/workspace.ts';
+import { loadQueue, onAssetChange } from '../../src/image-assets.ts';
+
+const root = new THREE.Group();
+const workspace = createWorkspace(root);
+let screen;
+root.traverse(object => {
+  if (object.material?.userData.imageUses?.some(use => use.url.includes('thrane-pixel-pinup'))) screen = object;
+});
+const uses = screen.material.userData.imageUses;
+const position = screen.getWorldPosition(new THREE.Vector3());
+const proximityCamera = new THREE.PerspectiveCamera();
+const scene = new THREE.Scene();
+const camera = new THREE.OrthographicCamera(-2, 2, .625, -.625, .1, 10);
+camera.position.z = 2;
+const actual = new THREE.Mesh(new THREE.PlaneGeometry(1.6, .9), screen.material);
+actual.position.x = -1; scene.add(actual);
+const referenceMaterial = new THREE.MeshBasicMaterial({ color: 0x283d45, toneMapped: false });
+const reference = new THREE.Mesh(actual.geometry, referenceMaterial);
+reference.position.x = 1; scene.add(reference);
+const renderer = new THREE.WebGLRenderer({ antialias: false });
+renderer.setSize(1024, 320);
+document.querySelector('#preview').append(renderer.domElement);
+const gl = renderer.getContext();
+const webglErrors = [];
+let referenceImage;
+
+function renderAt(distance) {
+  proximityCamera.position.copy(position).add(new THREE.Vector3(distance, 0, 0));
+  workspace.updateScreens(proximityCamera, 0, false);
+  const texture = screen.material.map;
+  const image = texture.image;
+  if (image?.naturalWidth && image !== referenceImage) {
+    referenceMaterial.map?.dispose();
+    referenceMaterial.map = new THREE.Texture(image);
+    referenceMaterial.map.colorSpace = THREE.SRGBColorSpace;
+    referenceMaterial.map.magFilter = texture.magFilter;
+    referenceMaterial.map.needsUpdate = true;
+    referenceMaterial.color.set(0xffffff);
+    referenceMaterial.needsUpdate = true;
+    referenceImage = image;
+  }
+  renderer.render(scene, camera);
+  let error;
+  while ((error = gl.getError()) !== gl.NO_ERROR) webglErrors.push(error);
+  let mismatches = 0;
+  const left = new Uint8Array(4), right = new Uint8Array(4);
+  for (const x of [-180, -120, -60, 0, 60, 120, 180]) for (const y of [-100, -50, 0, 50, 100]) {
+    gl.readPixels(256 + x, 160 + y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, left);
+    gl.readPixels(768 + x, 160 + y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, right);
+    if ([...left].some((value, i) => Math.abs(value - right[i]) > 1)) mismatches++;
+  }
+  return { distance, image: image?.src?.split('/').pop(), dimensions: [image?.width, image?.height], mismatches };
+}
+
+renderAt(6);
+renderAt(3);
+renderAt(6);
+let complete = false;
+onAssetChange(() => {
+  if (complete || !uses.every(use => use.ready)) return;
+  complete = true;
+  const frames = [renderAt(6), renderAt(3), renderAt(6)];
+  const names = ['thrane-pixel-pinup.webp', 'thrane-children.webp', 'thrane-pixel-pinup.webp'];
+  const passed = webglErrors.length === 0 && frames.every((frame, i) =>
+    frame.image === names[i] && frame.dimensions[0] === 1024 && frame.dimensions[1] === 576 && frame.mismatches === 0);
+  document.querySelector('#result').textContent = `${passed ? 'PASS' : 'FAIL'}\n${JSON.stringify({ webglErrors, frames }, null, 2)}`;
+});
+requestAnimationFrame(() => loadQueue.release());
+setTimeout(() => {
+  if (!complete) document.querySelector('#result').textContent = 'FAIL: Billederne blev ikke indlæst inden for 15 sekunder.';
+}, 15000);
+</script>
+</html>

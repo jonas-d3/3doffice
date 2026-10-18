@@ -210,12 +210,14 @@ export function createWorkspace(parent: THREE.Object3D) {
   const shell = createWorkspaceShell(group);
   const placeholder = document.createElement('canvas'); placeholder.width = placeholder.height = 2;
   const context = placeholder.getContext('2d')!; context.fillStyle = '#283d45'; context.fillRect(0, 0, 2, 2);
+  // Release the placeholder's GPU storage before uploading a larger image.
+  // Keep the texture objects stable for the proximity wallpaper controller.
   const pinup = new THREE.Texture<HTMLImageElement | HTMLCanvasElement>(placeholder); pinup.needsUpdate = true;
-  const pinupUse = registerImage(pinupUrl, image => { pinup.image = image; pinup.needsUpdate = true; });
+  const pinupUse = registerImage(pinupUrl, image => { pinup.dispose(); pinup.image = image; pinup.needsUpdate = true; });
   pinup.colorSpace = THREE.SRGBColorSpace;
   pinup.magFilter = THREE.NearestFilter;
   const children = new THREE.Texture<HTMLImageElement | HTMLCanvasElement>(placeholder); children.needsUpdate = true;
-  const childrenUse = registerImage(childrenUrl, image => { children.image = image; children.needsUpdate = true; });
+  const childrenUse = registerImage(childrenUrl, image => { children.dispose(); children.image = image; children.needsUpdate = true; });
   children.colorSpace = THREE.SRGBColorSpace;
   const wallpaper = new THREE.MeshBasicMaterial({ map: pinup, toneMapped: false });
   wallpaper.userData.imageUses = [pinupUse, childrenUse];
