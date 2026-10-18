@@ -10,6 +10,7 @@ import { screenPriority } from './feature-triggers.mjs';
 import { refreshSceneSurfaces } from './scene-surfaces.mjs';
 import { featureStatus } from './feature-status';
 import { screenPlaceholder } from './lazy-screens';
+import { installHolbechControl } from './holbech-screen-control.mjs';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#scene')!;
 document.querySelector('#reload')!.addEventListener('click', () => location.reload());
@@ -78,6 +79,10 @@ kongGame.prefetch();
 const whiteboardGame = new LazyFeature('Whiteboard', loadQueue, () => import('./whiteboard-game'), ({ WhiteboardGame }) => new WhiteboardGame(model.whiteboard, model.office, navigation, motionPreference, (): boolean => dialog.open || !!tvGame.value?.active || !!tetrisGame.value?.active || !!kongGame.value?.active || document.hidden), featureChanged, featureFailed);
 whiteboardGame.prefetch();
 const blocked = (): boolean => dialog.open || !!tvGame.value?.active || !!tetrisGame.value?.active || !!kongGame.value?.active || document.hidden;
+let focused = document.hasFocus();
+addEventListener('focus', () => { focused = true; });
+addEventListener('blur', () => { focused = false; model.holbechScreens.value?.setPaused(true); });
+installHolbechControl(canvas, camera, scene, () => model.holbechScreens.value, () => blocked() || !focused, () => { needsRender = true; });
 const coffee = new LazyFeature('Kaffe', loadQueue, () => import('./coffee-controller'), ({ CoffeeController }) => new CoffeeController(model.office, model.coffee, visitor, navigation, blocked), featureChanged, featureFailed);
 const salmon = new LazyFeature('Laks', loadQueue, () => import('./salmon-controller'), ({ SalmonController }) => new SalmonController(model.office, model.jesperScreen.value!, navigation, motionPreference, blocked), featureChanged, featureFailed);
 const creeper = new LazyFeature('Creeper', loadQueue, () => import('./creeper-controller'), ({ CreeperController }) => new CreeperController(model.office, navigation, motionPreference, blocked), featureChanged, featureFailed);
@@ -109,10 +114,10 @@ fullscreen.addEventListener('click', async () => {
 document.addEventListener('fullscreenchange', () => fullscreen.setAttribute('aria-label', document.fullscreenElement ? 'Afslut fuld skærm' : 'Fuld skærm'));
 canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); renderer.setAnimationLoop(null); document.querySelector<HTMLElement>('#error')!.hidden = false; });
 let needsRender = true;
-function featureChanged() { refreshSceneSurfaces(model.office); needsRender = true; }
+function featureChanged() { refreshSceneSurfaces(model.office); model.holbechScreens.value?.invalidate(); needsRender = true; }
 function featureFailed(name: string) { loadingStatus.failed(name); }
 // Repaint even when the camera is still after an image texture finishes loading.
-onAssetChange(() => { refreshSceneSurfaces(model.office); needsRender = true; if (model.holbechScreens.value) model.holbechScreens.value.dirty = true; });
+onAssetChange(() => { refreshSceneSurfaces(model.office); needsRender = true; model.holbechScreens.value?.invalidate(); });
 THREE.DefaultLoadingManager.onLoad = () => { needsRender = true; };
 loadQueue.setPaused(document.hidden);
 document.addEventListener('visibilitychange', () => loadQueue.setPaused(document.hidden));
@@ -155,7 +160,8 @@ renderer.setAnimationLoop(now => {
   tvGame.setRelevant(screenPriority(model.television, camera, innerHeight) > 0);
   whiteboardGame.setRelevant(navigation.view === 'walk' || screenPriority(model.whiteboard, camera, innerHeight) > 0);
   tetrisGame.setRelevant(navigation.view === 'tetris' || screenPriority(model.tetrisGlass, camera, innerHeight) > 0);
-  if (model.updateScreens(camera, dt, !motionPreference.matches && !dialog.open && !tvGame.value?.active && !kongGame.value?.active)) needsRender = true;
+  model.holbechScreens.value?.setPaused(blocked() || !focused);
+  if (model.updateScreens(camera, dt, !motionPreference.matches && !blocked())) needsRender = true;
   if (!tvGame.value?.active && !dialog.open && visitor.update(dt, motionPreference.matches)) needsRender = true;
   if (model.updateRestroomDoor(visitor.walk.restroomDoorClosure)) needsRender = true;
   if (tvGame.value?.update(dt)) needsRender = true;
