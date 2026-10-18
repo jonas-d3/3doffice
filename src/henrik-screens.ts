@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { registerImage } from './image-assets';
 import coverUrl from './assets/1000mods-cheat-death.webp';
 
 const width = 1024, height = 565;
@@ -135,7 +136,10 @@ export class HenrikScreens {
     };
     this.materials = [material('Henrik / 1000mods'), material('Henrik / burning bridge')];
     this.draw();
-    new THREE.ImageLoader().load(coverUrl, cover => { this.cover = cover; this.draw(); });
+  }
+
+  loadImages() {
+    registerImage(coverUrl, cover => { this.cover = cover; this.draw(); }, this.screen);
   }
 
   private draw() {

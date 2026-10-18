@@ -14,6 +14,7 @@ import { HenrikScreens } from './henrik-screens';
 import { ThraneScreens } from './thrane-screens';
 import { LarsScreens } from './lars-screens';
 import { youtubeWallpaper } from './youtube-screen';
+import { registerImage } from './image-assets';
 import pinupUrl from './assets/thrane-pixel-pinup.webp';
 import childrenUrl from './assets/thrane-children.webp';
 import astroLogoUrl from './assets/astro-logo.png';
@@ -39,14 +40,16 @@ function logoWallpaper(url: string, background: string, crop?: [number, number, 
     context.fillText(caption, canvas.width / 2, canvas.height - 65, canvas.width * .86);
   }
   const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
-  new THREE.ImageLoader().load(url, image => {
+  const use = registerImage(url, image => {
     const [x, y, width, height] = crop ?? [0, 0, image.width, image.height];
     const scale = Math.min(canvas.width / width, imageHeight / height) * .84;
     context.drawImage(image, x, y, width, height,
       (canvas.width - width * scale) / 2, (imageHeight - height * scale) / 2, width * scale, height * scale);
     texture.needsUpdate = true;
   });
-  return new THREE.MeshBasicMaterial({ map: texture, toneMapped: false });
+  const material = new THREE.MeshBasicMaterial({ map: texture, toneMapped: false });
+  material.userData.imageUses = [use];
+  return material;
 }
 
 function screenWallpaper(url: string) {
@@ -91,6 +94,7 @@ function monitor(parent: THREE.Object3D, x: number, portrait = false, active = f
     }
     display = mesh(panel, geometry, wallpaper, 0, 0, .032);
     display.castShadow = false; display.receiveShadow = false;
+    wallpaper.userData.imageUses?.forEach((use: { screen: THREE.Object3D }) => { use.screen = display!; });
   }
   if (active && !wallpaper) {
     // Abstract application windows: no personal screen content is reproduced.
@@ -210,12 +214,17 @@ function sofa(parent: THREE.Object3D, spec: typeof workspaceSofas[number]) {
 export function createWorkspace(parent: THREE.Object3D) {
   const group = new THREE.Group(); parent.add(group);
   const shell = createWorkspaceShell(group);
-  const pinup = new THREE.TextureLoader().load(pinupUrl);
+  const placeholder = document.createElement('canvas'); placeholder.width = placeholder.height = 2;
+  const context = placeholder.getContext('2d')!; context.fillStyle = '#283d45'; context.fillRect(0, 0, 2, 2);
+  const pinup = new THREE.Texture<HTMLImageElement | HTMLCanvasElement>(placeholder); pinup.needsUpdate = true;
+  const pinupUse = registerImage(pinupUrl, image => { pinup.image = image; pinup.needsUpdate = true; });
   pinup.colorSpace = THREE.SRGBColorSpace;
   pinup.magFilter = THREE.NearestFilter;
-  const children = new THREE.TextureLoader().load(childrenUrl);
+  const children = new THREE.Texture<HTMLImageElement | HTMLCanvasElement>(placeholder); children.needsUpdate = true;
+  const childrenUse = registerImage(childrenUrl, image => { children.image = image; children.needsUpdate = true; });
   children.colorSpace = THREE.SRGBColorSpace;
   const wallpaper = new THREE.MeshBasicMaterial({ map: pinup, toneMapped: false });
+  wallpaper.userData.imageUses = [pinupUse, childrenUse];
   let updateThraneScreen = (_cameraPosition: THREE.Vector3) => false;
   const palmScreens = new PalmScreens();
   const nicolaiScreens = new NicolaiScreens();
@@ -255,9 +264,9 @@ export function createWorkspace(parent: THREE.Object3D) {
     }
     if (isPalm) palmScreens.screen = display;
     if (isNicolai) nicolaiScreens.screen = display;
-    if (isAnja) anjaScreens.screen = display;
+    if (isAnja) { anjaScreens.screen = display; anjaScreens.loadImages(); }
     if (isJesper) jesperScreen.screen = display;
-    if (isHenrik) henrikScreens.screen = display;
+    if (isHenrik) { henrikScreens.screen = display; henrikScreens.loadImages(); }
     if (isLars) larsScreens.screen = display;
     if (isHolbech && display) holbechScreens.decorate(display);
   });

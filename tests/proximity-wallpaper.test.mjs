@@ -48,3 +48,14 @@ test('uses the actual screen world position, including desk transforms and camer
   desk.position.x += 10;
   assert.equal(update(new Vector3(8.4, 1.65, 19.5)), true, 'Follows the screen if its parent moves');
 });
+
+test('a late near-image completion cannot replace the current far wallpaper', () => {
+  const { near, far, material, update } = setup();
+  update(new Vector3(3, 0, 0));
+  update(new Vector3(6, 0, 0));
+  near.image = { width: 1024, height: 576 }; near.needsUpdate = true;
+  assert.equal(material.map, far);
+  update(new Vector3(3, 0, 0));
+  assert.equal(material.map, near);
+  assert.equal(material.map.image.width, 1024);
+});

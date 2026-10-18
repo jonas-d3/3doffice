@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { registerImage } from './image-assets';
 import fridgeUrl from './assets/anja-fridge-webcam.webp';
 import elevatorUrl from './assets/anja-elevator-webcam.webp';
 
@@ -97,9 +98,12 @@ export class AnjaScreens {
       return new THREE.MeshBasicMaterial({ map: texture, toneMapped: false });
     };
     this.materials = [material(), material()]; this.draw();
-    [fridgeUrl, elevatorUrl].forEach((url, index) => new THREE.ImageLoader().load(url, image => {
+  }
+
+  loadImages() {
+    [fridgeUrl, elevatorUrl].forEach((url, index) => registerImage(url, image => {
       this.images[index] = image; this.draw();
-    }));
+    }, this.screen));
   }
 
   private draw() {
