@@ -33,7 +33,7 @@ export function installHolbechControl(canvas, camera, scene, getScreens, blocked
     const screens = getScreens();
     if (event.button !== 0 || !hit(screens, event)) return;
     gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, screens, tracking: screens.tracking, position: camera.position.clone(), rotation: camera.quaternion.clone() };
-    claimed = true; captured = event.pointerId; consume(event); canvas.setPointerCapture(event.pointerId);
+    claimed = true; captured = event.pointerId; consume(event); canvas.focus({ preventScroll: true }); canvas.setPointerCapture(event.pointerId);
   }, true);
   canvas.addEventListener('pointermove', event => {
     if (!claimed) return;

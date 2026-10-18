@@ -22,11 +22,23 @@ function setup() {
 test('visibility allocates only the overview; live captures require explicit tracking and targets are reused',()=>{
  const s=setup();s.render();assert.equal(s.renders.length,0);
  s.screens.update(s.camera,.1,false);s.render();assert.equal(s.renders.length,1);assert.notEqual(s.renders[0].view,s.visitor.viewCamera);assert.equal(s.screens.liveTarget,undefined);
+ assert.equal(s.screens.materials[0].toneMapped,true,'linear capture receives tone mapping in the main framebuffer');
  s.screens.invalidate();s.render();assert.equal(s.renders.filter(r=>r.view===s.visitor.viewCamera).length,0);
  s.screens.setTracking(true);s.screens.update(s.camera,.1,false);s.render();assert.equal(s.renders.filter(r=>r.view===s.visitor.viewCamera).length,1);const target=s.screens.liveTarget;
  s.screens.update(s.camera,1,false);s.render();assert.equal(s.renders.filter(r=>r.view===s.visitor.viewCamera).length,1,'reduced motion captures only the explicit still');
  s.screens.setTracking(false);s.screens.invalidate();s.render();assert.equal(s.renders.filter(r=>r.view===s.visitor.viewCamera).length,1);
+ assert.equal(s.screens.materials[1].toneMapped,false,'the static sRGB interface keeps its colors');
  s.screens.setTracking(true);s.screens.update(s.camera,.1,false);s.render();assert.equal(s.screens.liveTarget,target);assert.equal(s.renders.filter(r=>r.view===s.visitor.viewCamera).length,2);
+});
+
+test('late assets coalesce with the 12 Hz live cadence and cannot restart reduced-motion captures',()=>{
+ const s=setup();s.screens.setTracking(true);
+ for(let i=0;i<60;i++){s.screens.invalidate();s.screens.update(s.camera,1/60,true);s.render();}
+ assert.ok(s.renders.filter(r=>r.view===s.visitor.viewCamera).length<=12);
+ assert.equal(s.screens.materials[1].toneMapped,true);
+ s.screens.setTracking(false);s.screens.setTracking(true);s.screens.update(s.camera,.1,false);s.render();const count=s.renders.filter(r=>r.view===s.visitor.viewCamera).length;
+ for(let i=0;i<20;i++){s.screens.invalidate();s.screens.update(s.camera,.1,false);s.render();}
+ assert.equal(s.renders.filter(r=>r.view===s.visitor.viewCamera).length,count);
 });
 
 test('distance stops tracking during pause, return never restarts, looking away pauses within the near area',()=>{

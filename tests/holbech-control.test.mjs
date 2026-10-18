@@ -21,13 +21,13 @@ test('button picking follows the transformed display, ignores its frame, and res
  s.desk.visible=false;assert.equal(hit(),false);s.desk.visible=true;s.camera.position.copy(s.screen.getWorldPosition(new THREE.Vector3())).add(new THREE.Vector3(0,0,-1).transformDirection(s.desk.matrixWorld));s.camera.lookAt(s.desk.position);s.camera.updateMatrixWorld();assert.equal(hit(),false);
 });
 function interaction(){
- const s=setup(),canvas=new EventTarget(),events=new EventTarget();canvas.getBoundingClientRect=()=>rect;canvas.setPointerCapture=()=>{};canvas.hasPointerCapture=()=>false;
+ const s=setup(),canvas=new EventTarget(),events=new EventTarget();let focused=false;canvas.focus=()=>{focused=true;};canvas.getBoundingClientRect=()=>rect;canvas.setPointerCapture=()=>{};canvas.hasPointerCapture=()=>false;
  let tracking=false,blocked=false,activations=0;const controller={liveDisplay:s.screen,get tracking(){return tracking;},setTracking(value){tracking=value;activations++;}};
  installHolbechControl(canvas,s.camera,s.scene,()=>controller,()=>blocked,()=>{},events);
  function fire(type,extra={}){const event=new Event(type,{cancelable:true});Object.assign(event,{...s.point(),pointerId:1,isPrimary:true,button:0,...extra});canvas.dispatchEvent(event);}
- return{...s,fire,events,get activations(){return activations;},block(){blocked=true;}};
+ return{...s,fire,events,get activations(){return activations;},get focused(){return focused;},block(){blocked=true;}};
 }
 test('only a completed primary click activates; drag, cancellation, multi-touch and blocked UI do not',()=>{
- const click=interaction();click.fire('pointerdown');click.fire('pointerup');assert.equal(click.activations,1);
+ const click=interaction();click.fire('pointerdown');click.fire('pointerup');assert.equal(click.activations,1);assert.equal(click.focused,true);
  for(const cancel of ['drag','pointercancel','lostpointercapture','blur','multi','blocked']){const s=interaction();s.fire('pointerdown');if(cancel==='drag')s.fire('pointermove',{clientX:100});else if(cancel==='blur')s.events.dispatchEvent(new Event('blur'));else if(cancel==='multi')s.fire('pointerdown',{pointerId:2,isPrimary:false});else if(cancel==='blocked')s.block();else s.fire(cancel);s.fire('pointerup');assert.equal(s.activations,0,cancel);}
 });

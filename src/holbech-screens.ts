@@ -65,12 +65,15 @@ export class HolbechScreens {
     });
   }
 
-  invalidate() { this.dirty = true; if (this.tracking) this.liveDirty = true; }
+  // Active live video picks up assets at its next 12 Hz tick. In reduced motion
+  // only a fresh explicit activation requests another still.
+  invalidate() { this.dirty = true; }
   setPaused(paused: boolean) { this.paused = paused; if (paused) this.elapsed = 0; }
   setTracking(tracking: boolean) {
     if (tracking === this.tracking) return;
     this.tracking = tracking; this.liveDirty = tracking; this.elapsed = 0;
     this.materials[1].map = tracking && this.liveTarget ? this.liveTarget.texture : this.startMaterial.map;
+    this.materials[1].toneMapped = !!(tracking && this.liveTarget);
     this.materials[1].needsUpdate = true;
     if (this.frames[1]) editorFrame(this.frames[1], true, tracking);
   }
@@ -102,7 +105,9 @@ export class HolbechScreens {
         ? this.liveTarget ??= new THREE.WebGLRenderTarget(768, 424, { type: THREE.HalfFloatType, samples: 2 })
         : this.overviewTarget ??= new THREE.WebGLRenderTarget(768, 424, { type: THREE.HalfFloatType, samples: 2 });
       const material = this.materials[live ? 1 : 0];
-      if (material.map !== target.texture) { material.map = target.texture; material.color.set('#ffffff'); material.needsUpdate = true; }
+      if (material.map !== target.texture) {
+        material.map = target.texture; material.color.set('#ffffff'); material.toneMapped = true; material.needsUpdate = true;
+      }
       // Neither display nor its frame samples a texture being captured.
       [...this.materials, ...this.frames].forEach(material => { material.visible = false; });
       const camera = live ? visitor.viewCamera : this.overviewCamera;
@@ -110,7 +115,7 @@ export class HolbechScreens {
       walls.forEach(wall => { wall.group.visible = live || (camera.position[wall.axis] - wall.position) * wall.inside > 0; });
       if (live) visitor.group.visible = false;
       camera.updateWorldMatrix(true, false); renderer.setRenderTarget(target); renderer.render(scene, camera);
-      if (live) this.liveDirty = false; else this.dirty = false;
+      if (live) { this.liveDirty = false; this.elapsed = 0; } else this.dirty = false;
     } catch {
       // Keep controls usable; a new explicit activation can retry, never an automatic frame loop.
       this.dirty = false; this.setTracking(false);
