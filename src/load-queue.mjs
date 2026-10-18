@@ -24,6 +24,11 @@ export class LoadQueue {
     if (task) task.priority = Math.max(task.priority, priority);
     this.wake();
   }
+  setPriority(key, priority) {
+    const task = this.tasks.get(key);
+    if (task && !task.started) task.priority = priority;
+    this.wake();
+  }
   release() { this.released = true; this.wake(); }
   setPaused(paused) { this.paused = paused; this.wake(); }
 

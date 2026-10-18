@@ -25,3 +25,9 @@ test('failed module graphs require explicit reload and never loop on retry or re
  feature.setRelevant(true);feature.setRelevant(false);feature.setRelevant(true);await feature.prepare(100,true);await drain(turns);
  assert.equal(feature.state,'error');assert.equal(attempts,1);assert.equal(created,0);
 });
+test('leaving while an import is pending lowers the later construction priority',async()=>{
+ const turns=[],queue=new LoadQueue(fn=>turns.push(fn));queue.release();let resolve;const order=[];
+ const old=new LazyFeature('old',queue,()=>new Promise(r=>{resolve=r;}),()=>{order.push('old');return {};});
+ old.setRelevant(true,90);turns.shift()();await tick();old.setRelevant(false);
+ queue.add('new','work',()=>order.push('new'),20);resolve({});await drain(turns);assert.deepEqual(order,['new','old']);
+});

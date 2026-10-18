@@ -27,3 +27,7 @@ test('shared images deduplicate, keep ready data, and retry only when requested'
  await assert.rejects(bad.request('bad'));assert.equal(failures,1);
  const retry=bad.request('bad',10,true);const retryRejected=assert.rejects(retry);await step();await retryRejected;assert.equal(failures,2);
 });
+test('a camera change lowers waiting work so the newly relevant screen starts first',async()=>{
+ const{queue,step}=setup(),order=[];queue.add('old-view','work',()=>order.push('old'),80);queue.add('new-view','work',()=>order.push('new'),20);
+ queue.setPriority('old-view',0);queue.release();await step();assert.deepEqual(order,['new']);await step();assert.deepEqual(order,['new','old']);
+});

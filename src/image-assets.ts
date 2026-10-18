@@ -26,10 +26,13 @@ function request(use: ImageUse, priority: number, retry: boolean) {
   }).catch(() => { /* Keep the placeholder. A new approach retries once. */ }).finally(() => { use.pending = false; });
 }
 export function updateImagePriorities(camera: THREE.PerspectiveCamera) {
+  const priorities = new Map<string, number>();
   for (const use of uses) {
     if (!use.screen || use.ready) continue;
     const priority = screenPriority(use.screen, camera, innerHeight);
+    priorities.set(use.url, Math.max(priorities.get(use.url) ?? 0, priority));
     if (priority && (use.pending || !use.relevant)) request(use, priority, !use.relevant);
     use.relevant = priority > 0;
   }
+  priorities.forEach((priority, url) => loadQueue.setPriority(`image:${url}`, priority));
 }

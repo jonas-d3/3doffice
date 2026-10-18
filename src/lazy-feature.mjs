@@ -7,7 +7,7 @@ export class LazyFeature {
     /** @type {T | undefined} */ this.value = undefined;
     /** @type {Promise<M> | undefined} */ this.module = undefined;
     /** @type {Promise<T | undefined> | undefined} */ this.pending = undefined;
-    this.state = 'idle'; this.relevant = false; this.reloadRequired = false;
+    this.state = 'idle'; this.relevant = false; this.reloadRequired = false; this.priority = 0;
   }
   warm(priority = 0) {
     this.queue.promote(`import:${this.name}`, priority);
@@ -19,6 +19,7 @@ export class LazyFeature {
   }
   prepare(priority = 10, retry = false) {
     if (this.value) return Promise.resolve(this.value);
+    this.priority = priority;
     this.queue.promote(`import:${this.name}`, priority); this.queue.promote(`create:${this.name}`, priority);
     if (this.pending) return this.pending;
     if (this.state === 'error') {
@@ -32,11 +33,14 @@ export class LazyFeature {
       importing = false;
       return this.queue.add(`create:${this.name}`, 'work', () => {
       this.value = this.create(module); this.state = 'ready'; this.changed(); return this.value;
-      }, priority);
+      }, this.priority);
     }).catch(error => { this.error(error, importing ? 'import' : 'create'); return undefined; }).finally(() => { this.pending = undefined; });
     return this.pending;
   }
   setRelevant(relevant, priority = 10) {
+    this.priority = relevant ? priority : 0;
+    this.queue.setPriority(`import:${this.name}`, this.priority);
+    this.queue.setPriority(`create:${this.name}`, this.priority);
     if (relevant && (!this.relevant || this.state === 'loading')) void this.prepare(priority, !this.relevant);
     this.relevant = relevant;
   }
