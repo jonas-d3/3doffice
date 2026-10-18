@@ -36,15 +36,18 @@ export class YoutubeScreen {
   resize() { this.renderer.setSize(innerWidth, innerHeight); }
 
   private unload() {
+    this.display.visible = false; this.renderer.domElement.hidden = true;
     if (!this.loaded) return;
     // Removing the document also stops its audio, including when the tab is hidden.
     this.iframe.removeAttribute('src'); this.loaded = false;
   }
 
   update(camera: THREE.PerspectiveCamera, enabled: boolean) {
+    enabled &&= !document.hidden;
     this.screen.getWorldPosition(this.center);
     if (!enabled || camera.position.distanceToSquared(this.center) > 25) this.unload();
     this.display.visible = enabled && this.visible(camera);
+    this.renderer.domElement.hidden = !this.display.visible;
     if (this.display.visible) {
       // Cross-origin video cannot be copied into a WebGL texture. Match an HTML iframe to the plane instead.
       this.screen.matrixWorld.decompose(this.display.position, this.display.quaternion, this.worldScale);
