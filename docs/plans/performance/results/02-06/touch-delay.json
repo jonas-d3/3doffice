@@ -1,0 +1,18 @@
+{
+  "input": {
+    "responseMs": 111,
+    "distanceBefore": 72.12609312809411,
+    "distanceAfter": 59.14339636503716,
+    "firstFrame": 714.7999999970198
+  },
+  "screenWaitMs": 1232,
+  "touch": {
+    "opened": true,
+    "movedFrom": 3,
+    "movedTo": 4,
+    "paused": "paused",
+    "status": "Pause · fortsæt med P eller knappen",
+    "closed": true
+  },
+  "errors": []
+}

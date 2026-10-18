@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { instanceStatic } from './static-instances.mjs';
 import { box, cylinder, mesh, rod } from './geometry';
 import { materials as m } from './materials';
 import { plant } from './plants';
@@ -24,7 +25,7 @@ function meetingTable(parent: THREE.Object3D, spec: typeof day21Tables[number]) 
   // Leave the entrance table clear for the physical Donkey Kong model.
   if (spec !== day21Tables[0]) {
     box(g, .26, .012, .2, .2, .78, 0, m.black);
-    for (const x of [-.55, .55]) cylinder(g, .035, .03, .09, x, .815, .12, m.white);
+    for (const x of [-.55, .55]) cylinder(g, .035, .03, .09, x, .815, .12, m.white, { cast: false });
   }
 }
 function sofa(parent: THREE.Object3D, x: number, z: number, rotation: number, fabric: THREE.Material) {
@@ -96,8 +97,8 @@ export function createDay21(parent: THREE.Object3D) {
   rod(coffee, [-.6, 1.18, -.2], [-.6, 1.18, .04], .018, steel);
   box(coffee, .42, .48, .36, .65, 1.13, -.07, m.black, .02);
   box(coffee, .32, .15, .016, .65, 1.25, .119, steel);
-  cylinder(coffee, .045, .035, .1, .65, .94, .17, m.white);
-  for (const y of [1.55, 1.9]) { box(coffee, 1.1, .035, .22, 0, y, -.23, m.white); for (const x of [-.35, 0, .35]) cylinder(coffee, .04, .035, .09, x, y + .06, -.23, m.white); }
+  cylinder(coffee, .045, .035, .1, .65, .94, .17, m.white, { cast: false });
+  for (const y of [1.55, 1.9]) { box(coffee, 1.1, .035, .22, 0, y, -.23, m.white); for (const x of [-.35, 0, .35]) cylinder(coffee, .04, .035, .09, x, y + .06, -.23, m.white, { cast: false }); }
   box(shell.northWest, 3, .8, .45, -24.1, .43, 17.92, m.white);
   for (const x of [-25.55, -24.55, -23.55, -22.65]) box(shell.northWest, .013, .73, .01, x, .45, 18.151, m.trim);
   const print = new THREE.MeshStandardMaterial({ map: graphicTexture('print'), roughness: .95 });
@@ -118,5 +119,8 @@ export function createDay21(parent: THREE.Object3D) {
   for (const x of [-17.7, -16.9]) rod(group, [x, .04, 18.05], [x, 1.7, 18.05], .018, m.black);
   rod(group, [-17.7, 1.7, 18.05], [-16.9, 1.7, 18.05], .018, m.black);
   for (const x of [-17.5, -17.15]) box(group, .32, .85, .15, x, 1.12, 18.05, x < -17.3 ? m.black : grey, .05);
+  const boundaries = [...shell.walls.map(wall => wall.group), shell.roof];
+  instanceStatic(group, { boundaries });
+  for (const boundary of boundaries) instanceStatic(boundary);
   return shell;
 }

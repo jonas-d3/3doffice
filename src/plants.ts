@@ -26,7 +26,7 @@ export function plant(parent: Parent, x: number, z: number, size = 1) {
   for (let i = 0; i < 10; i++) {
     const angle = i * 2.4, height = .7 + random() * .7, reach = .15 + random() * .45;
     const tip = new THREE.Vector3(Math.sin(angle) * reach, .5 + height, Math.cos(angle) * reach);
-    rod(group, [0, .5, 0], tip.toArray(), .012, m.green);
+    rod(group, [0, .5, 0], tip.toArray(), .012, m.green, { cast: false });
     leaf(group, tip, .55 + random() * .35, .14 + random() * .09, angle, .45 + random() * .7);
   }
 }

@@ -6,6 +6,7 @@ import { desks, deskIslands, deskSize, chairOffset, workspacePlants, workspaceSo
 import { createWorkspaceShell } from './workspace-shell';
 import { createProximityWallpaper } from './proximity-wallpaper.mjs';
 import { youtubeWallpaper } from './youtube-wallpaper';
+import { instanceStatic } from './static-instances.mjs';
 import { lazyScreens } from './lazy-screens';
 import { registerImage } from './image-assets';
 import pinupUrl from './assets/thrane-pixel-pinup.webp';
@@ -59,7 +60,7 @@ function chair(parent: THREE.Object3D, brown: boolean) {
   for (let i = 0; i < 5; i++) {
     const angle = i * Math.PI * 2 / 5, x = Math.cos(angle) * .32, z = Math.sin(angle) * .32;
     rod(parent, [0, .16, 0], [x, .065, z], .023, m.black);
-    cylinder(parent, .041, .041, .035, x, .041, z, m.black).rotation.z = Math.PI / 2;
+    cylinder(parent, .041, .041, .035, x, .041, z, m.black, { cast: false }).rotation.z = Math.PI / 2;
   }
   for (const x of [-.29, .29]) {
     rod(parent, [x, .47, -.12], [x, .69, -.12], .014, m.black);
@@ -71,8 +72,8 @@ function chair(parent: THREE.Object3D, brown: boolean) {
 function monitor(parent: THREE.Object3D, x: number, portrait = false, active = false, wallpaper?: THREE.Material, upper = false, quadrant?: [number, number]) {
   const width = portrait ? .34 : .63, height = portrait ? .61 : .36;
   const y = upper ? 1.56 : 1.17;
-  if (!upper) box(parent, .23, .025, .16, x, .795, -.17, m.black);
-  rod(parent, [x, upper ? 1.09 : .81, -.20], [x, y - .08, -.20], .018, m.black);
+  if (!upper) box(parent, .23, .025, .16, x, .795, -.17, m.black, 0, { cast: false });
+  rod(parent, [x, upper ? 1.09 : .81, -.20], [x, y - .08, -.20], .018, m.black, { cast: false });
   const panel = new THREE.Group(); parent.add(panel); panel.position.set(x, y, -.17);
   if (upper) panel.rotation.x = .06;
   box(panel, width, height, .045, 0, 0, 0, m.black, .009);
@@ -101,7 +102,7 @@ function laptop(parent: THREE.Object3D) {
   const group = new THREE.Group(); parent.add(group); group.position.set(-.51, .79, .18);
   box(group, .32, .016, .23, 0, 0, 0, silver, .006);
   box(group, .27, .003, .095, 0, .01, -.035, m.black, .003);
-  for (let row = 0; row < 4; row++) box(group, .25, .002, .004, 0, .012, -.067 + row * .022, silver);
+  for (let row = 0; row < 4; row++) box(group, .25, .002, .004, 0, .012, -.067 + row * .022, silver, 0, { cast: false });
   box(group, .095, .002, .055, 0, .01, .065, chairMesh, .003);
   const lid = new THREE.Group(); group.add(lid); lid.position.set(0, .008, -.11); lid.rotation.x = -.16;
   box(lid, .32, .21, .013, 0, .105, 0, m.black, .006);
@@ -128,23 +129,23 @@ export function workstation(parent: THREE.Object3D, desk: typeof desks[number], 
     monitor(group, -.34, false, false, spanWallpaper ? wallpapers[0] : wallpapers[2], true, spanWallpaper ? [0, 1] : undefined);
     monitor(group, .34, false, false, spanWallpaper ? wallpapers[0] : wallpapers[3], true, spanWallpaper ? [1, 1] : undefined);
   }
-  box(group, .42, .018, .15, -.1, .785, .17, index % 4 ? m.black : m.white, .009);
-  for (let row = 0; row < 4; row++) box(group, .38, .003, .008, -.1, .796, .117 + row * .029, silver);
-  const mouse = mesh(group, new THREE.SphereGeometry(.045, 10, 6), m.black, .22, .802, .18); mouse.scale.set(.6, .4, 1);
+  box(group, .42, .018, .15, -.1, .785, .17, index % 4 ? m.black : m.white, .009, { cast: false });
+  for (let row = 0; row < 4; row++) box(group, .38, .003, .008, -.1, .796, .117 + row * .029, silver, 0, { cast: false });
+  const mouse = mesh(group, new THREE.SphereGeometry(.045, 10, 6), m.black, .22, .802, .18, { cast: false }); mouse.scale.set(.6, .4, 1);
   if (fourScreens) laptop(group);
   else if (index % 3 === 0) {
     box(group, .3, .016, .22, -.53, .79, .15, silver);
     box(group, .3, .2, .014, -.53, .89, .045, m.black).rotation.x = -.12;
   }
-  cylinder(group, .035, .03, .095, .6, .823, .13, index % 2 ? m.white : leather);
-  if (index % 4 === 1) cylinder(group, .035, .035, .26, .58, .91, -.22, silver);
+  cylinder(group, .035, .03, .095, .6, .823, .13, index % 2 ? m.white : leather, { cast: false });
+  if (index % 4 === 1) cylinder(group, .035, .035, .26, .58, .91, -.22, silver, { cast: false });
   const seat = new THREE.Group(); group.add(seat); seat.position.set(0, 0, chairOffset); seat.rotation.y = index % 2 ? .07 : -.09;
   chair(seat, index % 3 !== 1);
   box(group, deskSize.width - .15, .006, .95, 0, .027, chairOffset - .1, mat);
   cylinder(group, .12, .085, .26, .56, .145, .42, m.black);
   cylinder(group, .126, .126, .025, .56, .276, .42, silver);
   const cable = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-.3, .74, -.25), new THREE.Vector3(.25, .15, -.25), new THREE.Vector3(.55, .14, -.17));
-  mesh(group, new THREE.TubeGeometry(cable, 8, .007, 4, false), m.black, 0, 0, 0);
+  mesh(group, new THREE.TubeGeometry(cable, 8, .007, 4, false), m.black, 0, 0, 0, { cast: false });
   if (index % 4 === 0) box(group, .22, .42, .4, .43, .23, -.13, m.black, .014);
   if (index === 5 || index === 11) {
     box(group, .13, .035, .13, .58, .8, -.23, m.black);
@@ -186,7 +187,7 @@ function mossWall(parent: THREE.Object3D) {
   box(guitar, .055, .62, .035, 0, .55, 0, m.bark);
   cylinder(guitar, .05, .05, .008, 0, .14, .05, gold).rotation.x = Math.PI / 2;
   box(guitar, .08, .14, .04, 0, .9, 0, m.black, .01);
-  for (let i = 0; i < 6; i++) rod(guitar, [-.02 + i * .008, .02, .06], [-.02 + i * .008, .93, .025], .0012, silver);
+  for (let i = 0; i < 6; i++) rod(guitar, [-.02 + i * .008, .02, .06], [-.02 + i * .008, .93, .025], .0012, silver, { cast: false });
   box(parent, .4, .9, 1.1, -.27, .45, 22.6, m.white);
 }
 
@@ -288,6 +289,9 @@ export function createWorkspace(parent: THREE.Object3D) {
   for (const y of [-.12, .12]) for (let i = 0; i < 3; i++) box(print, .035, .16, .008, -.12 + i * .1, y + i * .025, .03, m.white).rotation.z = -.45;
   cylinder(group, .055, .12, .2, 7.9, 2.2, 19.7, gold);
   cylinder(group, .09, .11, .025, 7.9, 2.09, 19.7, gold);
+  const boundaries = [...shell.walls.map(wall => wall.group), shell.roof];
+  instanceStatic(group, { boundaries });
+  for (const boundary of boundaries) instanceStatic(boundary);
   return {
     ...shell, television, holbechScreens, jesperScreen, martinScreen,
     screenFeatures: [henrikScreens.feature, anjaScreens.feature, palmScreens.feature, nicolaiScreens.feature, thraneScreens.feature, larsScreens.feature, jesperScreen.feature, holbechScreens.feature],

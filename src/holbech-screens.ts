@@ -22,10 +22,6 @@ export class HolbechScreens {
   ];
   private overviewCamera = this.camera(-5.4, 12.2, 18, 32, 46, 42);
   private liveDisplay?: THREE.Mesh;
-  private center = new THREE.Vector3();
-  private normal = new THREE.Vector3();
-  private offset = new THREE.Vector3();
-  private projected = new THREE.Vector3();
   private elapsed = 0;
   private liveDirty = true;
   dirty = true;
@@ -55,11 +51,7 @@ export class HolbechScreens {
 
   update(camera: THREE.PerspectiveCamera, dt: number, animate: boolean) {
     if (!animate || !this.liveDisplay) return false;
-    this.liveDisplay.getWorldPosition(this.center);
-    this.liveDisplay.getWorldDirection(this.normal); this.offset.copy(camera.position).sub(this.center);
-    if ((this.offset.lengthSq() > 8 ** 2 && !screenPriority(this.liveDisplay, camera, innerHeight)) || this.offset.dot(this.normal) <= 0) return false;
-    camera.updateMatrixWorld(); this.projected.copy(this.center).project(camera);
-    if (this.projected.z < -1 || this.projected.z > 1 || Math.abs(this.projected.x) > 1.3 || Math.abs(this.projected.y) > 1.3) return false;
+    if (!screenPriority(this.liveDisplay, camera, innerHeight, 8)) return false;
     this.elapsed += dt;
     if (this.elapsed < 1 / 12) return false;
     this.elapsed %= 1 / 12;

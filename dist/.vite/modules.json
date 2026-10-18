@@ -1,0 +1,134 @@
+{
+  "assets/index-DQCAj2Ry.js": [
+    "\u0000vite/modulepreload-polyfill.js",
+    "/src/style.css",
+    "/src/load-queue.mjs",
+    "/src/asset-cache.mjs",
+    "/src/feature-triggers.mjs",
+    "/src/image-assets.ts",
+    "/src/materials.ts",
+    "/src/layout.mjs",
+    "/src/placement.mjs",
+    "/node_modules/.pnpm/three@0.186.1/node_modules/three/examples/jsm/geometries/RoundedBoxGeometry.js",
+    "/src/geometry-cache.mjs",
+    "/src/geometry.ts",
+    "/src/architecture.ts",
+    "/src/lobby-layout.mjs",
+    "/src/workspace-layout.mjs",
+    "/src/day21-layout.mjs",
+    "/src/movement.mjs",
+    "/src/restrooms.ts",
+    "/src/plants.ts",
+    "/src/minecraft.ts",
+    "/src/kitchen.ts",
+    "/src/lobby.ts",
+    "/src/workspace-shell.ts",
+    "/src/proximity-wallpaper.mjs",
+    "/src/youtube-wallpaper.ts",
+    "/src/static-instances.mjs",
+    "/src/lazy-feature.mjs",
+    "/src/lazy-screens.ts",
+    "/src/assets/thrane-pixel-pinup.webp",
+    "/src/assets/thrane-children.webp",
+    "/src/assets/astro-logo.png",
+    "/src/assets/wiibroe-pilsner.webp",
+    "/src/assets/wiibroe-2026.webp",
+    "/src/assets/annie-graphs.svg",
+    "/src/assets/annie-diagrams.svg",
+    "\u0000vite/preload-helper.js",
+    "/src/workspace.ts",
+    "/src/day21-shell.ts",
+    "/src/day21.ts",
+    "/src/model.ts",
+    "/node_modules/.pnpm/three@0.186.1/node_modules/three/examples/jsm/controls/OrbitControls.js",
+    "/src/navigation.ts",
+    "/src/minimap.ts",
+    "/src/coffee-layout.mjs",
+    "/src/visitor-walk.mjs",
+    "/src/assets/apply-monogram.svg",
+    "/src/visitor.ts",
+    "/src/scene-surfaces.mjs",
+    "/src/feature-status.ts",
+    "/src/main.ts",
+    "/index.html"
+  ],
+  "assets/anja-screens-1Yoe_Ioq.js": [
+    "/src/assets/anja-fridge-webcam.webp",
+    "/src/assets/anja-elevator-webcam.webp",
+    "/src/anja-screens.ts"
+  ],
+  "assets/coffee-controller-DZEfD6ms.js": [
+    "/src/coffee-controller.ts"
+  ],
+  "assets/creeper-controller-CkdlwpXY.js": [
+    "/src/creeper-controller.ts"
+  ],
+  "assets/donkey-kong-game-iK267aG7.js": [
+    "/src/donkey-kong.mjs",
+    "/src/donkey-kong-model.ts",
+    "/src/donkey-kong-game.ts"
+  ],
+  "assets/easter-egg-state-BUel5wUv.js": [
+    "/src/easter-egg-state.mjs"
+  ],
+  "assets/easter-interaction-pS9HXwDw.js": [
+    "/src/easter-interaction.ts"
+  ],
+  "assets/head-camera-browser-CE7mejaJ.js": [
+    "/src/head-camera-browser.ts"
+  ],
+  "assets/henrik-screens-DkGrB-vP.js": [
+    "/src/assets/1000mods-cheat-death.webp",
+    "/src/henrik-screens.ts"
+  ],
+  "assets/holbech-screens-D7z-Y6aA.js": [
+    "/src/holbech-screens.ts"
+  ],
+  "assets/jesper-screen-CQdhrX5D.js": [
+    "/src/jesper-screen.ts"
+  ],
+  "assets/lars-screens-BBw6hWHi.js": [
+    "/src/lars-screens.ts"
+  ],
+  "assets/nicolai-screens-tdig6I64.js": [
+    "/src/nicolai-screens.ts"
+  ],
+  "assets/palm-screens-Ce3GzPdS.js": [
+    "/src/palm-screens.ts"
+  ],
+  "assets/salmon-controller-LPzjkhYS.js": [
+    "/src/salmon-controller.ts"
+  ],
+  "assets/tetris-game-D6aYd59L.js": [
+    "/src/tetris.mjs",
+    "/src/tetris-screen.ts",
+    "/src/tetris-game.ts"
+  ],
+  "assets/thrane-screens-Bh8Y51vt.js": [
+    "/src/thrane-screens.ts"
+  ],
+  "assets/three-6cyogrSz.js": [
+    "/node_modules/.pnpm/three@0.186.1/node_modules/three/build/three.core.js",
+    "/node_modules/.pnpm/three@0.186.1/node_modules/three/build/three.module.js"
+  ],
+  "assets/tv-game-RlCwfnAW.js": [
+    "/src/runner.mjs",
+    "/src/runner-screen.ts",
+    "/src/tv-game.ts"
+  ],
+  "assets/whiteboard-game-CTTCptad.js": [
+    "/src/invaders.mjs",
+    "/src/whiteboard-play.mjs",
+    "/src/invaders-screen.ts",
+    "/src/sound-shots.mjs",
+    "/src/microphone-shots.ts",
+    "/src/head-steering.mjs",
+    "/src/head-camera.ts",
+    "/src/whiteboard-game.ts"
+  ],
+  "assets/youtube-screen-DLFqkTA-.js": [
+    "/node_modules/.pnpm/three@0.186.1/node_modules/three/examples/jsm/renderers/CSS3DRenderer.js",
+    "/src/youtube-screen-visibility.mjs",
+    "/src/youtube-screen.ts"
+  ]
+}

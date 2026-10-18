@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { sceneSurfaces } from './scene-surfaces';
+import { sceneSurfaces } from './scene-surfaces.mjs';
 import { Tetris } from './tetris.mjs';
 import { TetrisScreen } from './tetris-screen';
 import { contains, day21Meeting } from './layout.mjs';

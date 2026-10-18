@@ -1,0 +1,29 @@
+{
+  "groups": 4,
+  "instances": 26,
+  "before": {
+    "frame": 11,
+    "calls": 3238,
+    "triangles": 815514,
+    "points": 0,
+    "lines": 0,
+    "shadow": {
+      "calls": 2624,
+      "triangles": 558866
+    }
+  },
+  "after": {
+    "frame": 12,
+    "calls": 3240,
+    "triangles": 800778,
+    "points": 0,
+    "lines": 0,
+    "shadow": {
+      "calls": 2624,
+      "triangles": 543890
+    }
+  },
+  "raycastHits": 0,
+  "colorWrite": true,
+  "depthWrite": true
+}

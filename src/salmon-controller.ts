@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { installInteraction } from './easter-interaction';
-import { refreshSceneSurfaces } from './scene-surfaces';
+import { refreshSceneSurfaces } from './scene-surfaces.mjs';
 import type { JesperScreen } from './jesper-screen';
 import type { Navigation } from './navigation';
 export class SalmonController {

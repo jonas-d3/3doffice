@@ -1,5 +1,7 @@
 # Plan 3: Moduler og easter eggs indlæses efter behov
 
+Status 18. oktober 2026: Implementeret med én afvigelse: fejlede browserimports kræver brugerens genindlæsning; se rapporten. Se [målinger, kontrol og afgrænsninger](results/02-06/README.md).
+
 Flyt valgfrie controllers ud af den statiske importgraf og udskyd deres oprettelse. Den komplette overbliksmodel, skærmflader og lette aktiveringstriggere er klar fra starten. Efter første brugbare frame må feature-moduler gradvist varmes i baggrunden. Import, oprettelse og aktivering er separate trin: store canvases og sceneobjekter må ikke oprettes som bivirkning af et imports topniveau. Genbrug køen og billedindlæsningen fra plan 2.
 
 I dag importerer `main.ts` alle spil og `EasterEggs`, mens `workspace.ts` importerer skærmcontrollers og `youtubeWallpaper` fra modulet med CSS3DRenderer. Et dynamisk import hjælper først, når de samme moduler ikke også er statisk tilgængelige gennem en anden sti.
@@ -10,9 +12,9 @@ Lav en lille lazy-handle, som deler igangværende import, opretter én controlle
 
 Berørte filer: `src/main.ts`, `src/tetris-game.ts`, nyt `src/lazy-feature.ts`, nyt `src/feature-triggers.ts` og fokuserede tests. Omfang: M.
 
-- [ ] Tetris-controlleren ligger uden for den kritiske opstart; kode kan forudindlæses efter første brugbare frame. Begge eksisterende adgangsveje virker, og baggrundsindlæsning starter ikke spillet.
-- [ ] Hurtige gentagne aktiveringer giver én instans og ét sæt listeners. Sen completion efter afgang overtager ikke kamera eller input.
-- [ ] Spiltilstand, pause, fokus og tilbagevenden bevares; loadfejl kan genforsøges uden at genstarte kontoret.
+- [x] Tetris-controlleren ligger uden for den kritiske opstart; kode kan forudindlæses efter første brugbare frame. Begge eksisterende adgangsveje virker, og baggrundsindlæsning starter ikke spillet.
+- [x] Hurtige gentagne aktiveringer giver én instans og ét sæt listeners. Sen completion efter afgang overtager ikke kamera eller input.
+- [ ] Spiltilstand, pause, fokus og tilbagevenden bevares; loadfejl kan genforsøges uden at genstarte kontoret. **Afvigelse:** spiladfærden er verificeret, men fejlede module-imports kræver eksplicit genindlæsning på grund af browserens modulcache. Oprettelsesfejl og billeder kan genforsøges lokalt.
 
 Kontrol: lazy-livscyklustest, eksisterende Tetris-tests og browserflow med forsinket/fejlet import. Kontrollér buildets statiske importlukning.
 
@@ -22,9 +24,9 @@ Brug samme handle til TV-spillet og derefter whiteboard-spillet. TV-indhold prio
 
 Filer pr. ændring: `src/main.ts`, `src/feature-triggers.ts`, den relevante `*-game.ts`, eventuelt dens `*-screen.ts` og relevante tests. Omfang: M pr. funktion.
 
-- [ ] TV/whiteboard-spil og Whiteboard-fonten ligger efter første brugbare frame. De må forudindlæses gradvist, og kameraets aktuelle visning kan hæve prioriteten.
-- [ ] Whiteboardets fem streger, TV-betjening, pause/genoptagelse og touch virker efter første og gentagen tilgang.
-- [ ] Kamera/mikrofon kræver fortsat et eksplicit klik. Afstand, blur, skjult fane og konteksttab stopper enhederne som før; WASM og modellen forbliver udskudt til kameraaktivering.
+- [x] TV/whiteboard-spil og Whiteboard-fonten ligger efter første brugbare frame. De må forudindlæses gradvist, og kameraets aktuelle visning kan hæve prioriteten.
+- [x] Whiteboardets fem streger, TV-betjening, pause/genoptagelse og touch virker efter første og gentagen tilgang.
+- [x] Kamera/mikrofon kræver fortsat et eksplicit klik. Afstand, blur, skjult fane og konteksttab stopper enhederne som før; WASM og modellen forbliver udskudt til kameraaktivering.
 
 Kontrol: eksisterende runner-, invaders-, whiteboard-, mikrofon- og hovedstyringstests. Test afgang mens tilladelse/import afventer. Hvis et browser-API kræver en aktuel brugerhandling, anvendes et nyt klik efter load.
 
@@ -34,9 +36,9 @@ Flyt `youtubeWallpaper()` til et lille selvstændigt modul, så `workspace.ts` i
 
 YouTube-filer: `src/youtube-screen.ts`, nyt wallpaper-modul, `src/workspace.ts`, `src/main.ts`, trigger/tests. Easter-egg-filer: én controller ad gangen, `src/easter-eggs.ts`, `src/main.ts`, trigger og test. Omfang: M pr. ændring.
 
-- [ ] CSS3DRenderer er ude af den statiske initiale importgraf, og videoen starter stadig kun efter klik.
-- [ ] Kaffe/laks-kode må forudindlæses efter opstart, mens aktivering følger de eksisterende interaktionsregler; creeper klargøres ved gåtilstand uden en synlig ændring af dens eksisterende følgeadfærd. Jespers synlige skærmindhold kan indlæses gennem overblikszoom uafhængigt af fiskespillets interaktionsregler.
-- [ ] Nye sceneobjekter registreres i eksisterende occlusion-lister; indlæsningens rækkefølge giver ikke klik gennem vægge eller manglende mål.
+- [x] CSS3DRenderer er ude af den statiske initiale importgraf, og videoen starter stadig kun efter klik.
+- [x] Kaffe/laks-kode må forudindlæses efter opstart, mens aktivering følger de eksisterende interaktionsregler; creeper klargøres ved gåtilstand uden en synlig ændring af dens eksisterende følgeadfærd. Jespers synlige skærmindhold kan indlæses gennem overblikszoom uafhængigt af fiskespillets interaktionsregler.
+- [x] Nye sceneobjekter registreres i eksisterende occlusion-lister; indlæsningens rækkefølge giver ikke klik gennem vægge eller manglende mål.
 
 Kontrol: eksisterende YouTube-/easter-egg-tests samt bagfra, delvist skjult skærm, kaffebestilling og creeperens stopforsinkelse.
 
@@ -46,9 +48,9 @@ Lad `workspace.ts` oprette stabile skærmflader og lette, genkendelige placehold
 
 Filer pr. gruppe: `src/workspace.ts`, højst to skærmmoduler, trigger/handle og en fokuseret test. Jespers forbindelse til laks samt `settleCatch()` skal have en sikker adgangsvej, også før indlæsning. Holbechs `decorate()` må ikke forudsætte færdige render targets; de udskydes videre i plan 7.
 
-- [ ] Hver controller ligger uden for den kritiske opstart. Kode må varmes i baggrunden; store canvases oprettes ved relevans eller i en målt, lille forberedelsesopgave, og sceneidentiteterne bevares.
-- [ ] Eksisterende 8/12 fps-grænser, reduceret bevægelse og pauser bevares.
-- [ ] Alle dynamiske imports har fejlhåndtering, én instans og en brugbar placeholder. Direkte zoom fra overblikket viser det fulde skærmindhold uden krav om skift til gåtilstand; dette kontrolleres straks efter opstart og efter baggrundsindlæsning.
+- [x] Hver controller ligger uden for den kritiske opstart. Kode må varmes i baggrunden; store canvases oprettes ved relevans eller i en målt, lille forberedelsesopgave, og sceneidentiteterne bevares.
+- [x] Eksisterende 8/12 fps-grænser, reduceret bevægelse og pauser bevares.
+- [x] Alle dynamiske imports har fejlhåndtering, én instans og en brugbar placeholder. Direkte zoom fra overblikket viser det fulde skærmindhold uden krav om skift til gåtilstand; dette kontrolleres straks efter opstart og efter baggrundsindlæsning.
 
 ## Aflevering
 

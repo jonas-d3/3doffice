@@ -2,7 +2,10 @@ import { Vector3 } from 'three';
 
 const center = new Vector3(), normal = new Vector3(), offset = new Vector3(), projected = new Vector3(), edge = new Vector3();
 // Projected size permits free overview zoom, including a narrow camera field of view.
-export function screenPriority(screen, camera, viewportHeight = 1000) {
+export function screenPriority(screen, camera, viewportHeight = 1000, nearDistance = 6, related = true) {
+  if (related && screen.userData.relatedScreens?.length) {
+    return Math.max(...screen.userData.relatedScreens.map(candidate => screenPriority(candidate, camera, viewportHeight, nearDistance, false)));
+  }
   for (let object = screen; object; object = object.parent) if (!object.visible) return 0;
   screen.getWorldPosition(center); screen.getWorldDirection(normal);
   offset.copy(camera.position).sub(center);
@@ -12,5 +15,5 @@ export function screenPriority(screen, camera, viewportHeight = 1000) {
   const height = screen.geometry?.parameters?.height ?? .36;
   edge.set(0, height / 2, 0); screen.localToWorld(edge); edge.project(camera);
   const pixels = edge.distanceTo(projected) * viewportHeight;
-  return pixels >= 28 || offset.lengthSq() < 6 ** 2 ? 10 + Math.min(pixels, 1000) : 0;
+  return pixels >= 28 || offset.lengthSq() < nearDistance ** 2 ? 10 + Math.min(pixels, 1000) : 0;
 }

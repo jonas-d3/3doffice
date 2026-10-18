@@ -1,0 +1,132 @@
+{
+  "initial": [
+    {
+      "file": "assets/index-DQCAj2Ry.js",
+      "bytes": 145686,
+      "gzip": 51311
+    },
+    {
+      "file": "assets/index-D8iXvNrb.css",
+      "bytes": 13431,
+      "gzip": 3861
+    },
+    {
+      "file": "assets/three-6cyogrSz.js",
+      "bytes": 577508,
+      "gzip": 145351
+    }
+  ],
+  "initialJS": {
+    "bytes": 723194,
+    "gzip": 196662
+  },
+  "dynamic": [
+    {
+      "file": "assets/easter-egg-state-BUel5wUv.js",
+      "bytes": 2621,
+      "gzip": 1290
+    },
+    {
+      "file": "assets/easter-interaction-pS9HXwDw.js",
+      "bytes": 1400,
+      "gzip": 772
+    },
+    {
+      "file": "assets/anja-screens-1Yoe_Ioq.js",
+      "bytes": 3465,
+      "gzip": 1830
+    },
+    {
+      "file": "assets/coffee-controller-DZEfD6ms.js",
+      "bytes": 1600,
+      "gzip": 835
+    },
+    {
+      "file": "assets/creeper-controller-CkdlwpXY.js",
+      "bytes": 2322,
+      "gzip": 1119
+    },
+    {
+      "file": "assets/donkey-kong-game-iK267aG7.js",
+      "bytes": 16511,
+      "gzip": 6240
+    },
+    {
+      "file": "assets/head-camera-browser-CE7mejaJ.js",
+      "bytes": 795,
+      "gzip": 499
+    },
+    {
+      "file": "assets/henrik-screens-DkGrB-vP.js",
+      "bytes": 4320,
+      "gzip": 2363
+    },
+    {
+      "file": "assets/holbech-screens-D7z-Y6aA.js",
+      "bytes": 2342,
+      "gzip": 1157
+    },
+    {
+      "file": "assets/jesper-screen-CQdhrX5D.js",
+      "bytes": 7427,
+      "gzip": 3085
+    },
+    {
+      "file": "assets/lars-screens-BBw6hWHi.js",
+      "bytes": 6167,
+      "gzip": 3093
+    },
+    {
+      "file": "assets/nicolai-screens-tdig6I64.js",
+      "bytes": 3777,
+      "gzip": 2028
+    },
+    {
+      "file": "assets/palm-screens-Ce3GzPdS.js",
+      "bytes": 2802,
+      "gzip": 1544
+    },
+    {
+      "file": "assets/salmon-controller-LPzjkhYS.js",
+      "bytes": 406,
+      "gzip": 288
+    },
+    {
+      "file": "assets/tetris-game-D6aYd59L.js",
+      "bytes": 12351,
+      "gzip": 4403
+    },
+    {
+      "file": "assets/thrane-screens-Bh8Y51vt.js",
+      "bytes": 4447,
+      "gzip": 2367
+    },
+    {
+      "file": "assets/tv-game-RlCwfnAW.js",
+      "bytes": 8299,
+      "gzip": 3215
+    },
+    {
+      "file": "assets/whiteboard-game-CTTCptad.js",
+      "bytes": 27412,
+      "gzip": 9261
+    },
+    {
+      "file": "assets/youtube-screen-DLFqkTA-.js",
+      "bytes": 5856,
+      "gzip": 2367
+    }
+  ],
+  "worker": [
+    "head-tracker.worker-DuUzyeEa.js"
+  ],
+  "wasm": [
+    "vision_wasm_module_internal-BEiPKPmH.js",
+    "vision_wasm_module_internal-BtRONiFR.wasm"
+  ],
+  "model": [
+    "models/face_landmarker.task (requested only by camera activation)"
+  ],
+  "violations": [],
+  "budgetGzip": 204672
+}

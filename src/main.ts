@@ -7,7 +7,7 @@ import { renderMinimap } from './minimap';
 import { Visitor } from './visitor';
 import { LazyFeature } from './lazy-feature.mjs';
 import { screenPriority } from './feature-triggers.mjs';
-import { refreshSceneSurfaces } from './scene-surfaces';
+import { refreshSceneSurfaces } from './scene-surfaces.mjs';
 import { featureStatus } from './feature-status';
 import { screenPlaceholder } from './lazy-screens';
 

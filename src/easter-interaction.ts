@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { sceneSurfaces } from './scene-surfaces';
+import { sceneSurfaces } from './scene-surfaces.mjs';
 import type { Navigation } from './navigation';
 
 export function belongsTo(object: THREE.Object3D, target: THREE.Object3D) {

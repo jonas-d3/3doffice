@@ -1,0 +1,204 @@
+{
+  "screens": [
+    {
+      "name": "Henrik",
+      "waitMs": 412,
+      "state": {
+        "view": "overview",
+        "materials": [
+          {
+            "texture": true,
+            "width": 768
+          },
+          {
+            "texture": true,
+            "width": 768
+          }
+        ]
+      }
+    },
+    {
+      "name": "Anja",
+      "waitMs": 387,
+      "state": {
+        "view": "overview",
+        "materials": [
+          {
+            "texture": true,
+            "width": 600
+          },
+          {
+            "texture": true,
+            "width": 600
+          }
+        ]
+      }
+    },
+    {
+      "name": "Palm",
+      "waitMs": 352,
+      "state": {
+        "view": "overview",
+        "materials": [
+          {
+            "texture": true,
+            "width": 512
+          },
+          {
+            "texture": true,
+            "width": 512
+          }
+        ]
+      }
+    },
+    {
+      "name": "Nicolai",
+      "waitMs": 409,
+      "state": {
+        "view": "overview",
+        "materials": [
+          {
+            "texture": true,
+            "width": 768
+          },
+          {
+            "texture": true,
+            "width": 768
+          }
+        ]
+      }
+    },
+    {
+      "name": "Thrane",
+      "waitMs": 353,
+      "state": {
+        "view": "overview",
+        "materials": [
+          {
+            "texture": true,
+            "width": 768
+          },
+          {
+            "texture": true,
+            "width": 768
+          },
+          {
+            "texture": true,
+            "width": 768
+          }
+        ]
+      }
+    },
+    {
+      "name": "Lars",
+      "waitMs": 404,
+      "state": {
+        "view": "overview",
+        "materials": [
+          {
+            "texture": true,
+            "width": 768
+          },
+          {
+            "texture": true,
+            "width": 768
+          },
+          {
+            "texture": true,
+            "width": 768
+          },
+          {
+            "texture": true,
+            "width": 768
+          }
+        ]
+      }
+    },
+    {
+      "name": "Jesper",
+      "waitMs": 353,
+      "state": {
+        "view": "overview",
+        "materials": [
+          {
+            "texture": true,
+            "width": 768
+          },
+          {
+            "texture": true,
+            "width": 768
+          }
+        ]
+      }
+    },
+    {
+      "name": "Holbech",
+      "waitMs": 358,
+      "state": {
+        "view": "overview",
+        "materials": [
+          {
+            "texture": true,
+            "width": 768
+          },
+          {
+            "texture": true,
+            "width": 768
+          }
+        ]
+      }
+    }
+  ],
+  "games": [
+    {
+      "name": "Tetris",
+      "paused": "Pause · fortsæt med P eller knappen"
+    },
+    {
+      "name": "Donkey Kong",
+      "paused": "Pause · fortsæt med P"
+    }
+  ],
+  "shadows": [],
+  "whiteboard": {
+    "fontLoaded": true,
+    "canDraw": true,
+    "sensorRequests": 0
+  },
+  "help": true,
+  "sensorRequests": 0,
+  "requests": [
+    "http://127.0.0.1:4175/3doffice/dist/assets/index-B18h8drY.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/index-D8iXvNrb.css",
+    "http://127.0.0.1:4175/3doffice/dist/assets/three-6cyogrSz.js",
+    "http://127.0.0.1:4175/favicon.ico",
+    "http://127.0.0.1:4175/3doffice/dist/assets/thrane-pixel-pinup-CdYYM-RA.webp",
+    "http://127.0.0.1:4175/3doffice/dist/assets/thrane-children-Wo8Fg2De.webp",
+    "http://127.0.0.1:4175/3doffice/dist/assets/henrik-screens-DQLgMEcz.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/astro-logo-Cg72ZFME.png",
+    "http://127.0.0.1:4175/3doffice/dist/assets/1000mods-cheat-death-DD8Q8cx4.webp",
+    "http://127.0.0.1:4175/3doffice/dist/assets/palm-screens-qu4xdI7A.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/wiibroe-pilsner-CIYQq_27.webp",
+    "http://127.0.0.1:4175/3doffice/dist/assets/nicolai-screens-B0KPSEvK.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/wiibroe-2026-xvdzOPiK.webp",
+    "http://127.0.0.1:4175/3doffice/dist/assets/anja-screens-Dcka-Q8X.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/jesper-screen-DyVL4-E6.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/easter-egg-state-D4yrCcMY.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/holbech-screens-Cced6ul3.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/thrane-screens-BwHazUWE.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/lars-screens-COVsD2S2.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/youtube-screen-DLFqkTA-.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/tv-game-RlCwfnAW.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/tetris-game-Bd54C5pr.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/donkey-kong-game-n9Kfw5bI.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/whiteboard-game-Cfx-yi_n.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/coffee-controller-Dt9o0Inw.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/easter-interaction-DPfPfRe3.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/salmon-controller-CocQxbf4.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/creeper-controller-BIBtlGrl.js",
+    "http://127.0.0.1:4175/3doffice/dist/assets/anja-fridge-webcam-BDYkwrG5.webp",
+    "http://127.0.0.1:4175/3doffice/dist/assets/anja-elevator-webcam-DyF5H08r.webp",
+    "http://127.0.0.1:4175/3doffice/dist/assets/virgil-Q_0-KYu6.woff2"
+  ],
+  "errors": []
+}

@@ -1,0 +1,1270 @@
+{
+  "browser": "151.0.7922.34",
+  "runs": [
+    {
+      "warm": false,
+      "metrics": {
+        "modelMs": 340.80000001192093,
+        "firstFrame": 5516.4000000059605,
+        "frames": [
+          {
+            "time": 4645.9000000059605,
+            "cpu": 1662.6000000089407,
+            "frame": 3,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 82
+            }
+          },
+          {
+            "time": 5516.20000000298,
+            "cpu": 26.5,
+            "frame": 6,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          },
+          {
+            "time": 5564.29999999702,
+            "cpu": 17.899999991059303,
+            "frame": 7,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          }
+        ]
+      },
+      "meshes": 4670,
+      "casters": 4615,
+      "geometries": 4668,
+      "resources": [
+        {
+          "name": "index-GzubbQZg.js",
+          "start": 34.79999999701977,
+          "duration": 26.600000008940697,
+          "size": 227019,
+          "transfer": 227319
+        },
+        {
+          "name": "index-Dy84jw3E.css",
+          "start": 35.099999994039536,
+          "duration": 6.4000000059604645,
+          "size": 3743,
+          "transfer": 4043
+        },
+        {
+          "name": "virgil-Q_0-KYu6.woff2",
+          "start": 577.7000000029802,
+          "duration": 29.299999997019768,
+          "size": 61248,
+          "transfer": 61548
+        },
+        {
+          "name": "thrane-pixel-pinup-CdYYM-RA.webp",
+          "start": 581.5999999940395,
+          "duration": 2.6000000089406967,
+          "size": 82940,
+          "transfer": 83240
+        },
+        {
+          "name": "thrane-children-Wo8Fg2De.webp",
+          "start": 581.7000000029802,
+          "duration": 2.3999999910593033,
+          "size": 121362,
+          "transfer": 121662
+        },
+        {
+          "name": "anja-fridge-webcam-BDYkwrG5.webp",
+          "start": 581.7000000029802,
+          "duration": 3,
+          "size": 30780,
+          "transfer": 31080
+        },
+        {
+          "name": "anja-elevator-webcam-DyF5H08r.webp",
+          "start": 581.7000000029802,
+          "duration": 3.0999999940395355,
+          "size": 17542,
+          "transfer": 17842
+        },
+        {
+          "name": "1000mods-cheat-death-DD8Q8cx4.webp",
+          "start": 581.7000000029802,
+          "duration": 3.0999999940395355,
+          "size": 95762,
+          "transfer": 96062
+        },
+        {
+          "name": "astro-logo-Cg72ZFME.png",
+          "start": 581.7999999970198,
+          "duration": 3,
+          "size": 14573,
+          "transfer": 14873
+        },
+        {
+          "name": "wiibroe-2026-xvdzOPiK.webp",
+          "start": 581.7999999970198,
+          "duration": 3.9000000059604645,
+          "size": 57886,
+          "transfer": 58186
+        },
+        {
+          "name": "wiibroe-pilsner-CIYQq_27.webp",
+          "start": 581.7999999970198,
+          "duration": 4,
+          "size": 32714,
+          "transfer": 33014
+        },
+        {
+          "name": "favicon.ico",
+          "start": 5565,
+          "duration": 1.0999999940395355,
+          "size": 126,
+          "transfer": 426
+        }
+      ],
+      "errors": []
+    },
+    {
+      "warm": true,
+      "metrics": {
+        "modelMs": 235.70000000298023,
+        "firstFrame": 892.2999999970198,
+        "frames": [
+          {
+            "time": 808,
+            "cpu": 130.59999999403954,
+            "frame": 3,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 82
+            }
+          },
+          {
+            "time": 892.2000000029802,
+            "cpu": 17.299999997019768,
+            "frame": 6,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          }
+        ]
+      },
+      "meshes": 4670,
+      "casters": 4615,
+      "geometries": 4668,
+      "resources": [
+        {
+          "name": "index-GzubbQZg.js",
+          "start": 109.59999999403954,
+          "duration": 2.7000000029802322,
+          "size": 227019,
+          "transfer": 300
+        },
+        {
+          "name": "index-Dy84jw3E.css",
+          "start": 109.70000000298023,
+          "duration": 2.7999999970197678,
+          "size": 3743,
+          "transfer": 300
+        },
+        {
+          "name": "thrane-pixel-pinup-CdYYM-RA.webp",
+          "start": 241.90000000596046,
+          "duration": 1.699999988079071,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "thrane-children-Wo8Fg2De.webp",
+          "start": 242.09999999403954,
+          "duration": 2.2000000029802322,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "anja-fridge-webcam-BDYkwrG5.webp",
+          "start": 243.70000000298023,
+          "duration": 1.3999999910593033,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "anja-elevator-webcam-DyF5H08r.webp",
+          "start": 243.79999999701977,
+          "duration": 2.9000000059604645,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "1000mods-cheat-death-DD8Q8cx4.webp",
+          "start": 246.5,
+          "duration": 0.9000000059604645,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "virgil-Q_0-KYu6.woff2",
+          "start": 443.09999999403954,
+          "duration": 2.2000000029802322,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "astro-logo-Cg72ZFME.png",
+          "start": 449.20000000298023,
+          "duration": 1.5,
+          "size": 14573,
+          "transfer": 300
+        },
+        {
+          "name": "wiibroe-pilsner-CIYQq_27.webp",
+          "start": 449.20000000298023,
+          "duration": 2.2000000029802322,
+          "size": 32714,
+          "transfer": 300
+        },
+        {
+          "name": "wiibroe-2026-xvdzOPiK.webp",
+          "start": 449.29999999701977,
+          "duration": 2.5,
+          "size": 57886,
+          "transfer": 300
+        }
+      ],
+      "errors": []
+    },
+    {
+      "warm": false,
+      "metrics": {
+        "modelMs": 275.5,
+        "firstFrame": 935.9000000059605,
+        "frames": [
+          {
+            "time": 835,
+            "cpu": 127.29999999701977,
+            "frame": 3,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 82
+            }
+          },
+          {
+            "time": 935.7000000029802,
+            "cpu": 18.799999997019768,
+            "frame": 6,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          },
+          {
+            "time": 974.5,
+            "cpu": 37.29999999701977,
+            "frame": 7,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          }
+        ]
+      },
+      "meshes": 4670,
+      "casters": 4615,
+      "geometries": 4668,
+      "resources": [
+        {
+          "name": "index-GzubbQZg.js",
+          "start": 35.6000000089407,
+          "duration": 22.899999991059303,
+          "size": 227019,
+          "transfer": 227319
+        },
+        {
+          "name": "index-Dy84jw3E.css",
+          "start": 35.80000001192093,
+          "duration": 4,
+          "size": 3743,
+          "transfer": 4043
+        },
+        {
+          "name": "virgil-Q_0-KYu6.woff2",
+          "start": 453.30000001192093,
+          "duration": 30.299999997019768,
+          "size": 61248,
+          "transfer": 61548
+        },
+        {
+          "name": "thrane-children-Wo8Fg2De.webp",
+          "start": 457.1000000089407,
+          "duration": 3,
+          "size": 121362,
+          "transfer": 121662
+        },
+        {
+          "name": "thrane-pixel-pinup-CdYYM-RA.webp",
+          "start": 457.1000000089407,
+          "duration": 2.8999999910593033,
+          "size": 82940,
+          "transfer": 83240
+        },
+        {
+          "name": "anja-fridge-webcam-BDYkwrG5.webp",
+          "start": 457.1000000089407,
+          "duration": 3.5,
+          "size": 30780,
+          "transfer": 31080
+        },
+        {
+          "name": "anja-elevator-webcam-DyF5H08r.webp",
+          "start": 457.20000000298023,
+          "duration": 3.5,
+          "size": 17542,
+          "transfer": 17842
+        },
+        {
+          "name": "1000mods-cheat-death-DD8Q8cx4.webp",
+          "start": 457.20000000298023,
+          "duration": 4.200000002980232,
+          "size": 95762,
+          "transfer": 96062
+        },
+        {
+          "name": "astro-logo-Cg72ZFME.png",
+          "start": 457.20000000298023,
+          "duration": 4.200000002980232,
+          "size": 14573,
+          "transfer": 14873
+        },
+        {
+          "name": "wiibroe-pilsner-CIYQq_27.webp",
+          "start": 457.20000000298023,
+          "duration": 4.299999997019768,
+          "size": 32714,
+          "transfer": 33014
+        },
+        {
+          "name": "wiibroe-2026-xvdzOPiK.webp",
+          "start": 457.30000001192093,
+          "duration": 4.399999991059303,
+          "size": 57886,
+          "transfer": 58186
+        }
+      ],
+      "errors": []
+    },
+    {
+      "warm": true,
+      "metrics": {
+        "modelMs": 223.90000000596046,
+        "firstFrame": 998.2999999970198,
+        "frames": [
+          {
+            "time": 898.5999999940395,
+            "cpu": 190.20000000298023,
+            "frame": 3,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 82
+            }
+          },
+          {
+            "time": 998.2000000029802,
+            "cpu": 22.100000008940697,
+            "frame": 6,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          }
+        ]
+      },
+      "meshes": 4670,
+      "casters": 4615,
+      "geometries": 4668,
+      "resources": [
+        {
+          "name": "index-Dy84jw3E.css",
+          "start": 113.5,
+          "duration": 1.2000000029802322,
+          "size": 3743,
+          "transfer": 300
+        },
+        {
+          "name": "index-GzubbQZg.js",
+          "start": 113.5,
+          "duration": 2.5999999940395355,
+          "size": 227019,
+          "transfer": 300
+        },
+        {
+          "name": "thrane-pixel-pinup-CdYYM-RA.webp",
+          "start": 238.79999999701977,
+          "duration": 1.2000000029802322,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "thrane-children-Wo8Fg2De.webp",
+          "start": 238.8999999910593,
+          "duration": 1.2000000029802322,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "anja-fridge-webcam-BDYkwrG5.webp",
+          "start": 240.29999999701977,
+          "duration": 1,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "anja-elevator-webcam-DyF5H08r.webp",
+          "start": 240.29999999701977,
+          "duration": 1.7000000029802322,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "1000mods-cheat-death-DD8Q8cx4.webp",
+          "start": 242.3999999910593,
+          "duration": 1.2000000029802322,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "virgil-Q_0-KYu6.woff2",
+          "start": 432.3999999910593,
+          "duration": 1.1000000089406967,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "astro-logo-Cg72ZFME.png",
+          "start": 435.29999999701977,
+          "duration": 2.2000000029802322,
+          "size": 14573,
+          "transfer": 300
+        },
+        {
+          "name": "wiibroe-pilsner-CIYQq_27.webp",
+          "start": 435.29999999701977,
+          "duration": 2.7000000029802322,
+          "size": 32714,
+          "transfer": 300
+        },
+        {
+          "name": "wiibroe-2026-xvdzOPiK.webp",
+          "start": 435.29999999701977,
+          "duration": 2.7999999970197678,
+          "size": 57886,
+          "transfer": 300
+        }
+      ],
+      "errors": []
+    },
+    {
+      "warm": false,
+      "metrics": {
+        "modelMs": 275,
+        "firstFrame": 960.3999999910593,
+        "frames": [
+          {
+            "time": 856.7000000029802,
+            "cpu": 136.40000000596046,
+            "frame": 3,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 82
+            }
+          },
+          {
+            "time": 960,
+            "cpu": 19,
+            "frame": 6,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          },
+          {
+            "time": 1004.5999999940395,
+            "cpu": 41,
+            "frame": 7,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          }
+        ]
+      },
+      "meshes": 4670,
+      "casters": 4615,
+      "geometries": 4668,
+      "resources": [
+        {
+          "name": "index-GzubbQZg.js",
+          "start": 32.099999994039536,
+          "duration": 22.400000005960464,
+          "size": 227019,
+          "transfer": 227319
+        },
+        {
+          "name": "index-Dy84jw3E.css",
+          "start": 32.20000000298023,
+          "duration": 4.399999991059303,
+          "size": 3743,
+          "transfer": 4043
+        },
+        {
+          "name": "virgil-Q_0-KYu6.woff2",
+          "start": 446.29999999701977,
+          "duration": 32.20000000298023,
+          "size": 61248,
+          "transfer": 61548
+        },
+        {
+          "name": "thrane-pixel-pinup-CdYYM-RA.webp",
+          "start": 450.79999999701977,
+          "duration": 4.5999999940395355,
+          "size": 82940,
+          "transfer": 83240
+        },
+        {
+          "name": "thrane-children-Wo8Fg2De.webp",
+          "start": 450.8999999910593,
+          "duration": 4.5,
+          "size": 121362,
+          "transfer": 121662
+        },
+        {
+          "name": "anja-fridge-webcam-BDYkwrG5.webp",
+          "start": 450.8999999910593,
+          "duration": 4.4000000059604645,
+          "size": 30780,
+          "transfer": 31080
+        },
+        {
+          "name": "anja-elevator-webcam-DyF5H08r.webp",
+          "start": 451,
+          "duration": 5,
+          "size": 17542,
+          "transfer": 17842
+        },
+        {
+          "name": "1000mods-cheat-death-DD8Q8cx4.webp",
+          "start": 451,
+          "duration": 5.200000002980232,
+          "size": 95762,
+          "transfer": 96062
+        },
+        {
+          "name": "astro-logo-Cg72ZFME.png",
+          "start": 451,
+          "duration": 5.0999999940395355,
+          "size": 14573,
+          "transfer": 14873
+        },
+        {
+          "name": "wiibroe-pilsner-CIYQq_27.webp",
+          "start": 451,
+          "duration": 6.0999999940395355,
+          "size": 32714,
+          "transfer": 33014
+        },
+        {
+          "name": "wiibroe-2026-xvdzOPiK.webp",
+          "start": 451,
+          "duration": 6.0999999940395355,
+          "size": 57886,
+          "transfer": 58186
+        }
+      ],
+      "errors": []
+    },
+    {
+      "warm": true,
+      "metrics": {
+        "modelMs": 260.29999999701977,
+        "firstFrame": 1116.2999999970198,
+        "frames": [
+          {
+            "time": 1058.6000000089407,
+            "cpu": 203.40000000596046,
+            "frame": 3,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 82
+            }
+          },
+          {
+            "time": 1116.1000000089407,
+            "cpu": 42.400000005960464,
+            "frame": 4,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          },
+          {
+            "time": 1224.9000000059605,
+            "cpu": 29.299999997019768,
+            "frame": 7,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          }
+        ]
+      },
+      "meshes": 4670,
+      "casters": 4615,
+      "geometries": 4668,
+      "resources": [
+        {
+          "name": "index-GzubbQZg.js",
+          "start": 164.40000000596046,
+          "duration": 2.5999999940395355,
+          "size": 227019,
+          "transfer": 300
+        },
+        {
+          "name": "index-Dy84jw3E.css",
+          "start": 164.5,
+          "duration": 1.1000000089406967,
+          "size": 3743,
+          "transfer": 300
+        },
+        {
+          "name": "thrane-pixel-pinup-CdYYM-RA.webp",
+          "start": 311.79999999701977,
+          "duration": 3.5,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "thrane-children-Wo8Fg2De.webp",
+          "start": 312.1000000089407,
+          "duration": 5.199999988079071,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "anja-fridge-webcam-BDYkwrG5.webp",
+          "start": 315.20000000298023,
+          "duration": 3.4000000059604645,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "anja-elevator-webcam-DyF5H08r.webp",
+          "start": 315.40000000596046,
+          "duration": 3.5999999940395355,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "1000mods-cheat-death-DD8Q8cx4.webp",
+          "start": 319.90000000596046,
+          "duration": 3.0999999940395355,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "virgil-Q_0-KYu6.woff2",
+          "start": 541.9000000059605,
+          "duration": 1.0999999940395355,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "astro-logo-Cg72ZFME.png",
+          "start": 545.1000000089407,
+          "duration": 2.699999988079071,
+          "size": 14573,
+          "transfer": 300
+        },
+        {
+          "name": "wiibroe-pilsner-CIYQq_27.webp",
+          "start": 545.1000000089407,
+          "duration": 3.5999999940395355,
+          "size": 32714,
+          "transfer": 300
+        },
+        {
+          "name": "wiibroe-2026-xvdzOPiK.webp",
+          "start": 545.2000000029802,
+          "duration": 4.4000000059604645,
+          "size": 57886,
+          "transfer": 300
+        }
+      ],
+      "errors": []
+    },
+    {
+      "warm": false,
+      "metrics": {
+        "modelMs": 291,
+        "firstFrame": 1040,
+        "frames": [
+          {
+            "time": 926.7999999970198,
+            "cpu": 131.69999998807907,
+            "frame": 3,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 82
+            }
+          },
+          {
+            "time": 1039.9000000059605,
+            "cpu": 24,
+            "frame": 6,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          },
+          {
+            "time": 1077.6000000089407,
+            "cpu": 35.400000005960464,
+            "frame": 7,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          }
+        ]
+      },
+      "meshes": 4670,
+      "casters": 4615,
+      "geometries": 4668,
+      "resources": [
+        {
+          "name": "index-GzubbQZg.js",
+          "start": 49.20000000298023,
+          "duration": 61.79999999701977,
+          "size": 227019,
+          "transfer": 227319
+        },
+        {
+          "name": "index-Dy84jw3E.css",
+          "start": 49.400000005960464,
+          "duration": 13.200000002980232,
+          "size": 3743,
+          "transfer": 4043
+        },
+        {
+          "name": "virgil-Q_0-KYu6.woff2",
+          "start": 539.2999999970198,
+          "duration": 31.400000005960464,
+          "size": 61248,
+          "transfer": 61548
+        },
+        {
+          "name": "thrane-pixel-pinup-CdYYM-RA.webp",
+          "start": 544.7000000029802,
+          "duration": 2.2000000029802322,
+          "size": 82940,
+          "transfer": 83240
+        },
+        {
+          "name": "thrane-children-Wo8Fg2De.webp",
+          "start": 544.7000000029802,
+          "duration": 2.5,
+          "size": 121362,
+          "transfer": 121662
+        },
+        {
+          "name": "anja-fridge-webcam-BDYkwrG5.webp",
+          "start": 544.7999999970198,
+          "duration": 2.7000000029802322,
+          "size": 30780,
+          "transfer": 31080
+        },
+        {
+          "name": "anja-elevator-webcam-DyF5H08r.webp",
+          "start": 544.7999999970198,
+          "duration": 2.7000000029802322,
+          "size": 17542,
+          "transfer": 17842
+        },
+        {
+          "name": "1000mods-cheat-death-DD8Q8cx4.webp",
+          "start": 544.7999999970198,
+          "duration": 3.2000000029802322,
+          "size": 95762,
+          "transfer": 96062
+        },
+        {
+          "name": "astro-logo-Cg72ZFME.png",
+          "start": 544.7999999970198,
+          "duration": 3.1000000089406967,
+          "size": 14573,
+          "transfer": 14873
+        },
+        {
+          "name": "wiibroe-pilsner-CIYQq_27.webp",
+          "start": 544.7999999970198,
+          "duration": 3.4000000059604645,
+          "size": 32714,
+          "transfer": 33014
+        },
+        {
+          "name": "wiibroe-2026-xvdzOPiK.webp",
+          "start": 544.7999999970198,
+          "duration": 3.7000000029802322,
+          "size": 57886,
+          "transfer": 58186
+        }
+      ],
+      "errors": []
+    },
+    {
+      "warm": true,
+      "metrics": {
+        "modelMs": 249,
+        "firstFrame": 982.2999999970198,
+        "frames": [
+          {
+            "time": 897,
+            "cpu": 137.80000001192093,
+            "frame": 3,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 82
+            }
+          },
+          {
+            "time": 982.0999999940395,
+            "cpu": 22.19999998807907,
+            "frame": 6,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          }
+        ]
+      },
+      "meshes": 4670,
+      "casters": 4615,
+      "geometries": 4668,
+      "resources": [
+        {
+          "name": "index-Dy84jw3E.css",
+          "start": 127.3999999910593,
+          "duration": 1.5,
+          "size": 3743,
+          "transfer": 300
+        },
+        {
+          "name": "index-GzubbQZg.js",
+          "start": 127.3999999910593,
+          "duration": 3,
+          "size": 227019,
+          "transfer": 300
+        },
+        {
+          "name": "thrane-pixel-pinup-CdYYM-RA.webp",
+          "start": 255.5,
+          "duration": 1.7999999970197678,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "thrane-children-Wo8Fg2De.webp",
+          "start": 255.5,
+          "duration": 2.5999999940395355,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "anja-fridge-webcam-BDYkwrG5.webp",
+          "start": 256.8999999910593,
+          "duration": 1.7000000029802322,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "anja-elevator-webcam-DyF5H08r.webp",
+          "start": 257,
+          "duration": 2.0999999940395355,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "1000mods-cheat-death-DD8Q8cx4.webp",
+          "start": 258.8999999910593,
+          "duration": 1,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "virgil-Q_0-KYu6.woff2",
+          "start": 476.59999999403954,
+          "duration": 1.7000000029802322,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "astro-logo-Cg72ZFME.png",
+          "start": 481.8999999910593,
+          "duration": 2.2000000029802322,
+          "size": 14573,
+          "transfer": 300
+        },
+        {
+          "name": "wiibroe-pilsner-CIYQq_27.webp",
+          "start": 482,
+          "duration": 2.3999999910593033,
+          "size": 32714,
+          "transfer": 300
+        },
+        {
+          "name": "wiibroe-2026-xvdzOPiK.webp",
+          "start": 482,
+          "duration": 2.5999999940395355,
+          "size": 57886,
+          "transfer": 300
+        }
+      ],
+      "errors": []
+    },
+    {
+      "warm": false,
+      "metrics": {
+        "modelMs": 292.59999999403954,
+        "firstFrame": 1015,
+        "frames": [
+          {
+            "time": 912.3999999910593,
+            "cpu": 136.8999999910593,
+            "frame": 3,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 82
+            }
+          },
+          {
+            "time": 1014.7999999970198,
+            "cpu": 19.799999997019768,
+            "frame": 6,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          },
+          {
+            "time": 1038.8999999910593,
+            "cpu": 22.399999991059303,
+            "frame": 7,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          }
+        ]
+      },
+      "meshes": 4670,
+      "casters": 4615,
+      "geometries": 4668,
+      "resources": [
+        {
+          "name": "index-GzubbQZg.js",
+          "start": 34.79999999701977,
+          "duration": 23.599999994039536,
+          "size": 227019,
+          "transfer": 227319
+        },
+        {
+          "name": "index-Dy84jw3E.css",
+          "start": 35,
+          "duration": 4.200000002980232,
+          "size": 3743,
+          "transfer": 4043
+        },
+        {
+          "name": "virgil-Q_0-KYu6.woff2",
+          "start": 478.79999999701977,
+          "duration": 30.5,
+          "size": 61248,
+          "transfer": 61548
+        },
+        {
+          "name": "thrane-pixel-pinup-CdYYM-RA.webp",
+          "start": 483.70000000298023,
+          "duration": 2.3999999910593033,
+          "size": 82940,
+          "transfer": 83240
+        },
+        {
+          "name": "thrane-children-Wo8Fg2De.webp",
+          "start": 483.70000000298023,
+          "duration": 2.3999999910593033,
+          "size": 121362,
+          "transfer": 121662
+        },
+        {
+          "name": "anja-fridge-webcam-BDYkwrG5.webp",
+          "start": 483.79999999701977,
+          "duration": 2.7000000029802322,
+          "size": 30780,
+          "transfer": 31080
+        },
+        {
+          "name": "anja-elevator-webcam-DyF5H08r.webp",
+          "start": 483.8999999910593,
+          "duration": 2.6000000089406967,
+          "size": 17542,
+          "transfer": 17842
+        },
+        {
+          "name": "1000mods-cheat-death-DD8Q8cx4.webp",
+          "start": 483.8999999910593,
+          "duration": 3.2000000029802322,
+          "size": 95762,
+          "transfer": 96062
+        },
+        {
+          "name": "astro-logo-Cg72ZFME.png",
+          "start": 483.8999999910593,
+          "duration": 3.2000000029802322,
+          "size": 14573,
+          "transfer": 14873
+        },
+        {
+          "name": "wiibroe-pilsner-CIYQq_27.webp",
+          "start": 483.8999999910593,
+          "duration": 3.5,
+          "size": 32714,
+          "transfer": 33014
+        },
+        {
+          "name": "wiibroe-2026-xvdzOPiK.webp",
+          "start": 484,
+          "duration": 3.3999999910593033,
+          "size": 57886,
+          "transfer": 58186
+        }
+      ],
+      "errors": []
+    },
+    {
+      "warm": true,
+      "metrics": {
+        "modelMs": 230.29999999701977,
+        "firstFrame": 1184.6000000089407,
+        "frames": [
+          {
+            "time": 1031.4000000059605,
+            "cpu": 309.79999999701977,
+            "frame": 3,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 82
+            }
+          },
+          {
+            "time": 1184.4000000059605,
+            "cpu": 38.70000000298023,
+            "frame": 6,
+            "calls": 7528,
+            "triangles": 1190892,
+            "points": 0,
+            "lines": 0,
+            "memory": {
+              "geometries": 4622,
+              "textures": 85
+            }
+          }
+        ]
+      },
+      "meshes": 4670,
+      "casters": 4615,
+      "geometries": 4668,
+      "resources": [
+        {
+          "name": "index-GzubbQZg.js",
+          "start": 114.70000000298023,
+          "duration": 2.9000000059604645,
+          "size": 227019,
+          "transfer": 300
+        },
+        {
+          "name": "index-Dy84jw3E.css",
+          "start": 114.80000001192093,
+          "duration": 1.0999999940395355,
+          "size": 3743,
+          "transfer": 300
+        },
+        {
+          "name": "thrane-pixel-pinup-CdYYM-RA.webp",
+          "start": 246.20000000298023,
+          "duration": 1.9000000059604645,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "thrane-children-Wo8Fg2De.webp",
+          "start": 246.30000001192093,
+          "duration": 2.0999999940395355,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "anja-fridge-webcam-BDYkwrG5.webp",
+          "start": 248.5,
+          "duration": 1.1000000089406967,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "anja-elevator-webcam-DyF5H08r.webp",
+          "start": 248.70000000298023,
+          "duration": 1.9000000059604645,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "1000mods-cheat-death-DD8Q8cx4.webp",
+          "start": 250.80000001192093,
+          "duration": 1.0999999940395355,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "virgil-Q_0-KYu6.woff2",
+          "start": 444.30000001192093,
+          "duration": 1.199999988079071,
+          "size": 0,
+          "transfer": 300
+        },
+        {
+          "name": "astro-logo-Cg72ZFME.png",
+          "start": 447.30000001192093,
+          "duration": 1.0999999940395355,
+          "size": 14573,
+          "transfer": 300
+        },
+        {
+          "name": "wiibroe-pilsner-CIYQq_27.webp",
+          "start": 447.40000000596046,
+          "duration": 1.5,
+          "size": 32714,
+          "transfer": 300
+        },
+        {
+          "name": "wiibroe-2026-xvdzOPiK.webp",
+          "start": 447.40000000596046,
+          "duration": 2.0999999940395355,
+          "size": 57886,
+          "transfer": 300
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

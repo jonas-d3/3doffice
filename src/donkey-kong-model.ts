@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { refreshSceneSurfaces } from './scene-surfaces.mjs';
 import { box, rod } from './geometry';
 import { BARREL_RADIUS, LADDER_X, PLATFORM_HALF, platformY } from './donkey-kong.mjs';
 import { day21Tables } from './day21-layout.mjs';
@@ -95,11 +96,14 @@ export class BarrelInstances {
   constructor(private parent: THREE.Object3D) {}
 
   update(barrels: { x: number; y: number; z: number; angle: number; heading: number; revision: number }[]) {
+    const changedChunks = new Set<THREE.InstancedMesh[]>();
+    let structureChanged = false;
     barrels.forEach((b, index) => {
       if (b.revision === this.revisions[index]) return;
       this.revisions[index] = b.revision;
       const chunkIndex = Math.floor(index / this.size), slot = index % this.size;
       if (!this.chunks[chunkIndex]) {
+        structureChanged = true;
         this.chunks[chunkIndex] = this.prototype.children.map(part => {
           const mesh = part as THREE.Mesh;
           const instances = new THREE.InstancedMesh(mesh.geometry, mesh.material, this.size);
@@ -107,7 +111,7 @@ export class BarrelInstances {
           this.parent.add(instances); return instances;
         });
       }
-      const chunk = this.chunks[chunkIndex];
+      const chunk = this.chunks[chunkIndex]; changedChunks.add(chunk);
       // Update one last time on the frame a barrel goes to sleep.
       this.pose.position.set(b.x, b.y, b.z); this.pose.rotation.set(0, b.heading + Math.PI / 2, 0); this.pose.rotateZ(-b.angle); this.pose.updateMatrix();
       chunk.forEach((instances, partIndex) => {
@@ -117,5 +121,7 @@ export class BarrelInstances {
         instances.count = Math.max(instances.count, slot + 1); instances.instanceMatrix.needsUpdate = true;
       });
     });
+    changedChunks.forEach(chunk => chunk.forEach(mesh => { mesh.computeBoundingBox(); mesh.computeBoundingSphere(); }));
+    if (structureChanged) refreshSceneSurfaces(this.parent);
   }
 }

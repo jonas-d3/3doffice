@@ -1,0 +1,28 @@
+{
+  "failed": {
+    "state": "error",
+    "message": "\n        Tetris kunne ikke indlæses. Genindlæs siden for at prøve igen.Prøv igenGenindlæsLuk\n      ",
+    "errorVisible": true,
+    "retryVisible": false
+  },
+  "after": {
+    "state": "error",
+    "view": "overview",
+    "active": false,
+    "iframe": false
+  },
+  "imageRequests": 3,
+  "chunkRequests": 2,
+  "image": {
+    "width": 1024,
+    "ready": [
+      true,
+      true
+    ]
+  },
+  "recovered": {
+    "state": "ready",
+    "active": false
+  },
+  "errors": []
+}

@@ -18,7 +18,7 @@ export function screenPlaceholder(name: string) {
   context.fillStyle = '#bce8db'; context.font = 'bold 22px sans-serif'; context.textAlign = 'center';
   context.fillText(name, 128, 78, 240);
   const map = new THREE.CanvasTexture(canvas); map.colorSpace = THREE.SRGBColorSpace;
-  return new THREE.MeshBasicMaterial({ map, toneMapped: false });
+  return new THREE.MeshBasicMaterial({ name, map, toneMapped: false });
 }
 
 export function lazyScreens<M, T extends Screens>(name: string, count: number, load: () => Promise<M>, create: (module: M) => T) {
@@ -44,7 +44,15 @@ export function lazyScreens<M, T extends Screens>(name: string, count: number, l
     materials, feature,
     get value() { return feature.value; },
     get screen() { return screen; },
-    set screen(value: THREE.Mesh | undefined) { screen = value; },
+    set screen(value: THREE.Mesh | undefined) {
+      screen = value;
+      const displays: THREE.Mesh[] = [];
+      value?.parent?.parent?.traverse(object => {
+        if (object instanceof THREE.Mesh && materials.includes(object.material)) displays.push(object);
+      });
+      if (value && !displays.includes(value)) displays.push(value);
+      displays.forEach(display => { display.userData.relatedScreens = displays; });
+    },
     update(camera: THREE.PerspectiveCamera, dt: number, animate: boolean) {
       const priority = screen ? screenPriority(screen, camera, innerHeight) : 0;
       feature.setRelevant(priority > 0, priority);

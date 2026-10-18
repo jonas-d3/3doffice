@@ -1,5 +1,7 @@
 # Plan 2: Billeder indlæses efter behov
 
+Status 18. oktober 2026: Implementeret og verificeret. Se [målinger, kontrol og afgrænsninger](results/02-06/README.md).
+
 Flyt detaljerede billedrequests væk fra den kritiske opstart. Efter første brugbare 3D-frame må billeder gerne hentes gradvist i baggrunden, mens direkte zoom fra overblikket eller anden kamerabevægelse prioriterer de relevante skærme først. Bevar det indlæste resultat til senere besøg. Planen kan udføres med de eksisterende billedfiler før plan 1.
 
 `createWorkspace()` starter i dag begge Thrane-billeder, Wiibroe og Astro. Anja og Henrik starter deres billeder i constructors. Afstandstjek i animationskoden udskyder ikke disse requests. En import af en asset-URL er ikke i sig selv en billeddownload; det afgørende er, hvornår loaderen kaldes.
@@ -10,9 +12,9 @@ Start med Thranes børnebillede. Tilføj en lille fælles billedcache efter URL 
 
 Berørte filer: nyt `src/image-assets.ts`, `src/proximity-wallpaper.mjs`, `src/workspace.ts`, `src/main.ts` og `tests/proximity-wallpaper.test.mjs`. Omfang: M. `main.ts` frigiver baggrundskøen efter den første brugbare frame.
 
-- [ ] Børnebilledet starter ikke som en del af den kritiske opstart. Efter første brugbare frame kan det forudindlæses, og samtidige behov giver højst én request.
-- [ ] Det eksisterende 4 m/5 m-billedskift bevares. En sen download anvender den aktuelle afstandstilstand og kan ikke skifte til forkert motiv, efter brugeren er gået væk.
-- [ ] Load eller fejl efterlader en brugbar placeholder og invalidérer renderingen ved faktisk ændring.
+- [x] Børnebilledet starter ikke som en del af den kritiske opstart. Efter første brugbare frame kan det forudindlæses, og samtidige behov giver højst én request.
+- [x] Det eksisterende 4 m/5 m-billedskift bevares. En sen download anvender den aktuelle afstandstilstand og kan ikke skifte til forkert motiv, efter brugeren er gået væk.
+- [x] Load eller fejl efterlader en brugbar placeholder og invalidérer renderingen ved faktisk ændring.
 
 Kontrol: tests med en kontrollerbar, forsinket loader; gennemgå tilgang, tilbagetrækning før svar, genbesøg, fejl og genforsøg. Kontrollér netværket i produktionsbuildet.
 
@@ -22,9 +24,9 @@ Flyt pinup, Wiibroe og Astro til samme mekanisme. Registrér skærmenes world-po
 
 Berørte filer: `src/workspace.ts`, `src/image-assets.ts` og en test af aktiveringsreglerne. Omfang: M.
 
-- [ ] Ingen af de fem store billeder fra plan 1 kræves eller startes før første brugbare 3D-frame; efterfølgende baggrundsrequests er tilladt.
-- [ ] Direkte zoom fra overblikket, valg af Kontoret og gang ind mod en skærm prioriterer relevante downloads og giver korrekt motiv efter load, uden krav om gåtilstand.
-- [ ] Genbesøg genbruger billedet; placeholders og færdige materialer bruger samme farverum og beskæring som før.
+- [x] Ingen af de fem store billeder fra plan 1 kræves eller startes før første brugbare 3D-frame; efterfølgende baggrundsrequests er tilladt.
+- [x] Direkte zoom fra overblikket, valg af Kontoret og gang ind mod en skærm prioriterer relevante downloads og giver korrekt motiv efter load, uden krav om gåtilstand.
+- [x] Genbesøg genbruger billedet; placeholders og færdige materialer bruger samme farverum og beskæring som før.
 
 Kontrol: netværkslog og frame-tider fra overblik, direkte zoom, Kontoret og gåtur, både kold og varm cache. Kameraets højde, skærmenes forældretransformationer og synlig skærmstørrelse indgår i testen. Kontrollér at en skærm løftes foran ventende baggrundsbilleder ved zoom.
 
@@ -34,9 +36,9 @@ Flyt Henrik-cover og Anjas webcam-billeder fra constructor til den fælles aktiv
 
 Berørte filer: `src/henrik-screens.ts`, `src/anja-screens.ts`, `src/workspace.ts`, `src/main.ts` og loader-/aktiveringstests. Omfang: M.
 
-- [ ] Billeder kan færdiggøres og vises med kameraet stille og reduceret bevægelse aktiveret.
-- [ ] En load-completion anmoder eksplicit om rendering; korrektheden afhænger ikke af, at alle globale loads bliver færdige samtidig.
-- [ ] De otte eksterne rasterbilleder fra den oprindelige baseline ligger efter den kritiske opstart. Hele sættet må gerne være indlæst senere, også mens brugeren bliver i overblikket, hvis zoom og panorering fortsat reagerer flydende.
+- [x] Billeder kan færdiggøres og vises med kameraet stille og reduceret bevægelse aktiveret.
+- [x] En load-completion anmoder eksplicit om rendering; korrektheden afhænger ikke af, at alle globale loads bliver færdige samtidig.
+- [x] De otte eksterne rasterbilleder fra den oprindelige baseline ligger efter den kritiske opstart. Hele sættet må gerne være indlæst senere, også mens brugeren bliver i overblikket, hvis zoom og panorering fortsat reagerer flydende.
 
 Kontrol: fælles test/build-protokol samt fejlet request, skjult fane under load og genbesøg. Der tilføjes ingen automatisk videoafspilning.
 

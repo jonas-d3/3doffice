@@ -11,3 +11,11 @@ test('zoom and transformed screen size lift visible content without requiring wa
  camera.position.set(11,1,18);camera.lookAt(9,1,18);assert.ok(screenPriority(screen,camera)>0);
  desk.visible=false;assert.equal(screenPriority(screen,camera),0);
 });
+test('a second or upper monitor can prepare its controller while the first is outside portrait viewport',()=>{
+ const desk=new Group();const screens=[[-.34,0],[.34,0],[-.34,.5],[.34,.5]].map(([x,y])=>{const s=new Mesh(new PlaneGeometry(.602,.332));s.position.set(x,y,0);desk.add(s);return s;});
+ const camera=new PerspectiveCamera(42,.6,.05,300);camera.position.set(.34,0,1.2);camera.lookAt(.34,0,0);
+ assert.equal(screenPriority(screens[0],camera),0);assert.ok(screenPriority(screens[1],camera)>0);
+ screens[0].userData.relatedScreens=screens;
+ assert.ok(screenPriority(screens[0],camera)>0);
+ camera.position.set(.34,.5,1.2);camera.lookAt(.34,.5,0);assert.ok(screenPriority(screens[0],camera)>0);
+});

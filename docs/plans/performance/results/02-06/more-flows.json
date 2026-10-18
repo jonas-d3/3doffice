@@ -1,0 +1,18 @@
+{
+  "tv": "Spillet er sat på pause.",
+  "whiteboard": {
+    "shipStrokes": 5,
+    "status": "paused",
+    "sensors": 0,
+    "running": "running",
+    "afterLeaving": {
+      "status": "paused",
+      "mic": "off",
+      "head": "off"
+    }
+  },
+  "coffee": {
+    "presses": 1
+  },
+  "errors": []
+}

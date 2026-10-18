@@ -7,26 +7,33 @@ export class LazyFeature {
     /** @type {T | undefined} */ this.value = undefined;
     /** @type {Promise<M> | undefined} */ this.module = undefined;
     /** @type {Promise<T | undefined> | undefined} */ this.pending = undefined;
-    this.state = 'idle'; this.relevant = false;
+    this.state = 'idle'; this.relevant = false; this.reloadRequired = false;
   }
   warm(priority = 0) {
     this.queue.promote(`import:${this.name}`, priority);
     return this.module ??= this.queue.add(`import:${this.name}`, 'work', this.load, priority);
   }
-  prefetch() { this.warm().catch(error => this.error(error)); }
-  error(error) { this.state = 'error'; this.failed(this.name, error); }
+  prefetch() { this.warm().catch(error => this.error(error, 'import')); }
+  error(error, phase) {
+    this.state = 'error'; this.reloadRequired = phase === 'import'; this.failed(this.name, error);
+  }
   prepare(priority = 10, retry = false) {
     if (this.value) return Promise.resolve(this.value);
     this.queue.promote(`import:${this.name}`, priority); this.queue.promote(`create:${this.name}`, priority);
     if (this.pending) return this.pending;
     if (this.state === 'error') {
-      if (!retry) return Promise.resolve(undefined);
-      this.module = undefined;
+      // Browsers retain failed module loads, including failed shared dependencies.
+      // Only an explicit page reload can reliably recover that module graph.
+      if (!retry || this.reloadRequired) return Promise.resolve(undefined);
     }
     this.state = 'loading';
-    this.pending = this.warm(priority).then(module => this.queue.add(`create:${this.name}`, 'work', () => {
+    let importing = true;
+    this.pending = this.warm(priority).then(module => {
+      importing = false;
+      return this.queue.add(`create:${this.name}`, 'work', () => {
       this.value = this.create(module); this.state = 'ready'; this.changed(); return this.value;
-    }, priority)).catch(error => { this.error(error); return undefined; }).finally(() => { this.pending = undefined; });
+      }, priority);
+    }).catch(error => { this.error(error, importing ? 'import' : 'create'); return undefined; }).finally(() => { this.pending = undefined; });
     return this.pending;
   }
   setRelevant(relevant, priority = 10) {

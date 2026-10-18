@@ -84,10 +84,6 @@ export class AnjaScreens {
   private textures: THREE.CanvasTexture[] = [];
   private elapsed = 0;
   private frame = 0;
-  private center = new THREE.Vector3();
-  private normal = new THREE.Vector3();
-  private offset = new THREE.Vector3();
-  private projected = new THREE.Vector3();
 
   constructor() {
     const material = () => {
@@ -114,11 +110,7 @@ export class AnjaScreens {
 
   update(camera: THREE.PerspectiveCamera, dt: number, animate: boolean) {
     if (!animate || !this.screen) return false;
-    this.screen.localToWorld(this.center.set(.34, 0, 0));
-    this.screen.getWorldDirection(this.normal); this.offset.copy(camera.position).sub(this.center);
-    if ((this.offset.lengthSq() > 8 ** 2 && !screenPriority(this.screen, camera, innerHeight)) || this.offset.dot(this.normal) <= 0) return false;
-    camera.updateMatrixWorld(); this.projected.copy(this.center).project(camera);
-    if (this.projected.z < -1 || this.projected.z > 1 || Math.abs(this.projected.x) > 1.3 || Math.abs(this.projected.y) > 1.3) return false;
+    if (!screenPriority(this.screen, camera, innerHeight, 8)) return false;
     this.elapsed += dt;
     const frame = Math.floor(this.elapsed * 8);
     if (frame === this.frame) return false;

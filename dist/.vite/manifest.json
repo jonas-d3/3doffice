@@ -1,0 +1,277 @@
+{
+  "_easter-egg-state-BUel5wUv.js": {
+    "file": "assets/easter-egg-state-BUel5wUv.js",
+    "name": "easter-egg-state",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_easter-interaction-pS9HXwDw.js": {
+    "file": "assets/easter-interaction-pS9HXwDw.js",
+    "name": "easter-interaction",
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ]
+  },
+  "_three-6cyogrSz.js": {
+    "file": "assets/three-6cyogrSz.js",
+    "name": "three"
+  },
+  "index.html": {
+    "file": "assets/index-DQCAj2Ry.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js"
+    ],
+    "dynamicImports": [
+      "src/palm-screens.ts",
+      "src/nicolai-screens.ts",
+      "src/anja-screens.ts",
+      "src/jesper-screen.ts",
+      "src/holbech-screens.ts",
+      "src/henrik-screens.ts",
+      "src/thrane-screens.ts",
+      "src/lars-screens.ts",
+      "src/youtube-screen.ts",
+      "src/tv-game.ts",
+      "src/tetris-game.ts",
+      "src/donkey-kong-game.ts",
+      "src/whiteboard-game.ts",
+      "src/coffee-controller.ts",
+      "src/salmon-controller.ts",
+      "src/creeper-controller.ts"
+    ],
+    "css": [
+      "assets/index-D8iXvNrb.css"
+    ],
+    "assets": [
+      "assets/thrane-pixel-pinup-CdYYM-RA.webp",
+      "assets/thrane-children-Wo8Fg2De.webp",
+      "assets/astro-logo-Cg72ZFME.png",
+      "assets/wiibroe-pilsner-CIYQq_27.webp",
+      "assets/wiibroe-2026-xvdzOPiK.webp",
+      "assets/virgil-Q_0-KYu6.woff2"
+    ]
+  },
+  "src/anja-screens.ts": {
+    "file": "assets/anja-screens-1Yoe_Ioq.js",
+    "name": "anja-screens",
+    "src": "src/anja-screens.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ],
+    "assets": [
+      "assets/anja-fridge-webcam-BDYkwrG5.webp",
+      "assets/anja-elevator-webcam-DyF5H08r.webp"
+    ]
+  },
+  "src/assets/1000mods-cheat-death.webp": {
+    "file": "assets/1000mods-cheat-death-DD8Q8cx4.webp",
+    "src": "src/assets/1000mods-cheat-death.webp"
+  },
+  "src/assets/anja-elevator-webcam.webp": {
+    "file": "assets/anja-elevator-webcam-DyF5H08r.webp",
+    "src": "src/assets/anja-elevator-webcam.webp"
+  },
+  "src/assets/anja-fridge-webcam.webp": {
+    "file": "assets/anja-fridge-webcam-BDYkwrG5.webp",
+    "src": "src/assets/anja-fridge-webcam.webp"
+  },
+  "src/assets/astro-logo.png": {
+    "file": "assets/astro-logo-Cg72ZFME.png",
+    "src": "src/assets/astro-logo.png"
+  },
+  "src/assets/thrane-children.webp": {
+    "file": "assets/thrane-children-Wo8Fg2De.webp",
+    "src": "src/assets/thrane-children.webp"
+  },
+  "src/assets/thrane-pixel-pinup.webp": {
+    "file": "assets/thrane-pixel-pinup-CdYYM-RA.webp",
+    "src": "src/assets/thrane-pixel-pinup.webp"
+  },
+  "src/assets/virgil.woff2": {
+    "file": "assets/virgil-Q_0-KYu6.woff2",
+    "src": "src/assets/virgil.woff2"
+  },
+  "src/assets/wiibroe-2026.webp": {
+    "file": "assets/wiibroe-2026-xvdzOPiK.webp",
+    "src": "src/assets/wiibroe-2026.webp"
+  },
+  "src/assets/wiibroe-pilsner.webp": {
+    "file": "assets/wiibroe-pilsner-CIYQq_27.webp",
+    "src": "src/assets/wiibroe-pilsner.webp"
+  },
+  "src/coffee-controller.ts": {
+    "file": "assets/coffee-controller-DZEfD6ms.js",
+    "name": "coffee-controller",
+    "src": "src/coffee-controller.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html",
+      "_easter-interaction-pS9HXwDw.js"
+    ]
+  },
+  "src/creeper-controller.ts": {
+    "file": "assets/creeper-controller-CkdlwpXY.js",
+    "name": "creeper-controller",
+    "src": "src/creeper-controller.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html",
+      "_easter-interaction-pS9HXwDw.js",
+      "_easter-egg-state-BUel5wUv.js"
+    ]
+  },
+  "src/donkey-kong-game.ts": {
+    "file": "assets/donkey-kong-game-iK267aG7.js",
+    "name": "donkey-kong-game",
+    "src": "src/donkey-kong-game.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ]
+  },
+  "src/head-camera-browser.ts": {
+    "file": "assets/head-camera-browser-CE7mejaJ.js",
+    "name": "head-camera-browser",
+    "src": "src/head-camera-browser.ts",
+    "isDynamicEntry": true,
+    "assets": [
+      "assets/head-tracker.worker-DuUzyeEa.js"
+    ]
+  },
+  "src/henrik-screens.ts": {
+    "file": "assets/henrik-screens-DkGrB-vP.js",
+    "name": "henrik-screens",
+    "src": "src/henrik-screens.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ],
+    "assets": [
+      "assets/1000mods-cheat-death-DD8Q8cx4.webp"
+    ]
+  },
+  "src/holbech-screens.ts": {
+    "file": "assets/holbech-screens-D7z-Y6aA.js",
+    "name": "holbech-screens",
+    "src": "src/holbech-screens.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ]
+  },
+  "src/jesper-screen.ts": {
+    "file": "assets/jesper-screen-CQdhrX5D.js",
+    "name": "jesper-screen",
+    "src": "src/jesper-screen.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html",
+      "_easter-egg-state-BUel5wUv.js"
+    ]
+  },
+  "src/lars-screens.ts": {
+    "file": "assets/lars-screens-BBw6hWHi.js",
+    "name": "lars-screens",
+    "src": "src/lars-screens.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ]
+  },
+  "src/nicolai-screens.ts": {
+    "file": "assets/nicolai-screens-tdig6I64.js",
+    "name": "nicolai-screens",
+    "src": "src/nicolai-screens.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ]
+  },
+  "src/palm-screens.ts": {
+    "file": "assets/palm-screens-Ce3GzPdS.js",
+    "name": "palm-screens",
+    "src": "src/palm-screens.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ]
+  },
+  "src/salmon-controller.ts": {
+    "file": "assets/salmon-controller-LPzjkhYS.js",
+    "name": "salmon-controller",
+    "src": "src/salmon-controller.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html",
+      "_easter-interaction-pS9HXwDw.js"
+    ]
+  },
+  "src/tetris-game.ts": {
+    "file": "assets/tetris-game-D6aYd59L.js",
+    "name": "tetris-game",
+    "src": "src/tetris-game.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ]
+  },
+  "src/thrane-screens.ts": {
+    "file": "assets/thrane-screens-Bh8Y51vt.js",
+    "name": "thrane-screens",
+    "src": "src/thrane-screens.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ]
+  },
+  "src/tv-game.ts": {
+    "file": "assets/tv-game-RlCwfnAW.js",
+    "name": "tv-game",
+    "src": "src/tv-game.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js"
+    ]
+  },
+  "src/whiteboard-game.ts": {
+    "file": "assets/whiteboard-game-CTTCptad.js",
+    "name": "whiteboard-game",
+    "src": "src/whiteboard-game.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js",
+      "index.html"
+    ],
+    "dynamicImports": [
+      "src/head-camera-browser.ts"
+    ]
+  },
+  "src/youtube-screen.ts": {
+    "file": "assets/youtube-screen-DLFqkTA-.js",
+    "name": "youtube-screen",
+    "src": "src/youtube-screen.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-6cyogrSz.js"
+    ]
+  }
+}

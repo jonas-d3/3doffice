@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { box } from './geometry';
 import { CreeperFollow, creeperStart } from './easter-egg-state.mjs';
-import { sceneSurfaces } from './scene-surfaces';
+import { sceneSurfaces } from './scene-surfaces.mjs';
 import { visibleHit, belongsTo } from './easter-interaction';
 import type { Navigation } from './navigation';
 

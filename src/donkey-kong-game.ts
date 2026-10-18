@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { refreshSceneSurfaces } from './scene-surfaces.mjs';
 import { DonkeyKong, RoomBarrels } from './donkey-kong.mjs';
 import { BarrelInstances, barrelModel, createDonkeyKongModel, kongPosition, kongTable } from './donkey-kong-model';
 import { day21GlassRoom } from './day21-layout.mjs';
@@ -168,6 +169,7 @@ export class DonkeyKongGame {
   }
 
   update(dt: number) {
+    let structureChanged = false;
     let changed = this.dirty; this.dirty = false;
     const camera = this.navigation.camera;
     const visible = this.active || (this.navigation.isWalking && contains(day21GlassRoom, camera.position.x, camera.position.z));
@@ -194,13 +196,14 @@ export class DonkeyKongGame {
       this.model.player.rotation.y = p.facing < 0 ? -.35 : .35;
       this.model.player.scale.setScalar(p.invulnerable > 0 ? .9 : 1);
       for (const b of this.game.barrels) {
-        if (!this.barrelMeshes.has(b.id)) { const mesh = barrelModel(); this.model.group.add(mesh); this.barrelMeshes.set(b.id, mesh); }
+        if (!this.barrelMeshes.has(b.id)) { const mesh = barrelModel(); this.model.group.add(mesh); this.barrelMeshes.set(b.id, mesh); structureChanged = true; }
         const mesh = this.barrelMeshes.get(b.id)!; mesh.position.set(b.x, b.y, .035); mesh.rotation.z = b.angle;
       }
       for (const [id, mesh] of this.barrelMeshes) if (!this.game.barrels.some(b => b.id === id)) {
-        this.model.group.remove(mesh); this.barrelMeshes.delete(id);
+        this.model.group.remove(mesh); this.barrelMeshes.delete(id); structureChanged = true;
       }
     }
+    if (structureChanged) refreshSceneSurfaces(this.office);
     const state = this.game.status, finished = state === 'over' || state === 'won';
     this.victory.hidden = state !== 'won';
     const message = state === 'over' ? `Game over · ${this.game.score} point` : state === 'won' ? `Du vandt! · ${this.game.score} point` : state === 'paused' ? 'Pause · fortsæt med P' : `${this.game.lives} liv · ${this.game.score} point`;

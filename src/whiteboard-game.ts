@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { sceneSurfaces } from './scene-surfaces';
+import { sceneSurfaces } from './scene-surfaces.mjs';
 import { inDrawingArea, WalkInInvaders } from './whiteboard-play.mjs';
 import { InvadersScreen } from './invaders-screen';
 import { MicrophoneShots } from './microphone-shots';

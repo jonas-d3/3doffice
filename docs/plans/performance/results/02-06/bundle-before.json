@@ -1,0 +1,16 @@
+[
+  {
+    "label": "before",
+    "revision": "57f7265",
+    "file": "dist/assets/index-CD7iX4or.js",
+    "bytes": 824877,
+    "gzip": 227977
+  },
+  {
+    "label": "plan3",
+    "revision": "205b99b",
+    "file": "dist/assets/index-DS9YqpAz.js",
+    "bytes": 720317,
+    "gzip": 194926
+  }
+]

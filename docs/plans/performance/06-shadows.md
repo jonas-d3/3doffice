@@ -1,5 +1,7 @@
 # Plan 6: Selektive og billigere skygger
 
+Status 18. oktober 2026: Implementeret og verificeret. Se [målinger, kontrol og afgrænsninger](results/02-06/README.md).
+
 Reducér antallet og kompleksiteten af skyggekastere, mens møbler og rum fortsat har tydelig kontakt med gulvet. `geometry.ts` sætter aktuelt både castShadow og receiveShadow på næsten alle meshes; 4.498 af 4.551 kontormeshes kastede skygger i målingen.
 
 Prioritér denne plan efter udskudt indlæsning, hvis målingerne stadig viser behov. Afhængighed: plan 5 anbefales først, så skyggevalgene følger de endelige instance-/materialegrupper. Hvis denne plan udføres tidligere, skal grupperingen genkontrolleres efter instancing. Det eksisterende overbliks udseende og fri zoom er visuelle referencepunkter ved sammenligning.
@@ -10,9 +12,9 @@ Tilføj en enkel mulighed i geometrihelperne for at vælge casting og receiving 
 
 Berørte filer: `src/geometry.ts`, eventuelt målemodulet fra oversigten og én repræsentativ rumfil. Omfang: S/M.
 
-- [ ] Eksisterende kald bevarer deres adfærd, og shadow casting kan fravælges uden at fjerne receiving.
-- [ ] InstancedMesh-grupper blander ikke dele med forskellige shadow flags.
-- [ ] Baseline for skyggekastere og shadow-pass-arbejde er registreret ved faste kameravisninger.
+- [x] Eksisterende kald bevarer deres adfærd, og shadow casting kan fravælges uden at fjerne receiving.
+- [x] InstancedMesh-grupper blander ikke dele med forskellige shadow flags.
+- [x] Baseline for skyggekastere og shadow-pass-arbejde er registreret ved faste kameravisninger.
 
 Kontrol: build og skærmbilleder uden bevidst grafisk ændring. Tilføj ikke en test, der alene genkender en bestemt options-syntaks.
 
@@ -22,9 +24,9 @@ Begynd med Kontorets tastaturdele, små skærmstandere, stolhjul og pynt. Bevar 
 
 Filer pr. ændring: `src/geometry.ts`, én rumfil og eventuelt en delt møbelhelper. Omfang: S/M pr. rum.
 
-- [ ] Casting er slået fra for de udvalgte små detaljer, mens nødvendige kontakt- og figurskygger bevares.
-- [ ] Shadow-pass-draw calls og/eller trekanter falder i den sammenlignelige måling.
-- [ ] Overblik, Kontoret, Day21 og de ændrede rums nærvisninger har ingen tydelig flydende-møbel-effekt eller utilsigtet tab af rumlighed.
+- [x] Casting er slået fra for de udvalgte små detaljer, mens nødvendige kontakt- og figurskygger bevares.
+- [x] Shadow-pass-draw calls og/eller trekanter falder i den sammenlignelige måling.
+- [x] Overblik, Kontoret, Day21 og de ændrede rums nærvisninger har ingen tydelig flydende-møbel-effekt eller utilsigtet tab af rumlighed.
 
 Kontrol: samme lys, kamera, pixel ratio og figurposition før/efter; browserbilleder og fælles tests/build.
 
@@ -34,9 +36,9 @@ Kun hvis målingen stadig viser væsentligt shadow-pass-arbejde: afprøv en enkl
 
 Berørte filer: den valgte møbel-/rumfil, `src/geometry.ts`, eventuel shadow-helper og occlusion-registrering. Omfang: M.
 
-- [ ] Den detaljerede variant og den simple caster kan sammenlignes direkte ved identiske forhold.
-- [ ] Den simple caster bidrager hverken med usynlige klikblokeringer eller forkert dybde i normal visning.
-- [ ] Den valgte løsning giver målt reduktion og acceptable skygger i nærvisning.
+- [x] Den detaljerede variant og den simple caster kan sammenlignes direkte ved identiske forhold.
+- [x] Den simple caster bidrager hverken med usynlige klikblokeringer eller forkert dybde i normal visning.
+- [x] Forsøget er målt og fjernet: simple sæde-casters sparede 2,7 % skyggetrekanter, men tilføjede hovedkamera-kald. Den valgte løsning er derfor detaljeskyggevalgene fra 6B.
 
 Kontrol: render- og raycast-kontrol samt før/efter-skærmbilleder. Dette trin er betinget af resultatet fra 6B, ikke et krav om at indføre proxies.
 

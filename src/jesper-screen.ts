@@ -113,10 +113,6 @@ export class JesperScreen {
   private pitchTexture: THREE.CanvasTexture;
   private elapsed = .9; // Keep the fish mid-leap in the reduced-motion still.
   private frame = -1;
-  private center = new THREE.Vector3();
-  private normal = new THREE.Vector3();
-  private offset = new THREE.Vector3();
-  private projected = new THREE.Vector3();
 
   constructor() {
     this.canvas.width = this.background.width = 768;
@@ -214,11 +210,7 @@ export class JesperScreen {
     if (!animate || !this.screen) return false;
     const fishChanged = this.catchState.update(dt, animate);
     if (fishChanged) this.poseFish();
-    this.screen.getWorldPosition(this.center); this.screen.getWorldDirection(this.normal);
-    this.offset.copy(camera.position).sub(this.center);
-    if ((this.offset.lengthSq() > 8 ** 2 && !screenPriority(this.screen, camera, innerHeight)) || this.offset.dot(this.normal) <= 0) return fishChanged;
-    camera.updateMatrixWorld(); this.projected.copy(this.center).project(camera);
-    if (this.projected.z < -1 || this.projected.z > 1 || Math.abs(this.projected.x) > 1.3 || Math.abs(this.projected.y) > 1.3) return fishChanged;
+    if (!screenPriority(this.screen, camera, innerHeight, 8)) return fishChanged;
     this.elapsed += dt;
     const frame = Math.floor(this.elapsed * 12);
     if (frame === this.frame) return fishChanged;
