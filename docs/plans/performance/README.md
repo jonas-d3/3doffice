@@ -1,10 +1,12 @@
 # Planer for performance i 3doffice
 
-Status: Plan 1 er gennemført. Plan 2–6 er implementeret og verificeret med én dokumenteret afvigelse for genforsøg af fejlede module-imports; plan 7 afventer. Se [resultater for plan 2–6](results/02-06/README.md). Oprettet 18. oktober 2026. Der er syv planer; det tidligere punkt om billeder er opdelt i optimering og indlæsning efter behov. Se [resultater for plan 1](results/01-image-optimization/README.md).
+Status: Plan 1 er gennemført. Plan 2–6 er implementeret og verificeret med én dokumenteret afvigelse for genforsøg af fejlede module-imports; plan 7 er nu implementeret inklusive Track David. Se [resultater og den resterende pris ved første oversigtscapture](results/07/README.md). Se [resultater for plan 2–6](results/02-06/README.md). Oprettet 18. oktober 2026. Der er syv planer; det tidligere punkt om billeder er opdelt i optimering og indlæsning efter behov. Se [resultater for plan 1](results/01-image-optimization/README.md).
 
 Det primære mål er et hurtigt, brugbart første overblik. Systemet må gerne hente meget indhold over tid; det valgfrie arbejde skal fordeles efter opstart, så download, evaluering, oprettelse og GPU-upload ikke blokerer den første oplevelse eller efterfølgende input. Samlede bytes er en sekundær måling. Hver plan leveres i små trin med måling og kontrol mellem trinnene.
 
 Det eksisterende overblik med hele kontoret og fri zoom skal bevares. Brugeren skal kunne zoome direkte ind på en skærm fra overblikket og se dens indhold uden først at vælge Kontoret eller Gå rundt. Relevans afgøres af kamera, synlighed og skærmens projicerede størrelse, uafhængigt af navigationsmodus. Eksisterende regler for at starte et bestemt spil bevares; synligt skærmindhold må ikke begrænses til gåtilstand.
+
+Supplerende funktionsplan: [Track David på Holbechs skærm](../track-david.md) er implementeret med plan 7 og gør Davids livekamera eksplicit klikaktiveret. Højre skærm viser først en statisk startside med knappen Track David; indlæsning og synlighed må ikke automatisk starte kameraoptagelser. Tracking slukkes automatisk, når brugeren bevæger sig væk fra skærmens nærområde, og kræver et nyt klik ved tilbagekomst. Disse regler skal bevares gennem plan 2, 3 og 7.
 
 | Plan | Leverance | Afhængigheder |
 | --- | --- | --- |

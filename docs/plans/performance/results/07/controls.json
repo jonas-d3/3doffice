@@ -1,0 +1,52 @@
+[
+  {
+    "touch": false,
+    "initial": {
+      "captures": 0,
+      "liveTarget": false,
+      "overviewTarget": true
+    },
+    "active": {
+      "focused": "scene",
+      "captures": 1,
+      "tracking": true,
+      "target": "f00acc47-1f49-4d14-b2ae-68528ae8bb4d"
+    },
+    "stopped": {
+      "captures": 1,
+      "tracking": false
+    },
+    "afterAsset": 1,
+    "second": {
+      "captures": 2,
+      "target": "f00acc47-1f49-4d14-b2ae-68528ae8bb4d"
+    },
+    "departed": false,
+    "errors": []
+  },
+  {
+    "touch": true,
+    "initial": {
+      "captures": 0,
+      "liveTarget": false,
+      "overviewTarget": true
+    },
+    "active": {
+      "focused": "scene",
+      "captures": 1,
+      "tracking": true,
+      "target": "364ba91d-c32f-47da-920e-035c3aa31b67"
+    },
+    "stopped": {
+      "captures": 1,
+      "tracking": false
+    },
+    "afterAsset": 1,
+    "second": {
+      "captures": 2,
+      "target": "364ba91d-c32f-47da-920e-035c3aa31b67"
+    },
+    "departed": false,
+    "errors": []
+  }
+]

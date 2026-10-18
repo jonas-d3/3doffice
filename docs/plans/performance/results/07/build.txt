@@ -1,0 +1,44 @@
+vite v8.3.2 building client environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/.vite/modules.json                                     4.07 kB │ gzip:     1.15 kB
+dist/.vite/manifest.json                                    7.42 kB │ gzip:     1.23 kB
+dist/index.html                                            12.65 kB │ gzip:     3.88 kB
+dist/assets/astro-logo-Cg72ZFME.png                        14.57 kB
+dist/assets/anja-elevator-webcam-DyF5H08r.webp             17.54 kB
+dist/assets/anja-fridge-webcam-BDYkwrG5.webp               30.78 kB
+dist/assets/wiibroe-pilsner-CIYQq_27.webp                  32.71 kB
+dist/assets/wiibroe-2026-xvdzOPiK.webp                     57.88 kB
+dist/assets/virgil-Q_0-KYu6.woff2                          61.24 kB
+dist/assets/thrane-pixel-pinup-CdYYM-RA.webp               82.94 kB
+dist/assets/1000mods-cheat-death-DD8Q8cx4.webp             95.76 kB
+dist/assets/thrane-children-Wo8Fg2De.webp                 121.36 kB
+dist/assets/head-tracker.worker-DuUzyeEa.js               153.65 kB
+dist/assets/vision_wasm_module_internal-BEiPKPmH.js       334.16 kB
+dist/assets/vision_wasm_module_internal-BtRONiFR.wasm  13,519.94 kB │ gzip: 4,004.31 kB
+dist/assets/index-D8iXvNrb.css                             13.43 kB │ gzip:     3.86 kB
+dist/assets/salmon-controller-BngCtMO9.js                   0.41 kB │ gzip:     0.28 kB
+dist/assets/head-camera-browser-CE7mejaJ.js                 0.79 kB │ gzip:     0.49 kB
+dist/assets/easter-interaction-CZZhdxxC.js                  1.40 kB │ gzip:     0.77 kB
+dist/assets/coffee-controller-CPXYgiWt.js                   1.60 kB │ gzip:     0.84 kB
+dist/assets/creeper-controller-DmBfzpa-.js                  2.32 kB │ gzip:     1.11 kB
+dist/assets/easter-egg-state-BWNiPNbY.js                    2.62 kB │ gzip:     1.28 kB
+dist/assets/palm-screens-DihjHn8_.js                        2.80 kB │ gzip:     1.54 kB
+dist/assets/anja-screens-qkOiv4Xb.js                        3.46 kB │ gzip:     1.83 kB
+dist/assets/nicolai-screens-D4P-fUxO.js                     3.77 kB │ gzip:     2.03 kB
+dist/assets/holbech-screens-DCB392Ma.js                     3.92 kB │ gzip:     1.65 kB
+dist/assets/henrik-screens-Wt-6lzfT.js                      4.32 kB │ gzip:     2.37 kB
+dist/assets/thrane-screens-CGMmm6Ix.js                      4.44 kB │ gzip:     2.37 kB
+dist/assets/lars-screens-CcBP7yBF.js                        6.16 kB │ gzip:     3.09 kB
+dist/assets/jesper-screen-FsHvzq3I.js                       7.42 kB │ gzip:     3.10 kB
+dist/assets/youtube-screen-C60UvpOk.js                      8.10 kB │ gzip:     3.24 kB
+dist/assets/tv-game-BVhuyh8Z.js                             8.29 kB │ gzip:     3.22 kB
+dist/assets/tetris-game-CQ9sJY8o.js                        12.35 kB │ gzip:     4.42 kB
+dist/assets/donkey-kong-game-BCO0CQx3.js                   16.51 kB │ gzip:     6.27 kB
+dist/assets/whiteboard-game-CHpi9PXo.js                    27.41 kB │ gzip:     9.29 kB
+dist/assets/index-N8ZsfiMw.js                             149.43 kB │ gzip:    53.05 kB
+dist/assets/three-BaonVORo.js                             577.52 kB │ gzip:   146.42 kB
+
+✓ built in 259ms

@@ -1,0 +1,307 @@
+[
+  {
+    "name": "v8.compileModule",
+    "ms": 0.023,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 7,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/index-DQCAj2Ry.js"
+    }
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.009,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 8,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/three-6cyogrSz.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 193.251,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.009,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 23,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/palm-screens-Ce3GzPdS.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.013,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.011,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 27,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/nicolai-screens-tdig6I64.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.013,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.018,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 28,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/anja-screens-1Yoe_Ioq.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 6.152,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.016,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 29,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/jesper-screen-CQdhrX5D.js"
+    }
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.003,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 30,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/easter-egg-state-BUel5wUv.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.027,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.013,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 31,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/holbech-screens-D7z-Y6aA.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.012,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.012,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 32,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/henrik-screens-DkGrB-vP.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.011,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.013,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 33,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/thrane-screens-Bh8Y51vt.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.014,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.014,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 34,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/lars-screens-BBw6hWHi.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.011,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.021,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 35,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/youtube-screen-DLFqkTA-.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.016,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.013,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 36,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/tv-game-RlCwfnAW.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.017,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.012,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 37,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/tetris-game-D6aYd59L.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.025,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.014,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 38,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/donkey-kong-game-iK267aG7.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.343,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.017,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 39,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/whiteboard-game-CTTCptad.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.032,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.011,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 40,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/coffee-controller-DZEfD6ms.js"
+    }
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.003,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 41,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/easter-interaction-pS9HXwDw.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.012,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.011,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 42,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/salmon-controller-LPzjkhYS.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.011,
+    "data": {}
+  },
+  {
+    "name": "v8.compileModule",
+    "ms": 0.011,
+    "data": {
+      "columnNumber": 1,
+      "lineNumber": 1,
+      "scriptId": 43,
+      "streamed": true,
+      "url": "http://127.0.0.1:4177/3doffice/dist/assets/creeper-controller-CkdlwpXY.js"
+    }
+  },
+  {
+    "name": "v8.evaluateModule",
+    "ms": 0.023,
+    "data": {}
+  }
+]

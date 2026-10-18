@@ -1,0 +1,66 @@
+{
+  "results": [
+    {
+      "name": "front",
+      "shown": true,
+      "loaded": true
+    },
+    {
+      "name": "new blocker",
+      "shown": false,
+      "loaded": true
+    },
+    {
+      "name": "hidden blocker",
+      "shown": true,
+      "loaded": true
+    },
+    {
+      "name": "moved blocker",
+      "shown": true,
+      "loaded": true
+    },
+    {
+      "name": "returned blocker",
+      "shown": false,
+      "loaded": true
+    },
+    {
+      "name": "removed blocker",
+      "shown": true,
+      "loaded": true
+    },
+    {
+      "name": "quick turn",
+      "shown": false,
+      "loaded": true
+    },
+    {
+      "name": "help unload",
+      "shown": false,
+      "loaded": false
+    },
+    {
+      "name": "visibilitychange synchronous",
+      "loaded": false,
+      "shown": false,
+      "queuePaused": true
+    },
+    {
+      "name": "distance over 5m",
+      "shown": false,
+      "loaded": false
+    },
+    {
+      "name": "return reloads",
+      "shown": true,
+      "loaded": true
+    },
+    {
+      "name": "TV game unload",
+      "shown": false,
+      "loaded": false
+    }
+  ],
+  "errors": []
+}

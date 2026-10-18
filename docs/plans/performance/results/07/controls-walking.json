@@ -1,0 +1,27 @@
+[
+  {
+    "touch": false,
+    "initial": {
+      "captures": 0,
+      "liveTarget": false,
+      "overviewTarget": true
+    },
+    "active": {
+      "focused": "scene",
+      "captures": 1,
+      "tracking": true,
+      "target": "4bc99892-cfd1-41ca-91c8-84a5635873b4"
+    },
+    "stopped": {
+      "captures": 1,
+      "tracking": false
+    },
+    "afterAsset": 1,
+    "second": {
+      "captures": 2,
+      "target": "4bc99892-cfd1-41ca-91c8-84a5635873b4"
+    },
+    "departed": false,
+    "errors": []
+  }
+]
