@@ -9,6 +9,7 @@ import { Visitor } from './visitor';
 import { EasterEggs } from './easter-eggs';
 import { YoutubeScreen } from './youtube-screen';
 import { TetrisGame } from './tetris-game';
+import { DonkeyKongGame } from './donkey-kong-game';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#scene')!;
 document.querySelector('#reload')!.addEventListener('click', () => location.reload());
@@ -63,9 +64,10 @@ document.querySelector('#zoom-in')!.addEventListener('click', () => navigation.z
 document.querySelector('#zoom-out')!.addEventListener('click', () => navigation.zoom(1.22));
 document.querySelector('#reset')!.addEventListener('click', () => navigation.setView('overview'));
 const dialog = document.querySelector<HTMLDialogElement>('#help-dialog')!;
-const tetrisGame = new TetrisGame(model.tetrisGlass, model.office, navigation, () => dialog.open || tvGame.active || document.hidden);
-const whiteboardGame = new WhiteboardGame(model.whiteboard, model.office, navigation, motionPreference, () => dialog.open || tvGame.active || tetrisGame.active || document.hidden);
-const easterEggs = new EasterEggs(model.office, model.coffee, model.jesperScreen, visitor, navigation, motionPreference, () => dialog.open || tvGame.active || tetrisGame.active || document.hidden);
+const tetrisGame = new TetrisGame(model.tetrisGlass, model.office, navigation, () => dialog.open || tvGame.active || kongGame.active || document.hidden);
+const kongGame = new DonkeyKongGame(model.office, navigation, () => dialog.open || tvGame.active || tetrisGame.active || document.hidden);
+const whiteboardGame = new WhiteboardGame(model.whiteboard, model.office, navigation, motionPreference, () => dialog.open || tvGame.active || tetrisGame.active || kongGame.active || document.hidden);
+const easterEggs = new EasterEggs(model.office, model.coffee, model.jesperScreen, visitor, navigation, motionPreference, () => dialog.open || tvGame.active || tetrisGame.active || kongGame.active || document.hidden);
 document.querySelector('#help')!.addEventListener('click', () => { navigation.clearInput(); dialog.showModal(); });
 dialog.addEventListener('click', event => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } });
 const fullscreen = document.querySelector<HTMLButtonElement>('#fullscreen')!;
@@ -88,6 +90,7 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
   tvGame.resize();
   tetrisGame.resize();
+  kongGame.resize();
   youtube.resize();
   needsRender = true;
   if (navigation.view === 'overview') navigation.setView('overview', true);
@@ -96,14 +99,17 @@ let previous = performance.now();
 const previousPosition = new THREE.Vector3();
 const previousRotation = new THREE.Quaternion();
 renderer.setAnimationLoop(now => {
-  const dt = Math.min((now - previous) / 1000, .05); previous = now;
+  const elapsed = (now - previous) / 1000;
+  const dt = Math.min(elapsed, .05); previous = now;
   if (document.hidden) return;
   navigation.update(dt);
-  if (model.updateScreens(camera, dt, !motionPreference.matches && !dialog.open && !tvGame.active)) needsRender = true;
+  if (model.updateScreens(camera, dt, !motionPreference.matches && !dialog.open && !tvGame.active && !kongGame.active)) needsRender = true;
   if (!tvGame.active && !dialog.open && visitor.update(dt, motionPreference.matches)) needsRender = true;
   if (model.updateRestroomDoor(visitor.walk.restroomDoorClosure)) needsRender = true;
   if (tvGame.update(dt)) needsRender = true;
   if (tetrisGame.update(dt)) needsRender = true;
+  // Its fixed simulation steps keep the tabletop game playable on slower 3D renderers.
+  if (kongGame.update(Math.min(elapsed, .25))) needsRender = true;
   const walk = navigation.isWalking;
   for (const wall of model.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
   for (const roof of model.roofs) roof.visible = walk;

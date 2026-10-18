@@ -21,8 +21,11 @@ function meetingTable(parent: THREE.Object3D, spec: typeof day21Tables[number]) 
   box(g, spec.width, .04, spec.depth, 0, .75, 0, spec.white ? m.white : m.black, .025);
   for (const x of [-spec.width / 2 + .15, spec.width / 2 - .15]) for (const z of [-spec.depth / 2 + .1, spec.depth / 2 - .1]) rod(g, [x, .73, z], [x, .03, z], .026, m.black);
   for (let i = 0; i < spec.chairs; i++) for (const side of [-1, 1]) diningChair(g, (i - (spec.chairs - 1) / 2) * .66, side * (spec.depth / 2 + .35), side < 0 ? 0 : Math.PI);
-  box(g, .26, .012, .2, .2, .78, 0, m.black);
-  for (const x of [-.55, .55]) cylinder(g, .035, .03, .09, x, .815, .12, m.white);
+  // Leave the entrance table clear for the physical Donkey Kong model.
+  if (spec !== day21Tables[0]) {
+    box(g, .26, .012, .2, .2, .78, 0, m.black);
+    for (const x of [-.55, .55]) cylinder(g, .035, .03, .09, x, .815, .12, m.white);
+  }
 }
 function sofa(parent: THREE.Object3D, x: number, z: number, rotation: number, fabric: THREE.Material) {
   const g = new THREE.Group(); parent.add(g); g.position.set(x, 0, z); g.rotation.y = rotation;

@@ -56,3 +56,4 @@ export const day21Obstacles = [
 ];
 export const day21Preset = { x: -1.85, z: 18.8, yaw: -Math.PI / 2, pitch: -.055 };
 export const tetrisPreset = { x: -13.6, z: 16.155, yaw: Math.PI / 2, pitch: -.15 };
+export const donkeyKongPreset = { x: -3.9, z: 23.85, yaw: 0, pitch: -.22 };

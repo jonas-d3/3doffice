@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#eeede8" />
     <meta name="description" content="Udforsk Apply Agency i 3D." />
     <title>Apply Agency</title>
-    <script type="module" crossorigin src="/3doffice/dist/assets/index-D6ffQxYv.js"></script>
-    <link rel="stylesheet" crossorigin href="/3doffice/dist/assets/index-BxXcCe9o.css">
+    <script type="module" crossorigin src="/3doffice/dist/assets/index-CL1aIXvi.js"></script>
+    <link rel="stylesheet" crossorigin href="/3doffice/dist/assets/index-Dy84jw3E.css">
   </head>
   <body>
     <main id="app">
@@ -22,6 +22,28 @@
         </div>
       </dialog>
       <p id="whiteboard-status" class="visually-hidden" role="status"></p>
+      <button id="kong-play" class="tv-play" type="button" hidden>Spil Donkey Kong</button>
+      <section id="kong-controls" aria-label="Donkey Kong på bordet" hidden>
+        <div id="kong-victory" aria-hidden="true" hidden>
+          <span class="kong-trophy">🏆</span>
+          <h2>Du vandt!</h2>
+          <p>Banen er klaret. Tønderne bliver.</p>
+        </div>
+        <p><strong>DONKEY KONG</strong> · <span id="kong-status" role="status"></span></p>
+        <div class="tetris-actions" role="group" aria-label="Styr figuren">
+          <button type="button" data-kong="ArrowLeft" aria-label="Gå til venstre">←</button>
+          <button type="button" data-kong="ArrowUp" aria-label="Klatr op">↑</button>
+          <button type="button" data-kong="ArrowDown" aria-label="Klatr ned">↓</button>
+          <button type="button" data-kong="ArrowRight" aria-label="Gå til højre">→</button>
+          <button type="button" data-kong="Space">Hop · Space</button>
+        </div>
+        <div class="tetris-actions">
+          <button type="button" id="kong-pause">Pause · P</button>
+          <button type="button" id="kong-restart" hidden>Spil igen</button>
+          <button type="button" id="kong-close">Gå videre · Esc</button>
+        </div>
+        <p id="kong-instructions">← → gå · ↑ ↓ stiger · Space: hop · Nå flaget øverst</p>
+      </section>
       <section id="tetris-controls" aria-label="Tetris på glasruden" hidden>
         <p id="tetris-status" role="status"></p>
         <div class="tetris-actions" role="group" aria-label="Styr brikkerne">
@@ -86,6 +108,7 @@
           <button data-view="workspace" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M5 12v8m14-8v8M7 4h10v6H7zM12 10v2M9 20h6"/></svg>Kontoret</button>
           <button data-view="day21" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V5h18v16M3 12h18M8 5v16m8-16v16M3 21h18"/></svg>Day21</button>
           <button data-view="tetris" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v7h7v8H1v-8h7zM8 11h8M8 11v8m8-8v8"/></svg>Tetris</button>
+          <button data-view="donkey-kong" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 18-2M3 13l18 2M3 22l18-2M17 5v9M7 13v8M7 16h3m4-8h3"/></svg>Donkey Kong</button>
           <span class="tab-divider"></span><button data-view="walk" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13" cy="4" r="2"/><path d="m9 21 3-7-3-3 3-4 3 5 4 1M5 12l4-4M12 14l5 7"/></svg>Gå rundt</button>
         </nav>
         <p id="navigation-hint"><span>Træk for at dreje</span><b>·</b><span>Højreklik + træk for at panorere</span><b>·</b><span>Scroll for at zoome</span></p>
@@ -102,6 +125,7 @@
           <dt>Kig rundt</dt><dd>Træk, eller brug Q / E.</dd>
           <dt>Tilbage til overblik</dt><dd>Esc, H eller hus-ikonet.</dd>
           <dt>Tetris</dt><dd>Tryk på den midterste siderude inde i Tetris-rummet, eller kig på den og tryk Enter. Pile flytter og drejer, Space slipper brikken, P pauser, og Esc giver styringen tilbage til gåturen. Der er også knapper til touch.</dd>
+          <dt>Donkey Kong</dt><dd>Vælg Donkey Kong, og klik på spillet på bordet i glasrummet ved Day21. ←/→ går, ↑/↓ klatrer på stiger, og Space hopper. Nå flaget øverst uden at miste dine tre liv. P pauser, og Esc giver styringen tilbage til gåturen. Tønderne bliver i lokalet mellem spil, indtil siden genindlæses.</dd>
         </dl>
       </dialog>
     </main>
