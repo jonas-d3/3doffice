@@ -12,11 +12,18 @@ function canvasMaterial(transparent = false) {
 function editorFrame(material: THREE.MeshBasicMaterial, live: boolean, tracking: boolean) {
   const c = (material.map!.image as HTMLCanvasElement).getContext('2d')!;
   c.clearRect(0, 0, 1024, 565);
-  c.fillStyle = '#18232d'; c.fillRect(0, 0, 1024, 60); c.fillRect(0, 523, 1024, 42);
-  c.fillStyle = '#7af0c4'; c.font = '700 30px monospace'; c.fillText('3doffice', 22, 40);
-  c.fillStyle = '#f3f6fc'; c.font = '24px monospace'; c.fillText(live ? 'David' : 'Scene / hele modellen', 225, 39);
-  c.fillStyle = '#a8b8c8'; c.font = '21px monospace'; c.fillText(live ? 'Davids udsyn / kamera i øjenhøjde' : 'Holbech / bygger kontoret inde i kontoret', 22, 552);
-  if (tracking) drawScreenButton(c, stopButton, 'Stop tracking');
+  if (live) {
+    c.fillStyle = '#141e19'; c.fillRect(0, 0, 1024, 60);
+    for (const [index, color] of ['#53645b', '#85916b', '#7af0c4'].entries()) {
+      c.fillStyle = color; c.beginPath(); c.arc(30 + index * 26, 30, 6, 0, Math.PI * 2); c.fill();
+    }
+    if (tracking) drawScreenButton(c, stopButton, 'Stop tracking');
+  } else {
+    c.fillStyle = '#18232d'; c.fillRect(0, 0, 1024, 60); c.fillRect(0, 523, 1024, 42);
+    c.fillStyle = '#7af0c4'; c.font = '700 30px monospace'; c.fillText('3doffice', 22, 40);
+    c.fillStyle = '#f3f6fc'; c.font = '24px monospace'; c.fillText('Scene / hele modellen', 225, 39);
+    c.fillStyle = '#a8b8c8'; c.font = '21px monospace'; c.fillText('Holbech / bygger kontoret inde i kontoret', 22, 552);
+  }
   material.map!.needsUpdate = true;
 }
 
@@ -42,10 +49,12 @@ export class HolbechScreens {
 
   constructor() {
     const c = (this.startMaterial.map!.image as HTMLCanvasElement).getContext('2d')!;
-    c.fillStyle = '#172b35'; c.fillRect(0, 0, 1024, 565);
-    c.textAlign = 'center'; c.fillStyle = '#f3f6fc'; c.font = 'bold 60px sans-serif'; c.fillText('David', 512, 180);
-    c.font = '32px sans-serif'; c.fillText('Se kontoret gennem Davids øjne', 512, 242);
-    drawScreenButton(c, trackButton, 'Track David');
+    c.fillStyle = '#0b1210'; c.fillRect(0, 0, 1024, 565);
+    const y = trackButton.y + trackButton.height / 2, commandX = trackButton.x + 66;
+    c.font = '42px monospace'; c.textBaseline = 'middle';
+    c.fillStyle = '#7af0c4'; c.fillText('$', trackButton.x + 16, y);
+    c.fillStyle = '#e2eee7'; c.fillText('track --user David', commandX, y);
+    c.fillStyle = '#7af0c4'; c.fillRect(commandX + c.measureText('track --user David').width + 12, y - 21, 20, 42);
   }
 
   private camera(x: number, z: number, height: number, dx: number, dy: number, dz: number) {

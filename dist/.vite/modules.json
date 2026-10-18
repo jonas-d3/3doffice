@@ -1,5 +1,5 @@
 {
-  "assets/index-N8ZsfiMw.js": [
+  "assets/index-CM1_Yqry.js": [
     "\u0000vite/modulepreload-polyfill.js",
     "/src/style.css",
     "/src/load-queue.mjs",
@@ -54,59 +54,59 @@
     "/src/main.ts",
     "/index.html"
   ],
-  "assets/anja-screens-qkOiv4Xb.js": [
+  "assets/anja-screens-BEoqr57S.js": [
     "/src/assets/anja-fridge-webcam.webp",
     "/src/assets/anja-elevator-webcam.webp",
     "/src/anja-screens.ts"
   ],
-  "assets/coffee-controller-CPXYgiWt.js": [
+  "assets/coffee-controller-DkJ6d3xX.js": [
     "/src/coffee-controller.ts"
   ],
-  "assets/creeper-controller-DmBfzpa-.js": [
+  "assets/creeper-controller-BpCnuvsA.js": [
     "/src/creeper-controller.ts"
   ],
-  "assets/donkey-kong-game-BCO0CQx3.js": [
+  "assets/donkey-kong-game--RxMJuQ8.js": [
     "/src/donkey-kong.mjs",
     "/src/donkey-kong-model.ts",
     "/src/donkey-kong-game.ts"
   ],
-  "assets/easter-egg-state-BWNiPNbY.js": [
+  "assets/easter-egg-state-DvMFi3hS.js": [
     "/src/easter-egg-state.mjs"
   ],
-  "assets/easter-interaction-CZZhdxxC.js": [
+  "assets/easter-interaction-BEGE4DpR.js": [
     "/src/easter-interaction.ts"
   ],
   "assets/head-camera-browser-CE7mejaJ.js": [
     "/src/head-camera-browser.ts"
   ],
-  "assets/henrik-screens-Wt-6lzfT.js": [
+  "assets/henrik-screens-CwxjJ00V.js": [
     "/src/assets/1000mods-cheat-death.webp",
     "/src/henrik-screens.ts"
   ],
-  "assets/holbech-screens-DCB392Ma.js": [
+  "assets/holbech-screens--eELGC9V.js": [
     "/src/holbech-screens.ts"
   ],
-  "assets/jesper-screen-FsHvzq3I.js": [
+  "assets/jesper-screen-BRiQ_zYc.js": [
     "/src/jesper-screen.ts"
   ],
-  "assets/lars-screens-CcBP7yBF.js": [
+  "assets/lars-screens-DU_3wty7.js": [
     "/src/lars-screens.ts"
   ],
-  "assets/nicolai-screens-D4P-fUxO.js": [
+  "assets/nicolai-screens-CEP7hGe_.js": [
     "/src/nicolai-screens.ts"
   ],
-  "assets/palm-screens-DihjHn8_.js": [
+  "assets/palm-screens-DJ3bXRqd.js": [
     "/src/palm-screens.ts"
   ],
-  "assets/salmon-controller-BngCtMO9.js": [
+  "assets/salmon-controller-BIuKFZnB.js": [
     "/src/salmon-controller.ts"
   ],
-  "assets/tetris-game-CQ9sJY8o.js": [
+  "assets/tetris-game-DP5HuKwB.js": [
     "/src/tetris.mjs",
     "/src/tetris-screen.ts",
     "/src/tetris-game.ts"
   ],
-  "assets/thrane-screens-CGMmm6Ix.js": [
+  "assets/thrane-screens-B4DgLttw.js": [
     "/src/thrane-screens.ts"
   ],
   "assets/three-BaonVORo.js": [
@@ -118,7 +118,7 @@
     "/src/runner-screen.ts",
     "/src/tv-game.ts"
   ],
-  "assets/whiteboard-game-CHpi9PXo.js": [
+  "assets/whiteboard-game-COPH3yR-.js": [
     "/src/invaders.mjs",
     "/src/whiteboard-play.mjs",
     "/src/invaders-screen.ts",
@@ -128,7 +128,7 @@
     "/src/head-camera.ts",
     "/src/whiteboard-game.ts"
   ],
-  "assets/youtube-screen-C60UvpOk.js": [
+  "assets/youtube-screen-D776MSkg.js": [
     "/node_modules/.pnpm/three@0.186.1/node_modules/three/examples/jsm/renderers/CSS3DRenderer.js",
     "/src/visibility-objects.mjs",
     "/src/youtube-screen-visibility.mjs",

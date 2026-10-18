@@ -1,13 +1,13 @@
 {
-  "_easter-egg-state-BWNiPNbY.js": {
-    "file": "assets/easter-egg-state-BWNiPNbY.js",
+  "_easter-egg-state-DvMFi3hS.js": {
+    "file": "assets/easter-egg-state-DvMFi3hS.js",
     "name": "easter-egg-state",
     "imports": [
       "index.html"
     ]
   },
-  "_easter-interaction-CZZhdxxC.js": {
-    "file": "assets/easter-interaction-CZZhdxxC.js",
+  "_easter-interaction-BEGE4DpR.js": {
+    "file": "assets/easter-interaction-BEGE4DpR.js",
     "name": "easter-interaction",
     "imports": [
       "_three-BaonVORo.js",
@@ -19,7 +19,7 @@
     "name": "three"
   },
   "index.html": {
-    "file": "assets/index-N8ZsfiMw.js",
+    "file": "assets/index-CM1_Yqry.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -57,7 +57,7 @@
     ]
   },
   "src/anja-screens.ts": {
-    "file": "assets/anja-screens-qkOiv4Xb.js",
+    "file": "assets/anja-screens-BEoqr57S.js",
     "name": "anja-screens",
     "src": "src/anja-screens.ts",
     "isDynamicEntry": true,
@@ -107,30 +107,30 @@
     "src": "src/assets/wiibroe-pilsner.webp"
   },
   "src/coffee-controller.ts": {
-    "file": "assets/coffee-controller-CPXYgiWt.js",
+    "file": "assets/coffee-controller-DkJ6d3xX.js",
     "name": "coffee-controller",
     "src": "src/coffee-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-CZZhdxxC.js"
+      "_easter-interaction-BEGE4DpR.js"
     ]
   },
   "src/creeper-controller.ts": {
-    "file": "assets/creeper-controller-DmBfzpa-.js",
+    "file": "assets/creeper-controller-BpCnuvsA.js",
     "name": "creeper-controller",
     "src": "src/creeper-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-CZZhdxxC.js",
-      "_easter-egg-state-BWNiPNbY.js"
+      "_easter-interaction-BEGE4DpR.js",
+      "_easter-egg-state-DvMFi3hS.js"
     ]
   },
   "src/donkey-kong-game.ts": {
-    "file": "assets/donkey-kong-game-BCO0CQx3.js",
+    "file": "assets/donkey-kong-game--RxMJuQ8.js",
     "name": "donkey-kong-game",
     "src": "src/donkey-kong-game.ts",
     "isDynamicEntry": true,
@@ -149,7 +149,7 @@
     ]
   },
   "src/henrik-screens.ts": {
-    "file": "assets/henrik-screens-Wt-6lzfT.js",
+    "file": "assets/henrik-screens-CwxjJ00V.js",
     "name": "henrik-screens",
     "src": "src/henrik-screens.ts",
     "isDynamicEntry": true,
@@ -162,7 +162,7 @@
     ]
   },
   "src/holbech-screens.ts": {
-    "file": "assets/holbech-screens-DCB392Ma.js",
+    "file": "assets/holbech-screens--eELGC9V.js",
     "name": "holbech-screens",
     "src": "src/holbech-screens.ts",
     "isDynamicEntry": true,
@@ -172,18 +172,18 @@
     ]
   },
   "src/jesper-screen.ts": {
-    "file": "assets/jesper-screen-FsHvzq3I.js",
+    "file": "assets/jesper-screen-BRiQ_zYc.js",
     "name": "jesper-screen",
     "src": "src/jesper-screen.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-egg-state-BWNiPNbY.js"
+      "_easter-egg-state-DvMFi3hS.js"
     ]
   },
   "src/lars-screens.ts": {
-    "file": "assets/lars-screens-CcBP7yBF.js",
+    "file": "assets/lars-screens-DU_3wty7.js",
     "name": "lars-screens",
     "src": "src/lars-screens.ts",
     "isDynamicEntry": true,
@@ -193,7 +193,7 @@
     ]
   },
   "src/nicolai-screens.ts": {
-    "file": "assets/nicolai-screens-D4P-fUxO.js",
+    "file": "assets/nicolai-screens-CEP7hGe_.js",
     "name": "nicolai-screens",
     "src": "src/nicolai-screens.ts",
     "isDynamicEntry": true,
@@ -203,7 +203,7 @@
     ]
   },
   "src/palm-screens.ts": {
-    "file": "assets/palm-screens-DihjHn8_.js",
+    "file": "assets/palm-screens-DJ3bXRqd.js",
     "name": "palm-screens",
     "src": "src/palm-screens.ts",
     "isDynamicEntry": true,
@@ -213,18 +213,18 @@
     ]
   },
   "src/salmon-controller.ts": {
-    "file": "assets/salmon-controller-BngCtMO9.js",
+    "file": "assets/salmon-controller-BIuKFZnB.js",
     "name": "salmon-controller",
     "src": "src/salmon-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-CZZhdxxC.js"
+      "_easter-interaction-BEGE4DpR.js"
     ]
   },
   "src/tetris-game.ts": {
-    "file": "assets/tetris-game-CQ9sJY8o.js",
+    "file": "assets/tetris-game-DP5HuKwB.js",
     "name": "tetris-game",
     "src": "src/tetris-game.ts",
     "isDynamicEntry": true,
@@ -234,7 +234,7 @@
     ]
   },
   "src/thrane-screens.ts": {
-    "file": "assets/thrane-screens-CGMmm6Ix.js",
+    "file": "assets/thrane-screens-B4DgLttw.js",
     "name": "thrane-screens",
     "src": "src/thrane-screens.ts",
     "isDynamicEntry": true,
@@ -253,7 +253,7 @@
     ]
   },
   "src/whiteboard-game.ts": {
-    "file": "assets/whiteboard-game-CHpi9PXo.js",
+    "file": "assets/whiteboard-game-COPH3yR-.js",
     "name": "whiteboard-game",
     "src": "src/whiteboard-game.ts",
     "isDynamicEntry": true,
@@ -266,7 +266,7 @@
     ]
   },
   "src/youtube-screen.ts": {
-    "file": "assets/youtube-screen-C60UvpOk.js",
+    "file": "assets/youtube-screen-D776MSkg.js",
     "name": "youtube-screen",
     "src": "src/youtube-screen.ts",
     "isDynamicEntry": true,
