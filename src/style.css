@@ -11,6 +11,9 @@ canvas:active { cursor: grabbing; }
 canvas:focus-visible { outline-offset: -5px; }
 .youtube-layer { position: absolute; inset: 0; pointer-events: none; }
 .youtube-screen { border: 0; background: oklch(18% 0 none); backface-visibility: hidden; }
+.spotify-layer { position: absolute; inset: 0; pointer-events: none; }
+.spotify-panel { backface-visibility: hidden; }
+.spotify-screen { display: block; border: 0; border-radius: 12px; background: oklch(18% 0 none); }
 [hidden] { display: none !important; }
 svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .header { position: absolute; inset: 30px 38px auto; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
@@ -102,7 +105,7 @@ body[data-playing] #app > :not(#scene, #tv-dialog) { visibility: hidden; }
   #tv-jump:hover { background: oklch(33% .04 160); }
 }
 
-@font-face { font-family: Whiteboard; src: url('./assets/virgil.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: Whiteboard; src: url('./fonts/virgil.woff2') format('woff2'); font-display: swap; }
 #scene[data-whiteboard-pen] { cursor: crosshair; }
 .visually-hidden { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; margin: -1px; overflow: clip; clip-path: inset(50%); white-space: nowrap; border: 0; }
 #scene[data-tetris-hover] { cursor: pointer; }

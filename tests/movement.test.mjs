@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { canStand, canWalkBetween, moveWithCollisions, obstacles, setRestroomDoorClosure } from '../src/movement.mjs';
-import { walkingLocation, spaceInvaders, minecraft, kitchen, meeting2 } from '../src/layout.mjs';
-import { planPoint } from '../src/placement.mjs';
-import { lobbyPreset } from '../src/lobby-layout.mjs';
+import { canStand, canWalkBetween, moveWithCollisions, obstacles, setRestroomDoorClosure } from '../src/navigation/movement.mjs';
+import { walkingLocation, spaceInvaders, minecraft, kitchen, meeting2 } from '../src/office/layout.mjs';
+import { planPoint } from '../src/office/placement.mjs';
+import { lobbyPreset } from '../src/office/lobby-layout.mjs';
 const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-7, `${a} ≠ ${b}`);
 function route(points) {
   let p = { x: points[0][0], z: points[0][1] };

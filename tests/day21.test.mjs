@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { day21, day21Door, workspace, walkingLocation } from '../src/layout.mjs';
-import { canStand, moveWithCollisions } from '../src/movement.mjs';
-import { day21Preset, tetrisPreset } from '../src/day21-layout.mjs';
+import { day21, day21Door, workspace, walkingLocation } from '../src/office/layout.mjs';
+import { canStand, moveWithCollisions } from '../src/navigation/movement.mjs';
+import { day21Preset, tetrisPreset } from '../src/office/day21-layout.mjs';
 
 function route(points) {
   let [x, z] = points[0];

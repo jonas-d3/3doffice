@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Tetris } from '../src/tetris.mjs';
+import { Tetris } from '../src/games/tetris/tetris.mjs';
 
 const advance = (game, seconds, fps = 60) => {
   for (let i = 0; i < seconds * fps; i++) game.update(1 / fps);

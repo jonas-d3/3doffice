@@ -1,5 +1,5 @@
 {
-  "assets/index-DbsPCZYt.js": [
+  "assets/index-C3UX8aC2.js": [
     "\u0000vite/modulepreload-polyfill.js",
     "/src/style.css",
     "/src/load-queue.mjs",
@@ -31,8 +31,6 @@
     "/src/assets/thrane-pixel-pinup.webp",
     "/src/assets/thrane-children.webp",
     "/src/assets/astro-logo.png",
-    "/src/assets/wiibroe-pilsner.webp",
-    "/src/assets/wiibroe-2026.webp",
     "/src/assets/annie-graphs.svg",
     "/src/assets/annie-diagrams.svg",
     "\u0000vite/preload-helper.js",
@@ -51,62 +49,75 @@
     "/src/feature-status.ts",
     "/src/holbech-screen-buttons.mjs",
     "/src/holbech-screen-control.mjs",
+    "/src/david-director.mjs",
+    "/src/david-screen-control.mjs",
     "/src/main.ts",
     "/index.html"
   ],
-  "assets/anja-screens-qF6YYbne.js": [
+  "assets/anja-screens-BGOok4xy.js": [
     "/src/assets/anja-fridge-webcam.webp",
     "/src/assets/anja-elevator-webcam.webp",
     "/src/anja-screens.ts"
   ],
-  "assets/coffee-controller-y9xym8Vi.js": [
+  "assets/coffee-controller-CkE2exW9.js": [
     "/src/coffee-controller.ts"
   ],
-  "assets/creeper-controller-D549mSxz.js": [
+  "assets/creeper-controller-CzospA_c.js": [
     "/src/creeper-controller.ts"
   ],
-  "assets/donkey-kong-game-KIRgQZpf.js": [
+  "assets/david-screens-B9_zu7Qn.js": [
+    "/src/david-screens.ts"
+  ],
+  "assets/donkey-kong-game-DpJC8gfq.js": [
     "/src/donkey-kong.mjs",
     "/src/donkey-kong-model.ts",
     "/src/donkey-kong-game.ts"
   ],
-  "assets/easter-egg-state-fMdmvi0d.js": [
+  "assets/easter-egg-state-BngrFpJ-.js": [
     "/src/easter-egg-state.mjs"
   ],
-  "assets/easter-interaction-BYdqrSFa.js": [
+  "assets/easter-interaction-S0SYfylp.js": [
     "/src/easter-interaction.ts"
+  ],
+  "assets/gansted-screens-Cf8sM8id.js": [
+    "/src/assets/gansted-spotify-half.png",
+    "/src/assets/gansted-website-flowchart.webp",
+    "/src/gansted-screens.ts"
   ],
   "assets/head-camera-browser-CE7mejaJ.js": [
     "/src/head-camera-browser.ts"
   ],
-  "assets/henrik-screens-DFReMtwt.js": [
+  "assets/henrik-screens-BYEHjHKg.js": [
     "/src/assets/1000mods-cheat-death.webp",
     "/src/henrik-screens.ts"
   ],
-  "assets/holbech-screens-wFG5v7q9.js": [
+  "assets/holbech-screens-CtIKOZYa.js": [
     "/src/holbech-screens.ts"
   ],
-  "assets/jesper-screen-DRsXy-nS.js": [
+  "assets/jesper-screen-DJ6MDu8h.js": [
     "/src/jesper-screen.ts"
   ],
-  "assets/lars-screens-wS33DWV-.js": [
+  "assets/lars-screens-Dz3Zlt0L.js": [
     "/src/lars-screens.ts"
   ],
-  "assets/nicolai-screens-ChMYAGIW.js": [
+  "assets/nicolai-screens-BaEllgGG.js": [
     "/src/nicolai-screens.ts"
   ],
-  "assets/palm-screens-D6K1sPOU.js": [
+  "assets/palm-screens-xVH41Lxs.js": [
     "/src/palm-screens.ts"
   ],
-  "assets/salmon-controller-BkGQMBje.js": [
+  "assets/salmon-controller-CMbmTn3J.js": [
     "/src/salmon-controller.ts"
   ],
-  "assets/tetris-game-CnzPszGU.js": [
+  "assets/spotify-screen-A-tQnu8J.js": [
+    "/src/spotify-screen.ts"
+  ],
+  "assets/tetris-game-D3ZY3tzD.js": [
     "/src/tetris.mjs",
     "/src/tetris-screen.ts",
     "/src/tetris-game.ts"
   ],
-  "assets/thrane-screens-CCfG_fY7.js": [
+  "assets/thrane-screens-CPArakHq.js": [
     "/src/thrane-screens.ts"
   ],
   "assets/three-BaonVORo.js": [
@@ -118,7 +129,7 @@
     "/src/runner-screen.ts",
     "/src/tv-game.ts"
   ],
-  "assets/whiteboard-game-y7czuCJd.js": [
+  "assets/whiteboard-game-DTvIv-sM.js": [
     "/src/invaders.mjs",
     "/src/whiteboard-play.mjs",
     "/src/invaders-screen.ts",
@@ -128,10 +139,12 @@
     "/src/head-camera.ts",
     "/src/whiteboard-game.ts"
   ],
-  "assets/youtube-screen-BXC5DgfM.js": [
+  "assets/youtube-screen-DbuYY1YS.js": [
+    "/src/youtube-screen.ts"
+  ],
+  "assets/youtube-screen-visibility-BJK0Smyt.js": [
     "/node_modules/.pnpm/three@0.186.1/node_modules/three/examples/jsm/renderers/CSS3DRenderer.js",
     "/src/visibility-objects.mjs",
-    "/src/youtube-screen-visibility.mjs",
-    "/src/youtube-screen.ts"
+    "/src/youtube-screen-visibility.mjs"
   ]
 }

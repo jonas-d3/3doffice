@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { WalkInInvaders } from '../src/whiteboard-play.mjs';
-import { SoundShotDetector } from '../src/sound-shots.mjs';
+import { WalkInInvaders } from '../src/games/invaders/whiteboard-play.mjs';
+import { SoundShotDetector } from '../src/input/sound-shots.mjs';
 
 const drawing = [
   [[350, 620], [350, 720]],

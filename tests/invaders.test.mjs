@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Invaders, invadersSize } from '../src/invaders.mjs';
+import { Invaders, invadersSize } from '../src/games/invaders/invaders.mjs';
 
 function advance(game, seconds, input = {}) {
   for (let i = 0; i < Math.round(seconds * 120); i++) game.update(1 / 120, input);

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { HeadSteering, facePosition } from '../src/head-steering.mjs';
+import { HeadSteering, facePosition } from '../src/input/head-steering.mjs';
 
 function calibrate(head, position = .5, start = 0) {
   for (let t = start; t <= start + 700; t += 100) head.observe(position, t);

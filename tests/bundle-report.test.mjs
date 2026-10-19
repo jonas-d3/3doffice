@@ -14,7 +14,16 @@ test('startup includes mandatory CSS once, without pulling in dynamic styles', (
   };
   assert.deepEqual(manifestFiles(manifest, staticClosure(manifest, 'html')), ['entry.js', 'entry.css', 'shared.css', 'shared.js']);
 });
-test('optional module guard includes the browser camera entry', () => {
-  for (const id of ['/src/head-camera-browser.ts', '/src/head-camera.ts', '/src/head-tracker.worker.ts', '/src/tetris-game.ts']) assert.ok(optionalModule.test(id), id);
-  assert.equal(optionalModule.test('/src/lazy-screens.ts'), false);
+test('optional module guard detects deferred features in nested source folders', () => {
+  for (const id of [
+    '/src/input/head-camera-browser.ts', '/src/input/head-camera.ts', '/src/input/head-tracker.worker.ts',
+    '/src/games/tetris/tetris-game.ts', '/src/games/donkey-kong/donkey-kong-game.ts',
+    '/src/games/invaders/whiteboard-game.ts', '/src/games/runner/tv-game.ts',
+    '/src/screens/david-screens.ts', '/src/screens/jesper-screen.ts', '/src/screens/spotify-screen.ts',
+    '/src/screens/youtube-screen.ts', '/src/easter-eggs/coffee-controller.ts',
+    '/src/easter-eggs/salmon-controller.ts', '/src/easter-eggs/creeper-controller.ts',
+  ]) assert.ok(optionalModule.test(id), id);
+  for (const id of ['/src/screens/lazy-screens.ts', '/src/screens/david-screen-control.mjs', '/src/loading/lazy-feature.mjs']) {
+    assert.equal(optionalModule.test(id), false, id);
+  }
 });

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { SoundShotDetector } from '../src/sound-shots.mjs';
+import { SoundShotDetector } from '../src/input/sound-shots.mjs';
 
 function listen(detector, seconds, level, fps = 60) {
   let shots = 0;

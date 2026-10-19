@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Group, Mesh, PlaneGeometry, PerspectiveCamera, Vector3 } from 'three';
-import { screenPriority } from '../src/feature-triggers.mjs';
+import { screenPriority } from '../src/loading/feature-triggers.mjs';
 test('zoom and transformed screen size lift visible content without requiring walking',()=>{
  const desk=new Group(), screen=new Mesh(new PlaneGeometry(.6,.36));desk.add(screen);desk.position.set(9,1,18);desk.rotation.y=Math.PI/2;
  const camera=new PerspectiveCamera(42,1.4,.05,300);camera.position.set(30,6,18);camera.lookAt(9,1,18);

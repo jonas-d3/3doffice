@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { screenButton, trackButton, stopButton } from '../src/holbech-screen-buttons.mjs';
-import { hitHolbechButton, installHolbechControl } from '../src/holbech-screen-control.mjs';
+import { screenButton, trackButton, stopButton } from '../src/screens/holbech-screen-buttons.mjs';
+import { hitHolbechButton, installHolbechControl } from '../src/screens/holbech-screen-control.mjs';
 const rect={left:0,top:0,width:1000,height:800};
 function setup(){
  const scene=new THREE.Scene(),desk=new THREE.Group();scene.add(desk);desk.position.set(2,1,3);desk.rotation.y=.4;

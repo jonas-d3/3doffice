@@ -18,7 +18,7 @@ export function manifestFiles(manifest, keys) {
   return [...new Set([...keys].flatMap(key => [manifest[key].file, ...(manifest[key].css ?? [])]))];
 }
 
-export const optionalModule = /(?:\/src\/(?:.*-game|(?:anja|henrik|holbech|lars|nicolai|palm|thrane)-screens|jesper-screen|youtube-screen|coffee-controller|salmon-controller|creeper-controller|head-camera(?:-browser)?|head-tracker)[.\/]|CSS3DRenderer|@mediapipe|\.wasm)/;
+export const optionalModule = /(?:\/src\/(?:[^/]+\/)*(?:.*-game|(?:anja|david|gansted|henrik|holbech|lars|nicolai|palm|thrane)-screens|jesper-screen|youtube-screen|spotify-screen|coffee-controller|salmon-controller|creeper-controller|head-camera(?:-browser)?|head-tracker)[.\/]|CSS3DRenderer|@mediapipe|\.wasm)/;
 
 export async function reportBundle(directory = 'dist', check = false) {
   const manifest = JSON.parse(await readFile(`${directory}/.vite/manifest.json`, 'utf8'));

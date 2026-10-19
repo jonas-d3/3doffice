@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { HolbechScreens } from '../src/holbech-screens.ts';
+import { HolbechScreens } from '../src/screens/holbech-screens.ts';
 
 const context = () => new Proxy({}, { get: (_, key) => key === 'measureText' ? () => ({ width: 100 }) : () => {} });
 globalThis.document = { createElement: () => ({ width: 0, height: 0, getContext: context }) };

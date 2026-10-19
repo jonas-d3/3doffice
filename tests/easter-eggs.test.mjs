@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CreeperFollow, creeperRadius, SalmonCatch } from '../src/easter-egg-state.mjs';
-import { VisitorWalk, visitorRadius } from '../src/visitor-walk.mjs';
-import { coffeeDropoff, coffeeCupPlacement, thraneDesk } from '../src/coffee-layout.mjs';
-import { canStand, canWalkBetween } from '../src/movement.mjs';
+import { CreeperFollow, creeperRadius, SalmonCatch } from '../src/easter-eggs/easter-egg-state.mjs';
+import { VisitorWalk, visitorRadius } from '../src/characters/visitor-walk.mjs';
+import { coffeeDropoff, coffeeCupPlacement, thraneDesk } from '../src/easter-eggs/coffee-layout.mjs';
+import { canStand, canWalkBetween } from '../src/navigation/movement.mjs';
 
 test('the creeper only starts following after its first sighting and keeps following while unseen', () => {
   const creeper = new CreeperFollow(), player = { x: 5.585, z: 7.9 };

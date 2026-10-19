@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { LoadQueue } from '../src/load-queue.mjs';
-import { AssetCache } from '../src/asset-cache.mjs';
+import { LoadQueue } from '../src/loading/load-queue.mjs';
+import { AssetCache } from '../src/loading/asset-cache.mjs';
 const tick = () => new Promise(resolve => setImmediate(resolve));
 function setup() { const turns=[]; const queue=new LoadQueue(fn=>turns.push(fn)); return {queue, async step(){turns.shift()?.();await tick();},turns}; }
 test('nothing starts before first frame; priority wins and work yields between starts', async()=>{

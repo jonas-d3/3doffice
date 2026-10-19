@@ -1,16 +1,17 @@
 import * as THREE from 'three';
 import './style.css';
-import { loadQueue, onAssetChange, updateImagePriorities } from './image-assets';
-import { createOffice } from './model';
-import { Navigation, type View } from './navigation';
-import { renderMinimap } from './minimap';
-import { Visitor } from './visitor';
-import { LazyFeature } from './lazy-feature.mjs';
-import { screenPriority } from './feature-triggers.mjs';
-import { refreshSceneSurfaces } from './scene-surfaces.mjs';
-import { featureStatus } from './feature-status';
-import { screenPlaceholder } from './lazy-screens';
-import { installHolbechControl } from './holbech-screen-control.mjs';
+import { loadQueue, onAssetChange, updateImagePriorities } from './textures/image-assets';
+import { createOffice } from './office/model';
+import { Navigation, type View } from './navigation/navigation';
+import { renderMinimap } from './navigation/minimap';
+import { Visitor } from './characters/visitor';
+import { LazyFeature } from './loading/lazy-feature.mjs';
+import { screenPriority } from './loading/feature-triggers.mjs';
+import { refreshSceneSurfaces } from './scene/scene-surfaces.mjs';
+import { featureStatus } from './loading/feature-status';
+import { screenPlaceholder } from './screens/lazy-screens';
+import { installHolbechControl } from './screens/holbech-screen-control.mjs';
+import { installDavidControl } from './screens/david-screen-control.mjs';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#scene')!;
 document.querySelector('#reload')!.addEventListener('click', () => location.reload());
@@ -46,8 +47,10 @@ model.television.material = screenPlaceholder('TV · Runner');
 model.whiteboard.material = screenPlaceholder('Space Invaders');
 model.tetrisGlass.material.map = screenPlaceholder('Tetris').map;
 scene.add(model.office);
-const youtube = new LazyFeature('YouTube', loadQueue, () => import('./youtube-screen'), ({ YoutubeScreen }) => new YoutubeScreen(model.martinScreen, scene, canvas), featureChanged, featureFailed);
+const youtube = new LazyFeature('YouTube', loadQueue, () => import('./screens/youtube-screen'), ({ YoutubeScreen }) => new YoutubeScreen(model.martinScreen, scene, canvas), featureChanged, featureFailed);
 youtube.prefetch();
+const spotify = new LazyFeature('Spotify', loadQueue, () => import('./screens/spotify-screen'), ({ SpotifyScreen }) => new SpotifyScreen(model.ganstedScreen, scene, canvas), featureChanged, featureFailed);
+spotify.prefetch();
 const visitor = new Visitor();
 scene.add(visitor.group, visitor.deskCups);
 const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
@@ -57,7 +60,7 @@ motionPreference.addEventListener('change', () => {
   if (motionPreference.matches) model.jesperScreen.value?.settleCatch();
   needsRender = true;
 });
-const tvGame = new LazyFeature('TV', loadQueue, () => import('./tv-game'), ({ TVGame }) => new TVGame(model.television, navigation), featureChanged, featureFailed);
+const tvGame = new LazyFeature('TV', loadQueue, () => import('./games/runner/tv-game'), ({ TVGame }) => new TVGame(model.television, navigation), featureChanged, featureFailed);
 tvGame.prefetch();
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.ShadowMaterial({ opacity: .12 }));
 ground.rotation.x = -Math.PI / 2; ground.position.y = -.265; ground.receiveShadow = true;
@@ -72,22 +75,28 @@ document.querySelector('#zoom-in')!.addEventListener('click', () => navigation.z
 document.querySelector('#zoom-out')!.addEventListener('click', () => navigation.zoom(1.22));
 document.querySelector('#reset')!.addEventListener('click', () => navigation.setView('overview'));
 const dialog = document.querySelector<HTMLDialogElement>('#help-dialog')!;
-const tetrisGame = new LazyFeature('Tetris', loadQueue, () => import('./tetris-game'), ({ TetrisGame }) => new TetrisGame(model.tetrisGlass, model.office, navigation, (): boolean => dialog.open || !!tvGame.value?.active || !!kongGame.value?.active || document.hidden), featureChanged, featureFailed);
+const tetrisGame = new LazyFeature('Tetris', loadQueue, () => import('./games/tetris/tetris-game'), ({ TetrisGame }) => new TetrisGame(model.tetrisGlass, model.office, navigation, (): boolean => dialog.open || !!tvGame.value?.active || !!kongGame.value?.active || document.hidden), featureChanged, featureFailed);
 tetrisGame.prefetch();
-const kongGame = new LazyFeature('Donkey Kong', loadQueue, () => import('./donkey-kong-game'), ({ DonkeyKongGame }) => new DonkeyKongGame(model.office, navigation, (): boolean => dialog.open || !!tvGame.value?.active || !!tetrisGame.value?.active || document.hidden), featureChanged, featureFailed);
+const kongGame = new LazyFeature('Donkey Kong', loadQueue, () => import('./games/donkey-kong/donkey-kong-game'), ({ DonkeyKongGame }) => new DonkeyKongGame(model.office, navigation, (): boolean => dialog.open || !!tvGame.value?.active || !!tetrisGame.value?.active || document.hidden), featureChanged, featureFailed);
 kongGame.prefetch();
-const whiteboardGame = new LazyFeature('Whiteboard', loadQueue, () => import('./whiteboard-game'), ({ WhiteboardGame }) => new WhiteboardGame(model.whiteboard, model.office, navigation, motionPreference, (): boolean => dialog.open || !!tvGame.value?.active || !!tetrisGame.value?.active || !!kongGame.value?.active || document.hidden), featureChanged, featureFailed);
+const whiteboardGame = new LazyFeature('Whiteboard', loadQueue, () => import('./games/invaders/whiteboard-game'), ({ WhiteboardGame }) => new WhiteboardGame(model.whiteboard, model.office, navigation, motionPreference, (): boolean => dialog.open || !!tvGame.value?.active || !!tetrisGame.value?.active || !!kongGame.value?.active || document.hidden), featureChanged, featureFailed);
 whiteboardGame.prefetch();
 const blocked = (): boolean => dialog.open || !!tvGame.value?.active || !!tetrisGame.value?.active || !!kongGame.value?.active || document.hidden;
 let focused = document.hasFocus();
 addEventListener('focus', () => { focused = true; });
 addEventListener('blur', () => { focused = false; model.holbechScreens.value?.setPaused(true); });
 installHolbechControl(canvas, camera, scene, () => model.holbechScreens.value, () => blocked() || !focused, () => { needsRender = true; });
-const coffee = new LazyFeature('Kaffe', loadQueue, () => import('./coffee-controller'), ({ CoffeeController }) => new CoffeeController(model.office, model.coffee, visitor, navigation, blocked), featureChanged, featureFailed);
-const salmon = new LazyFeature('Laks', loadQueue, () => import('./salmon-controller'), ({ SalmonController }) => new SalmonController(model.office, model.jesperScreen.value!, navigation, motionPreference, blocked), featureChanged, featureFailed);
-const creeper = new LazyFeature('Creeper', loadQueue, () => import('./creeper-controller'), ({ CreeperController }) => new CreeperController(model.office, navigation, motionPreference, blocked), featureChanged, featureFailed);
+installDavidControl(canvas, camera, scene, () => model.davidScreens.value, () => blocked() || !focused, () => {
+  needsRender = true;
+  model.holbechScreens.value?.invalidate();
+  const state = model.davidScreens.value!.state;
+  document.querySelector('#david-status')!.textContent = `${state.receipt} ${state.alert}`;
+});
+const coffee = new LazyFeature('Kaffe', loadQueue, () => import('./easter-eggs/coffee-controller'), ({ CoffeeController }) => new CoffeeController(model.office, model.coffee, visitor, navigation, blocked), featureChanged, featureFailed);
+const salmon = new LazyFeature('Laks', loadQueue, () => import('./easter-eggs/salmon-controller'), ({ SalmonController }) => new SalmonController(model.office, model.jesperScreen.value!, navigation, motionPreference, blocked), featureChanged, featureFailed);
+const creeper = new LazyFeature('Creeper', loadQueue, () => import('./easter-eggs/creeper-controller'), ({ CreeperController }) => new CreeperController(model.office, navigation, motionPreference, blocked), featureChanged, featureFailed);
 coffee.prefetch(); salmon.prefetch(); creeper.prefetch();
-const features = [youtube, tvGame, tetrisGame, kongGame, whiteboardGame, coffee, salmon, creeper, ...model.screenFeatures];
+const features = [youtube, spotify, tvGame, tetrisGame, kongGame, whiteboardGame, coffee, salmon, creeper, ...model.screenFeatures];
 const loadingStatus = featureStatus(features);
 addEventListener('feature-load-error', event => featureFailed((event as CustomEvent<string>).detail));
 const pendingTargets = [
@@ -137,6 +146,7 @@ addEventListener('resize', () => {
   tetrisGame.value?.resize();
   kongGame.value?.resize();
   youtube.value?.resize();
+  spotify.value?.resize();
   needsRender = true;
   if (navigation.view === 'overview') navigation.setView('overview', true);
 });
@@ -156,6 +166,7 @@ renderer.setAnimationLoop(now => {
   salmon.setRelevant(navigation.isWalking && !!model.jesperScreen.value);
   creeper.setRelevant(navigation.isWalking);
   youtube.setRelevant(screenPriority(model.martinScreen, camera, innerHeight) > 0);
+  spotify.setRelevant(screenPriority(model.ganstedScreen, camera, innerHeight) > 0);
   kongGame.setRelevant(navigation.isWalking && camera.position.x > -7.5 && camera.position.x < -.5 && camera.position.z > 17.5);
   tvGame.setRelevant(screenPriority(model.television, camera, innerHeight) > 0);
   whiteboardGame.setRelevant(navigation.view === 'walk' || screenPriority(model.whiteboard, camera, innerHeight) > 0);
@@ -187,6 +198,7 @@ renderer.setAnimationLoop(now => {
     previousPosition.copy(camera.position); previousRotation.copy(camera.quaternion); needsRender = false;
   }
   youtube.value?.update(camera, !dialog.open && !tvGame.value?.active);
+  spotify.value?.update(camera, !blocked());
 });
 }
 

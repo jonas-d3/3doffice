@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { BoxGeometry, Group, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, PlaneGeometry, Scene } from 'three';
-import { createScreenVisibility } from '../src/youtube-screen-visibility.mjs';
+import { createScreenVisibility } from '../src/screens/youtube-screen-visibility.mjs';
 
 function setup() {
   const scene = new Scene();

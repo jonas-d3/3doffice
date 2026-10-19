@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { boxGeometry, cylinderGeometry } from '../src/geometry-cache.mjs';
+import { boxGeometry, cylinderGeometry } from '../src/scene/geometry-cache.mjs';
 test('geometry cache shares equal parameters and isolates radius, size and segment changes',()=>{
  assert.equal(boxGeometry(1,2,3),boxGeometry(1,2,3));assert.notEqual(boxGeometry(1,2,3),boxGeometry(2,2,3));
  assert.equal(boxGeometry(1,2,3,.1),boxGeometry(1,2,3,.1));assert.notEqual(boxGeometry(1,2,3,.1),boxGeometry(1,2,3,.2));

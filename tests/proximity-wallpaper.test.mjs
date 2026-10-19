@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Group, Mesh, MeshBasicMaterial, Texture, Vector3 } from 'three';
-import { createProximityWallpaper } from '../src/proximity-wallpaper.mjs';
+import { createProximityWallpaper } from '../src/textures/proximity-wallpaper.mjs';
 
 function setup() {
   const far = new Texture(), near = new Texture();

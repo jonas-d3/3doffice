@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { MicrophoneShots } from '../src/microphone-shots.ts';
+import { MicrophoneShots } from '../src/input/microphone-shots.ts';
 
 function microphone(request) {
   let level = .004;

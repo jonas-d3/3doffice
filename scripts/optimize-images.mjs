@@ -9,10 +9,8 @@ const images = [
   { source: 'thrane-children.jpg', output: 'thrane-children.webp', width: 1024, quality: 80 },
   // Higher quality and nearest-neighbour resizing retain the deliberately hard pixel edges.
   { source: 'thrane-pixel-pinup.jpg', output: 'thrane-pixel-pinup.webp', width: 1024, quality: 90, kernel: 'nearest' },
-  { source: 'wiibroe-pilsner.png', output: 'wiibroe-pilsner.webp', width: 187, quality: 80 },
-  { source: 'wiibroe-2026.jpg', output: 'wiibroe-2026.webp', width: 1024, quality: 80 },
 ];
-const assetPath = name => fileURLToPath(new URL(`../src/assets/${name}`, import.meta.url));
+const assetPath = name => fileURLToPath(new URL(`../src/textures/images/${name}`, import.meta.url));
 let beforeTotal = 0, afterTotal = 0;
 
 for (const { source, output, width, quality, kernel = 'lanczos3' } of images) {

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { DonkeyKong, RoomBarrels, platformY, BARREL_RADIUS } from '../src/donkey-kong.mjs';
+import { DonkeyKong, RoomBarrels, platformY, BARREL_RADIUS } from '../src/games/donkey-kong/donkey-kong.mjs';
 
 function advance(game, seconds, input = {}, fps = 60) {
   for (let i = 0; i < Math.round(seconds * fps); i++) game.update(1 / fps, input);
@@ -110,9 +110,9 @@ test('jumping over a barrel avoids a hit and scores only once', () => {
 });
 
 test('the Donkey Kong camera preset is reachable inside the glass room', async () => {
-  const { donkeyKongPreset, day21GlassRoom } = await import('../src/day21-layout.mjs');
-  const { canStand } = await import('../src/movement.mjs');
-  const { contains } = await import('../src/layout.mjs');
+  const { donkeyKongPreset, day21GlassRoom } = await import('../src/office/day21-layout.mjs');
+  const { canStand } = await import('../src/navigation/movement.mjs');
+  const { contains } = await import('../src/office/layout.mjs');
   assert.equal(canStand(donkeyKongPreset.x, donkeyKongPreset.z), true);
   assert.equal(contains(day21GlassRoom, donkeyKongPreset.x, donkeyKongPreset.z), true);
 });

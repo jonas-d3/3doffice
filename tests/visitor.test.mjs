@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { VisitorWalk, visitorRoute, visitorRadius } from '../src/visitor-walk.mjs';
-import { canStand } from '../src/movement.mjs';
-import { walkingLocation } from '../src/layout.mjs';
+import { VisitorWalk, visitorRoute, visitorRadius } from '../src/characters/visitor-walk.mjs';
+import { canStand } from '../src/navigation/movement.mjs';
+import { walkingLocation } from '../src/office/layout.mjs';
 
 test('the whole visitor route has clearance for his body, including doorways and corners', () => {
   for (let i = 0; i < visitorRoute.length; i++) {

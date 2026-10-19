@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import * as layout from '../src/layout.mjs';
+import * as layout from '../src/office/layout.mjs';
 const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-6, `${actual} ≠ ${expected}`);
 
 test('MØDE 4 and MØDE 3 use the dimensions printed on the PDF', () => {

@@ -10,8 +10,8 @@
 // Run pnpm dev, then open /3doffice/dist/tests/browser/thrane-wallpaper.html.
 // Render BOTH placeholders before releasing the image queue to reproduce the bug.
 import * as THREE from 'three';
-import { createWorkspace } from '../../src/workspace.ts';
-import { loadQueue, onAssetChange } from '../../src/image-assets.ts';
+import { createWorkspace } from '../../src/office/workspace.ts';
+import { loadQueue, onAssetChange } from '../../src/textures/image-assets.ts';
 
 const root = new THREE.Group();
 const workspace = createWorkspace(root);

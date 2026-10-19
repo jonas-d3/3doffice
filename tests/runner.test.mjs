@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Runner } from '../src/runner.mjs';
+import { Runner } from '../src/games/runner/runner.mjs';
 
 const advance = (game, seconds, fps = 60) => {
   for (let i = 0; i < Math.round(seconds * fps); i++) game.update(1 / fps);

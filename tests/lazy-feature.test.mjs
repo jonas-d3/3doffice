@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { LoadQueue } from '../src/load-queue.mjs';
-import { LazyFeature } from '../src/lazy-feature.mjs';
+import { LoadQueue } from '../src/loading/load-queue.mjs';
+import { LazyFeature } from '../src/loading/lazy-feature.mjs';
 const tick=()=>new Promise(r=>setImmediate(r));
 async function drain(turns){for(let i=0;i<10;i++){turns.shift()?.();await tick();}}
 test('prefetch imports without construction or activation; concurrent prepare creates once',async()=>{

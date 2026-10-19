@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import * as layout from '../src/layout.mjs';
-import { canStand, moveWithCollisions } from '../src/movement.mjs';
+import * as layout from '../src/office/layout.mjs';
+import { canStand, moveWithCollisions } from '../src/navigation/movement.mjs';
 
 function route(points) {
   let [x, z] = points[0];

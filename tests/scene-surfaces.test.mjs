@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Group, Mesh, BoxGeometry, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
-import { sceneSurfaces, refreshSceneSurfaces } from '../src/scene-surfaces.mjs';
+import { sceneSurfaces, refreshSceneSurfaces } from '../src/scene/scene-surfaces.mjs';
 test('live controllers share new meshes and stop hitting detached barrel geometry',()=>{
  const office=new Group(),first=sceneSurfaces(office),second=sceneSurfaces(office);
  assert.equal(first,second);

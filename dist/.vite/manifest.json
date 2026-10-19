@@ -1,13 +1,13 @@
 {
-  "_easter-egg-state-fMdmvi0d.js": {
-    "file": "assets/easter-egg-state-fMdmvi0d.js",
+  "_easter-egg-state-BngrFpJ-.js": {
+    "file": "assets/easter-egg-state-BngrFpJ-.js",
     "name": "easter-egg-state",
     "imports": [
       "index.html"
     ]
   },
-  "_easter-interaction-BYdqrSFa.js": {
-    "file": "assets/easter-interaction-BYdqrSFa.js",
+  "_easter-interaction-S0SYfylp.js": {
+    "file": "assets/easter-interaction-S0SYfylp.js",
     "name": "easter-interaction",
     "imports": [
       "_three-BaonVORo.js",
@@ -18,8 +18,16 @@
     "file": "assets/three-BaonVORo.js",
     "name": "three"
   },
+  "_youtube-screen-visibility-BJK0Smyt.js": {
+    "file": "assets/youtube-screen-visibility-BJK0Smyt.js",
+    "name": "youtube-screen-visibility",
+    "imports": [
+      "_three-BaonVORo.js",
+      "index.html"
+    ]
+  },
   "index.html": {
-    "file": "assets/index-DbsPCZYt.js",
+    "file": "assets/index-C3UX8aC2.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -33,9 +41,12 @@
       "src/jesper-screen.ts",
       "src/holbech-screens.ts",
       "src/henrik-screens.ts",
+      "src/gansted-screens.ts",
       "src/thrane-screens.ts",
       "src/lars-screens.ts",
+      "src/david-screens.ts",
       "src/youtube-screen.ts",
+      "src/spotify-screen.ts",
       "src/tv-game.ts",
       "src/tetris-game.ts",
       "src/donkey-kong-game.ts",
@@ -45,19 +56,17 @@
       "src/creeper-controller.ts"
     ],
     "css": [
-      "assets/index-CM0OgzO2.css"
+      "assets/index-BsZmKNSb.css"
     ],
     "assets": [
       "assets/thrane-pixel-pinup-CdYYM-RA.webp",
       "assets/thrane-children-Wo8Fg2De.webp",
       "assets/astro-logo-Cg72ZFME.png",
-      "assets/wiibroe-pilsner-CIYQq_27.webp",
-      "assets/wiibroe-2026-xvdzOPiK.webp",
       "assets/virgil-Q_0-KYu6.woff2"
     ]
   },
   "src/anja-screens.ts": {
-    "file": "assets/anja-screens-qF6YYbne.js",
+    "file": "assets/anja-screens-BGOok4xy.js",
     "name": "anja-screens",
     "src": "src/anja-screens.ts",
     "isDynamicEntry": true,
@@ -86,6 +95,14 @@
     "file": "assets/astro-logo-Cg72ZFME.png",
     "src": "src/assets/astro-logo.png"
   },
+  "src/assets/gansted-spotify-half.png": {
+    "file": "assets/gansted-spotify-half-B8yKL7_6.png",
+    "src": "src/assets/gansted-spotify-half.png"
+  },
+  "src/assets/gansted-website-flowchart.webp": {
+    "file": "assets/gansted-website-flowchart-CMuWPO0s.webp",
+    "src": "src/assets/gansted-website-flowchart.webp"
+  },
   "src/assets/thrane-children.webp": {
     "file": "assets/thrane-children-Wo8Fg2De.webp",
     "src": "src/assets/thrane-children.webp"
@@ -98,45 +115,61 @@
     "file": "assets/virgil-Q_0-KYu6.woff2",
     "src": "src/assets/virgil.woff2"
   },
-  "src/assets/wiibroe-2026.webp": {
-    "file": "assets/wiibroe-2026-xvdzOPiK.webp",
-    "src": "src/assets/wiibroe-2026.webp"
-  },
-  "src/assets/wiibroe-pilsner.webp": {
-    "file": "assets/wiibroe-pilsner-CIYQq_27.webp",
-    "src": "src/assets/wiibroe-pilsner.webp"
-  },
   "src/coffee-controller.ts": {
-    "file": "assets/coffee-controller-y9xym8Vi.js",
+    "file": "assets/coffee-controller-CkE2exW9.js",
     "name": "coffee-controller",
     "src": "src/coffee-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-BYdqrSFa.js"
+      "_easter-interaction-S0SYfylp.js"
     ]
   },
   "src/creeper-controller.ts": {
-    "file": "assets/creeper-controller-D549mSxz.js",
+    "file": "assets/creeper-controller-CzospA_c.js",
     "name": "creeper-controller",
     "src": "src/creeper-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-BYdqrSFa.js",
-      "_easter-egg-state-fMdmvi0d.js"
+      "_easter-interaction-S0SYfylp.js",
+      "_easter-egg-state-BngrFpJ-.js"
+    ]
+  },
+  "src/david-screens.ts": {
+    "file": "assets/david-screens-B9_zu7Qn.js",
+    "name": "david-screens",
+    "src": "src/david-screens.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-BaonVORo.js",
+      "index.html"
     ]
   },
   "src/donkey-kong-game.ts": {
-    "file": "assets/donkey-kong-game-KIRgQZpf.js",
+    "file": "assets/donkey-kong-game-DpJC8gfq.js",
     "name": "donkey-kong-game",
     "src": "src/donkey-kong-game.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html"
+    ]
+  },
+  "src/gansted-screens.ts": {
+    "file": "assets/gansted-screens-Cf8sM8id.js",
+    "name": "gansted-screens",
+    "src": "src/gansted-screens.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-BaonVORo.js",
+      "index.html"
+    ],
+    "assets": [
+      "assets/gansted-spotify-half-B8yKL7_6.png",
+      "assets/gansted-website-flowchart-CMuWPO0s.webp"
     ]
   },
   "src/head-camera-browser.ts": {
@@ -149,7 +182,7 @@
     ]
   },
   "src/henrik-screens.ts": {
-    "file": "assets/henrik-screens-DFReMtwt.js",
+    "file": "assets/henrik-screens-BYEHjHKg.js",
     "name": "henrik-screens",
     "src": "src/henrik-screens.ts",
     "isDynamicEntry": true,
@@ -162,7 +195,7 @@
     ]
   },
   "src/holbech-screens.ts": {
-    "file": "assets/holbech-screens-wFG5v7q9.js",
+    "file": "assets/holbech-screens-CtIKOZYa.js",
     "name": "holbech-screens",
     "src": "src/holbech-screens.ts",
     "isDynamicEntry": true,
@@ -172,18 +205,18 @@
     ]
   },
   "src/jesper-screen.ts": {
-    "file": "assets/jesper-screen-DRsXy-nS.js",
+    "file": "assets/jesper-screen-DJ6MDu8h.js",
     "name": "jesper-screen",
     "src": "src/jesper-screen.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-egg-state-fMdmvi0d.js"
+      "_easter-egg-state-BngrFpJ-.js"
     ]
   },
   "src/lars-screens.ts": {
-    "file": "assets/lars-screens-wS33DWV-.js",
+    "file": "assets/lars-screens-Dz3Zlt0L.js",
     "name": "lars-screens",
     "src": "src/lars-screens.ts",
     "isDynamicEntry": true,
@@ -193,7 +226,7 @@
     ]
   },
   "src/nicolai-screens.ts": {
-    "file": "assets/nicolai-screens-ChMYAGIW.js",
+    "file": "assets/nicolai-screens-BaEllgGG.js",
     "name": "nicolai-screens",
     "src": "src/nicolai-screens.ts",
     "isDynamicEntry": true,
@@ -203,7 +236,7 @@
     ]
   },
   "src/palm-screens.ts": {
-    "file": "assets/palm-screens-D6K1sPOU.js",
+    "file": "assets/palm-screens-xVH41Lxs.js",
     "name": "palm-screens",
     "src": "src/palm-screens.ts",
     "isDynamicEntry": true,
@@ -213,18 +246,28 @@
     ]
   },
   "src/salmon-controller.ts": {
-    "file": "assets/salmon-controller-BkGQMBje.js",
+    "file": "assets/salmon-controller-CMbmTn3J.js",
     "name": "salmon-controller",
     "src": "src/salmon-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-BYdqrSFa.js"
+      "_easter-interaction-S0SYfylp.js"
+    ]
+  },
+  "src/spotify-screen.ts": {
+    "file": "assets/spotify-screen-A-tQnu8J.js",
+    "name": "spotify-screen",
+    "src": "src/spotify-screen.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_three-BaonVORo.js",
+      "_youtube-screen-visibility-BJK0Smyt.js"
     ]
   },
   "src/tetris-game.ts": {
-    "file": "assets/tetris-game-CnzPszGU.js",
+    "file": "assets/tetris-game-D3ZY3tzD.js",
     "name": "tetris-game",
     "src": "src/tetris-game.ts",
     "isDynamicEntry": true,
@@ -234,7 +277,7 @@
     ]
   },
   "src/thrane-screens.ts": {
-    "file": "assets/thrane-screens-CCfG_fY7.js",
+    "file": "assets/thrane-screens-CPArakHq.js",
     "name": "thrane-screens",
     "src": "src/thrane-screens.ts",
     "isDynamicEntry": true,
@@ -253,7 +296,7 @@
     ]
   },
   "src/whiteboard-game.ts": {
-    "file": "assets/whiteboard-game-y7czuCJd.js",
+    "file": "assets/whiteboard-game-DTvIv-sM.js",
     "name": "whiteboard-game",
     "src": "src/whiteboard-game.ts",
     "isDynamicEntry": true,
@@ -266,13 +309,13 @@
     ]
   },
   "src/youtube-screen.ts": {
-    "file": "assets/youtube-screen-BXC5DgfM.js",
+    "file": "assets/youtube-screen-DbuYY1YS.js",
     "name": "youtube-screen",
     "src": "src/youtube-screen.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
-      "index.html"
+      "_youtube-screen-visibility-BJK0Smyt.js"
     ]
   }
 }

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { HeadCamera } from '../src/head-camera.ts';
+import { HeadCamera } from '../src/input/head-camera.ts';
 
 function camera(overrides = {}) {
   let time = 0, position = .5;

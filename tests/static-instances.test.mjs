@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Group, Mesh, MeshBasicMaterial, BoxGeometry, Matrix4, Box3, Vector3, Raycaster } from 'three';
-import { instanceStatic } from '../src/static-instances.mjs';
+import { instanceStatic } from '../src/scene/static-instances.mjs';
 test('instances preserve world transforms, bounds and picking through rotated parents',()=>{
  const root=new Group();root.position.set(3,0,4);root.rotation.y=.3;
  const geometry=new BoxGeometry(1,1,1),material=new MeshBasicMaterial();const meshes=[];
