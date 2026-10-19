@@ -10,7 +10,8 @@ canvas:active { cursor: grabbing; }
 :focus-visible { outline: 3px solid #247453; outline-offset: 4px; }
 canvas:focus-visible { outline-offset: -5px; }
 .youtube-layer { position: absolute; inset: 0; pointer-events: none; }
-.youtube-screen { border: 0; background: oklch(18% 0 none); backface-visibility: hidden; }
+.youtube-panel { backface-visibility: hidden; }
+.youtube-screen { display: block; border: 0; background: oklch(18% 0 none); }
 .spotify-layer { position: absolute; inset: 0; pointer-events: none; }
 .spotify-panel { backface-visibility: hidden; }
 .spotify-screen { display: block; border: 0; border-radius: 12px; background: oklch(18% 0 none); }

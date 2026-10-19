@@ -1,150 +1,150 @@
 {
-  "assets/index-C3UX8aC2.js": [
+  "assets/index-DCJ41q48.js": [
     "\u0000vite/modulepreload-polyfill.js",
     "/src/style.css",
-    "/src/load-queue.mjs",
-    "/src/asset-cache.mjs",
-    "/src/feature-triggers.mjs",
-    "/src/image-assets.ts",
-    "/src/materials.ts",
-    "/src/layout.mjs",
-    "/src/placement.mjs",
+    "/src/loading/load-queue.mjs",
+    "/src/loading/asset-cache.mjs",
+    "/src/loading/feature-triggers.mjs",
+    "/src/textures/image-assets.ts",
+    "/src/textures/materials.ts",
+    "/src/office/layout.mjs",
+    "/src/office/placement.mjs",
     "/node_modules/.pnpm/three@0.186.1/node_modules/three/examples/jsm/geometries/RoundedBoxGeometry.js",
-    "/src/geometry-cache.mjs",
-    "/src/geometry.ts",
-    "/src/architecture.ts",
-    "/src/lobby-layout.mjs",
-    "/src/workspace-layout.mjs",
-    "/src/day21-layout.mjs",
-    "/src/movement.mjs",
-    "/src/restrooms.ts",
-    "/src/plants.ts",
-    "/src/minecraft.ts",
-    "/src/kitchen.ts",
-    "/src/lobby.ts",
-    "/src/workspace-shell.ts",
-    "/src/proximity-wallpaper.mjs",
-    "/src/youtube-wallpaper.ts",
-    "/src/static-instances.mjs",
-    "/src/lazy-feature.mjs",
-    "/src/lazy-screens.ts",
-    "/src/assets/thrane-pixel-pinup.webp",
-    "/src/assets/thrane-children.webp",
-    "/src/assets/astro-logo.png",
-    "/src/assets/annie-graphs.svg",
-    "/src/assets/annie-diagrams.svg",
+    "/src/scene/geometry-cache.mjs",
+    "/src/scene/geometry.ts",
+    "/src/scene/architecture.ts",
+    "/src/office/lobby-layout.mjs",
+    "/src/office/workspace-layout.mjs",
+    "/src/office/day21-layout.mjs",
+    "/src/navigation/movement.mjs",
+    "/src/office/restrooms.ts",
+    "/src/scene/plants.ts",
+    "/src/office/minecraft.ts",
+    "/src/office/kitchen.ts",
+    "/src/office/lobby.ts",
+    "/src/office/workspace-shell.ts",
+    "/src/textures/proximity-wallpaper.mjs",
+    "/src/textures/youtube-wallpaper.ts",
+    "/src/scene/static-instances.mjs",
+    "/src/loading/lazy-feature.mjs",
+    "/src/screens/lazy-screens.ts",
+    "/src/textures/images/thrane-pixel-pinup.webp",
+    "/src/textures/images/thrane-children.webp",
+    "/src/textures/images/astro-logo.png",
+    "/src/textures/images/annie-graphs.svg",
+    "/src/textures/images/annie-diagrams.svg",
     "\u0000vite/preload-helper.js",
-    "/src/workspace.ts",
-    "/src/day21-shell.ts",
-    "/src/day21.ts",
-    "/src/model.ts",
+    "/src/office/workspace.ts",
+    "/src/office/day21-shell.ts",
+    "/src/office/day21.ts",
+    "/src/office/model.ts",
     "/node_modules/.pnpm/three@0.186.1/node_modules/three/examples/jsm/controls/OrbitControls.js",
-    "/src/navigation.ts",
-    "/src/minimap.ts",
-    "/src/coffee-layout.mjs",
-    "/src/visitor-walk.mjs",
-    "/src/assets/apply-monogram.svg",
-    "/src/visitor.ts",
-    "/src/scene-surfaces.mjs",
-    "/src/feature-status.ts",
-    "/src/holbech-screen-buttons.mjs",
-    "/src/holbech-screen-control.mjs",
-    "/src/david-director.mjs",
-    "/src/david-screen-control.mjs",
+    "/src/navigation/navigation.ts",
+    "/src/navigation/minimap.ts",
+    "/src/easter-eggs/coffee-layout.mjs",
+    "/src/characters/visitor-walk.mjs",
+    "/src/textures/images/apply-monogram.svg",
+    "/src/characters/visitor.ts",
+    "/src/scene/scene-surfaces.mjs",
+    "/src/loading/feature-status.ts",
+    "/src/screens/holbech-screen-buttons.mjs",
+    "/src/screens/holbech-screen-control.mjs",
+    "/src/screens/david-director.mjs",
+    "/src/screens/david-screen-control.mjs",
     "/src/main.ts",
     "/index.html"
   ],
-  "assets/anja-screens-BGOok4xy.js": [
-    "/src/assets/anja-fridge-webcam.webp",
-    "/src/assets/anja-elevator-webcam.webp",
-    "/src/anja-screens.ts"
+  "assets/anja-screens-D_0mMAme.js": [
+    "/src/textures/images/anja-fridge-webcam.webp",
+    "/src/textures/images/anja-elevator-webcam.webp",
+    "/src/screens/anja-screens.ts"
   ],
-  "assets/coffee-controller-CkE2exW9.js": [
-    "/src/coffee-controller.ts"
+  "assets/coffee-controller-DZ_W3WtT.js": [
+    "/src/easter-eggs/coffee-controller.ts"
   ],
-  "assets/creeper-controller-CzospA_c.js": [
-    "/src/creeper-controller.ts"
+  "assets/creeper-controller-B6Q22H66.js": [
+    "/src/easter-eggs/creeper-controller.ts"
   ],
-  "assets/david-screens-B9_zu7Qn.js": [
-    "/src/david-screens.ts"
+  "assets/david-screens-DWEmftmT.js": [
+    "/src/screens/david-screens.ts"
   ],
-  "assets/donkey-kong-game-DpJC8gfq.js": [
-    "/src/donkey-kong.mjs",
-    "/src/donkey-kong-model.ts",
-    "/src/donkey-kong-game.ts"
+  "assets/donkey-kong-game-CT1LYVE6.js": [
+    "/src/games/donkey-kong/donkey-kong.mjs",
+    "/src/games/donkey-kong/donkey-kong-model.ts",
+    "/src/games/donkey-kong/donkey-kong-game.ts"
   ],
-  "assets/easter-egg-state-BngrFpJ-.js": [
-    "/src/easter-egg-state.mjs"
+  "assets/easter-egg-state-DVPKJSwb.js": [
+    "/src/easter-eggs/easter-egg-state.mjs"
   ],
-  "assets/easter-interaction-S0SYfylp.js": [
-    "/src/easter-interaction.ts"
+  "assets/easter-interaction-Bnc-vmqI.js": [
+    "/src/easter-eggs/easter-interaction.ts"
   ],
-  "assets/gansted-screens-Cf8sM8id.js": [
-    "/src/assets/gansted-spotify-half.png",
-    "/src/assets/gansted-website-flowchart.webp",
-    "/src/gansted-screens.ts"
+  "assets/gansted-screens-h_puaj2d.js": [
+    "/src/textures/images/gansted-spotify-half.png",
+    "/src/textures/images/gansted-website-flowchart.webp",
+    "/src/screens/gansted-screens.ts"
   ],
   "assets/head-camera-browser-CE7mejaJ.js": [
-    "/src/head-camera-browser.ts"
+    "/src/input/head-camera-browser.ts"
   ],
-  "assets/henrik-screens-BYEHjHKg.js": [
-    "/src/assets/1000mods-cheat-death.webp",
-    "/src/henrik-screens.ts"
+  "assets/henrik-screens-D98kOOus.js": [
+    "/src/textures/images/1000mods-cheat-death.webp",
+    "/src/screens/henrik-screens.ts"
   ],
-  "assets/holbech-screens-CtIKOZYa.js": [
-    "/src/holbech-screens.ts"
+  "assets/holbech-screens-CzpxUMFA.js": [
+    "/src/screens/holbech-screens.ts"
   ],
-  "assets/jesper-screen-DJ6MDu8h.js": [
-    "/src/jesper-screen.ts"
+  "assets/jesper-screen-QDFIw2OW.js": [
+    "/src/screens/jesper-screen.ts"
   ],
-  "assets/lars-screens-Dz3Zlt0L.js": [
-    "/src/lars-screens.ts"
+  "assets/lars-screens-D_55wdhi.js": [
+    "/src/screens/lars-screens.ts"
   ],
-  "assets/nicolai-screens-BaEllgGG.js": [
-    "/src/nicolai-screens.ts"
+  "assets/nicolai-screens-2zSScBjm.js": [
+    "/src/screens/nicolai-screens.ts"
   ],
-  "assets/palm-screens-xVH41Lxs.js": [
-    "/src/palm-screens.ts"
+  "assets/palm-screens-C7lAfJ2-.js": [
+    "/src/screens/palm-screens.ts"
   ],
-  "assets/salmon-controller-CMbmTn3J.js": [
-    "/src/salmon-controller.ts"
+  "assets/salmon-controller-C2I7DmoM.js": [
+    "/src/easter-eggs/salmon-controller.ts"
   ],
-  "assets/spotify-screen-A-tQnu8J.js": [
-    "/src/spotify-screen.ts"
+  "assets/spotify-screen-ClHhwyKT.js": [
+    "/src/screens/spotify-screen.ts"
   ],
-  "assets/tetris-game-D3ZY3tzD.js": [
-    "/src/tetris.mjs",
-    "/src/tetris-screen.ts",
-    "/src/tetris-game.ts"
+  "assets/tetris-game-veRq5Aox.js": [
+    "/src/games/tetris/tetris.mjs",
+    "/src/games/tetris/tetris-screen.ts",
+    "/src/games/tetris/tetris-game.ts"
   ],
-  "assets/thrane-screens-CPArakHq.js": [
-    "/src/thrane-screens.ts"
+  "assets/thrane-screens-vuTVYEH2.js": [
+    "/src/screens/thrane-screens.ts"
   ],
   "assets/three-BaonVORo.js": [
     "/node_modules/.pnpm/three@0.186.1/node_modules/three/build/three.core.js",
     "/node_modules/.pnpm/three@0.186.1/node_modules/three/build/three.module.js"
   ],
   "assets/tv-game-BVhuyh8Z.js": [
-    "/src/runner.mjs",
-    "/src/runner-screen.ts",
-    "/src/tv-game.ts"
+    "/src/games/runner/runner.mjs",
+    "/src/games/runner/runner-screen.ts",
+    "/src/games/runner/tv-game.ts"
   ],
-  "assets/whiteboard-game-DTvIv-sM.js": [
-    "/src/invaders.mjs",
-    "/src/whiteboard-play.mjs",
-    "/src/invaders-screen.ts",
-    "/src/sound-shots.mjs",
-    "/src/microphone-shots.ts",
-    "/src/head-steering.mjs",
-    "/src/head-camera.ts",
-    "/src/whiteboard-game.ts"
+  "assets/whiteboard-game-CNj-NvpW.js": [
+    "/src/games/invaders/invaders.mjs",
+    "/src/games/invaders/whiteboard-play.mjs",
+    "/src/games/invaders/invaders-screen.ts",
+    "/src/input/sound-shots.mjs",
+    "/src/input/microphone-shots.ts",
+    "/src/input/head-steering.mjs",
+    "/src/input/head-camera.ts",
+    "/src/games/invaders/whiteboard-game.ts"
   ],
-  "assets/youtube-screen-DbuYY1YS.js": [
-    "/src/youtube-screen.ts"
+  "assets/youtube-screen-ByekOJlH.js": [
+    "/src/screens/youtube-screen.ts"
   ],
-  "assets/youtube-screen-visibility-BJK0Smyt.js": [
+  "assets/youtube-screen-visibility-CZL2nHOO.js": [
     "/node_modules/.pnpm/three@0.186.1/node_modules/three/examples/jsm/renderers/CSS3DRenderer.js",
-    "/src/visibility-objects.mjs",
-    "/src/youtube-screen-visibility.mjs"
+    "/src/scene/visibility-objects.mjs",
+    "/src/screens/youtube-screen-visibility.mjs"
   ]
 }

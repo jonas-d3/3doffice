@@ -23,7 +23,12 @@ export class YoutubeScreen {
     this.iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
     this.iframe.allowFullscreen = true;
     this.iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-    this.display = new CSS3DObject(this.iframe); this.display.visible = false;
+    // Transform a wrapper: Chromium misses pointer hits on an iframe rotated 90° directly.
+    const panel = document.createElement('div');
+    panel.className = 'youtube-panel';
+    panel.style.inlineSize = this.iframe.width + 'px'; panel.style.blockSize = this.iframe.height + 'px';
+    panel.appendChild(this.iframe);
+    this.display = new CSS3DObject(panel); this.display.visible = false;
     this.scene.add(this.display);
     this.renderer.domElement.className = 'youtube-layer';
     // CSS3DRenderer defaults to overflow:hidden, which can scroll when iframe controls gain focus.
