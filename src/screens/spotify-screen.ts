@@ -10,6 +10,7 @@ export class SpotifyScreen {
   private renderer = new CSS3DRenderer();
   private scene = new THREE.Scene();
   private iframe = document.createElement('iframe');
+  private startButton = document.createElement('button');
   private display: CSS3DObject;
   private center = new THREE.Vector3();
   private worldScale = new THREE.Vector3();
@@ -26,14 +27,25 @@ export class SpotifyScreen {
     this.iframe.width = String(playerWidth); this.iframe.height = String(height);
     this.iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
     this.iframe.allowFullscreen = true;
-    this.iframe.loading = 'lazy';
     this.iframe.referrerPolicy = 'strict-origin-when-cross-origin';
     // Transform a wrapper: Chromium misses pointer hits on an iframe rotated 90° directly.
     const panel = document.createElement('div');
     panel.className = 'spotify-panel';
     panel.style.inlineSize = `${playerWidth}px`; panel.style.blockSize = `${height}px`;
-    panel.appendChild(this.iframe);
+    this.startButton.type = 'button';
+    this.startButton.className = 'media-screen-start';
+    this.startButton.textContent = '▶ Åbn Spotify';
+    this.startButton.setAttribute('aria-label', 'Åbn Spotify på Gansteds skærm');
+    panel.appendChild(this.startButton);
     this.display = new CSS3DObject(panel); this.display.visible = false;
+    panel.style.pointerEvents = 'none';
+    this.startButton.addEventListener('click', event => {
+      if (this.loaded || !this.display.visible || document.hidden) return;
+      this.iframe.src = playlistUrl;
+      panel.appendChild(this.iframe); this.loaded = true; this.startButton.hidden = true;
+      panel.style.pointerEvents = 'auto';
+      if (event.detail === 0) this.iframe.focus({ preventScroll: true });
+    });
     this.scene.add(this.display);
     this.renderer.domElement.className = 'spotify-layer';
     this.renderer.domElement.hidden = true;
@@ -51,7 +63,9 @@ export class SpotifyScreen {
     this.display.visible = false; this.renderer.domElement.hidden = true;
     if (!this.loaded) return;
     // Removing the Spotify document stops playback without a cross-origin player API.
-    this.iframe.removeAttribute('src'); this.loaded = false;
+    this.iframe.removeAttribute('src'); this.iframe.remove(); this.loaded = false;
+    this.startButton.hidden = false;
+    this.display.element.style.pointerEvents = 'none';
   }
 
   update(camera: THREE.PerspectiveCamera, enabled: boolean) {
@@ -67,7 +81,6 @@ export class SpotifyScreen {
     // Cover only the left half; the right half keeps the flowchart from the monitor texture.
     this.display.position.set(-size.width / 4, 0, 0).applyMatrix4(this.screen.matrixWorld);
     this.display.scale.set(size.width / width, size.height / height, 1).multiply(this.worldScale);
-    if (!this.loaded) { this.iframe.src = playlistUrl; this.loaded = true; }
     this.renderer.render(this.scene, camera);
   }
 }

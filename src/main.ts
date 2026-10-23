@@ -197,7 +197,7 @@ renderer.setAnimationLoop(now => {
     if (firstFrame) { firstFrame = false; requestAnimationFrame(() => { metrics.firstFrame = performance.now(); loadQueue.release(); }); }
     previousPosition.copy(camera.position); previousRotation.copy(camera.quaternion); needsRender = false;
   }
-  youtube.value?.update(camera, !dialog.open && !tvGame.value?.active);
+  youtube.value?.update(camera, !blocked());
   spotify.value?.update(camera, !blocked());
 });
 }

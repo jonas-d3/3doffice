@@ -1,5 +1,5 @@
 {
-  "assets/index-DCJ41q48.js": [
+  "assets/index-DSdCpw-U.js": [
     "\u0000vite/modulepreload-polyfill.js",
     "/src/style.css",
     "/src/loading/load-queue.mjs",
@@ -24,6 +24,7 @@
     "/src/office/lobby.ts",
     "/src/office/workspace-shell.ts",
     "/src/textures/proximity-wallpaper.mjs",
+    "/src/textures/images/martin-youtube-preview.webp",
     "/src/textures/youtube-wallpaper.ts",
     "/src/scene/static-instances.mjs",
     "/src/loading/lazy-feature.mjs",
@@ -54,32 +55,32 @@
     "/src/main.ts",
     "/index.html"
   ],
-  "assets/anja-screens-D_0mMAme.js": [
+  "assets/anja-screens-DDIH02W5.js": [
     "/src/textures/images/anja-fridge-webcam.webp",
     "/src/textures/images/anja-elevator-webcam.webp",
     "/src/screens/anja-screens.ts"
   ],
-  "assets/coffee-controller-DZ_W3WtT.js": [
+  "assets/coffee-controller-qfxUaEsO.js": [
     "/src/easter-eggs/coffee-controller.ts"
   ],
-  "assets/creeper-controller-B6Q22H66.js": [
+  "assets/creeper-controller-Dd_ErtKT.js": [
     "/src/easter-eggs/creeper-controller.ts"
   ],
-  "assets/david-screens-DWEmftmT.js": [
+  "assets/david-screens-IbO_9QCB.js": [
     "/src/screens/david-screens.ts"
   ],
-  "assets/donkey-kong-game-CT1LYVE6.js": [
+  "assets/donkey-kong-game-qNpevVXS.js": [
     "/src/games/donkey-kong/donkey-kong.mjs",
     "/src/games/donkey-kong/donkey-kong-model.ts",
     "/src/games/donkey-kong/donkey-kong-game.ts"
   ],
-  "assets/easter-egg-state-DVPKJSwb.js": [
+  "assets/easter-egg-state-C50QrGYk.js": [
     "/src/easter-eggs/easter-egg-state.mjs"
   ],
-  "assets/easter-interaction-Bnc-vmqI.js": [
+  "assets/easter-interaction-ColFY1oV.js": [
     "/src/easter-eggs/easter-interaction.ts"
   ],
-  "assets/gansted-screens-h_puaj2d.js": [
+  "assets/gansted-screens-DW0xwAcD.js": [
     "/src/textures/images/gansted-spotify-half.png",
     "/src/textures/images/gansted-website-flowchart.webp",
     "/src/screens/gansted-screens.ts"
@@ -87,37 +88,37 @@
   "assets/head-camera-browser-CE7mejaJ.js": [
     "/src/input/head-camera-browser.ts"
   ],
-  "assets/henrik-screens-D98kOOus.js": [
+  "assets/henrik-screens-DWtT99xA.js": [
     "/src/textures/images/1000mods-cheat-death.webp",
     "/src/screens/henrik-screens.ts"
   ],
-  "assets/holbech-screens-CzpxUMFA.js": [
+  "assets/holbech-screens-Cauej3YS.js": [
     "/src/screens/holbech-screens.ts"
   ],
-  "assets/jesper-screen-QDFIw2OW.js": [
+  "assets/jesper-screen-CQTDswFL.js": [
     "/src/screens/jesper-screen.ts"
   ],
-  "assets/lars-screens-D_55wdhi.js": [
+  "assets/lars-screens-D60lYQ0w.js": [
     "/src/screens/lars-screens.ts"
   ],
-  "assets/nicolai-screens-2zSScBjm.js": [
+  "assets/nicolai-screens-cZcmraIV.js": [
     "/src/screens/nicolai-screens.ts"
   ],
-  "assets/palm-screens-C7lAfJ2-.js": [
+  "assets/palm-screens-CO53aBGt.js": [
     "/src/screens/palm-screens.ts"
   ],
-  "assets/salmon-controller-C2I7DmoM.js": [
+  "assets/salmon-controller-D5BXm1iv.js": [
     "/src/easter-eggs/salmon-controller.ts"
   ],
-  "assets/spotify-screen-ClHhwyKT.js": [
+  "assets/spotify-screen-D2obuSGZ.js": [
     "/src/screens/spotify-screen.ts"
   ],
-  "assets/tetris-game-veRq5Aox.js": [
+  "assets/tetris-game-7gq5zyUD.js": [
     "/src/games/tetris/tetris.mjs",
     "/src/games/tetris/tetris-screen.ts",
     "/src/games/tetris/tetris-game.ts"
   ],
-  "assets/thrane-screens-vuTVYEH2.js": [
+  "assets/thrane-screens-m8hm4CjN.js": [
     "/src/screens/thrane-screens.ts"
   ],
   "assets/three-BaonVORo.js": [
@@ -129,7 +130,7 @@
     "/src/games/runner/runner-screen.ts",
     "/src/games/runner/tv-game.ts"
   ],
-  "assets/whiteboard-game-CNj-NvpW.js": [
+  "assets/whiteboard-game-C-q92My-.js": [
     "/src/games/invaders/invaders.mjs",
     "/src/games/invaders/whiteboard-play.mjs",
     "/src/games/invaders/invaders-screen.ts",
@@ -139,10 +140,10 @@
     "/src/input/head-camera.ts",
     "/src/games/invaders/whiteboard-game.ts"
   ],
-  "assets/youtube-screen-ByekOJlH.js": [
+  "assets/youtube-screen-gmG-oT0x.js": [
     "/src/screens/youtube-screen.ts"
   ],
-  "assets/youtube-screen-visibility-CZL2nHOO.js": [
+  "assets/youtube-screen-visibility-DzjMaTAm.js": [
     "/node_modules/.pnpm/three@0.186.1/node_modules/three/examples/jsm/renderers/CSS3DRenderer.js",
     "/src/scene/visibility-objects.mjs",
     "/src/screens/youtube-screen-visibility.mjs"

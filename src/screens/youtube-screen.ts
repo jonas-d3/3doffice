@@ -8,15 +8,18 @@ export class YoutubeScreen {
   private renderer = new CSS3DRenderer();
   private scene = new THREE.Scene();
   private iframe = document.createElement('iframe');
+  private startButton = document.createElement('button');
   private display: CSS3DObject;
   private center = new THREE.Vector3();
   private worldScale = new THREE.Vector3();
   private visible: ReturnType<typeof createScreenVisibility>;
   private loaded = false;
+  private screen: THREE.Mesh<THREE.PlaneGeometry>;
 
-  constructor(private screen: THREE.Mesh, scene: THREE.Scene, canvas: HTMLCanvasElement) {
+  constructor(screen: THREE.Mesh, scene: THREE.Scene, canvas: HTMLCanvasElement) {
     if (!(screen.geometry instanceof THREE.PlaneGeometry)) throw new Error('YouTube requires a flat monitor');
-    this.visible = createScreenVisibility(screen as THREE.Mesh<THREE.PlaneGeometry>, scene);
+    this.screen = screen as THREE.Mesh<THREE.PlaneGeometry>;
+    this.visible = createScreenVisibility(this.screen, scene);
     this.iframe.className = 'youtube-screen';
     this.iframe.title = 'YouTube på Martins anden skærm';
     this.iframe.width = '960'; this.iframe.height = '529';
@@ -27,15 +30,30 @@ export class YoutubeScreen {
     const panel = document.createElement('div');
     panel.className = 'youtube-panel';
     panel.style.inlineSize = this.iframe.width + 'px'; panel.style.blockSize = this.iframe.height + 'px';
-    panel.appendChild(this.iframe);
+    this.startButton.type = 'button';
+    this.startButton.className = 'media-screen-start';
+    this.startButton.textContent = '▶ Afspil video';
+    this.startButton.setAttribute('aria-label', 'Afspil YouTube på Martins skærm');
+    panel.appendChild(this.startButton);
     this.display = new CSS3DObject(panel); this.display.visible = false;
+    panel.style.pointerEvents = 'none';
+    this.startButton.addEventListener('click', event => {
+      if (this.loaded || !this.display.visible || document.hidden) return;
+      this.iframe.src = `https://www.youtube.com/embed/${videoId}?playsinline=1&rel=0&autoplay=1`;
+      panel.appendChild(this.iframe); this.loaded = true; this.startButton.hidden = true;
+      panel.style.pointerEvents = 'auto';
+      if (event.detail === 0) this.iframe.focus({ preventScroll: true });
+    });
     this.scene.add(this.display);
     this.renderer.domElement.className = 'youtube-layer';
+    this.renderer.domElement.hidden = true;
     // CSS3DRenderer defaults to overflow:hidden, which can scroll when iframe controls gain focus.
     this.renderer.domElement.style.overflow = 'clip';
     canvas.after(this.renderer.domElement);
     this.resize();
     document.addEventListener('visibilitychange', () => { if (document.hidden) this.unload(); });
+    window.addEventListener('pagehide', () => this.unload());
+    canvas.addEventListener('webglcontextlost', () => this.unload());
   }
 
   resize() { this.renderer.setSize(innerWidth, innerHeight); }
@@ -44,7 +62,9 @@ export class YoutubeScreen {
     this.display.visible = false; this.renderer.domElement.hidden = true;
     if (!this.loaded) return;
     // Removing the document also stops its audio, including when the tab is hidden.
-    this.iframe.removeAttribute('src'); this.loaded = false;
+    this.iframe.removeAttribute('src'); this.iframe.remove(); this.loaded = false;
+    this.startButton.hidden = false;
+    this.display.element.style.pointerEvents = 'none';
   }
 
   update(camera: THREE.PerspectiveCamera, enabled: boolean) {
@@ -58,10 +78,6 @@ export class YoutubeScreen {
       this.screen.matrixWorld.decompose(this.display.position, this.display.quaternion, this.worldScale);
       const { width, height } = (this.screen.geometry as THREE.PlaneGeometry).parameters;
       this.display.scale.set(width / 960, height / 529, 1).multiply(this.worldScale);
-      if (!this.loaded) {
-        this.iframe.src = `https://www.youtube.com/embed/${videoId}?playsinline=1&rel=0`;
-        this.loaded = true;
-      }
     }
     this.renderer.render(this.scene, camera);
   }
