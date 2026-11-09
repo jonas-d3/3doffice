@@ -13,7 +13,7 @@
     "check:bundle": "node scripts/report-bundle.mjs --check"
   },
   "dependencies": {
-    "@mediapipe/tasks-vision": "1.1.1",
+    "@mediapipe/tasks-vision": "1.2.2",
     "three": "^0.186.1"
   },
   "devDependencies": {
