@@ -58,6 +58,7 @@ En stiliseret 3D-figur inspireret af referencefotoet går automatisk fra Space I
 - Træk for at dreje. Højreklik og træk, eller vælg panoreringsværktøjet, for at panorere.
 - Scroll eller brug +/− for at zoome. Touch: én finger drejer, to fingre panorerer/zoomer.
 - Vælg Overblik, Mødebord eller Lounge for et fast udgangspunkt.
+- [Se kontoret gennem Davids øjne](https://jonas-d3.github.io/3doffice/dist/?view=david). Kameraet følger hans blik på rundturen. Vælg Overblik for at forlade visningen.
 - Vælg Gå rundt: W/A/S/D eller piletaster bevæger kameraet; træk eller Q/E drejer blikket. Shift øger hastigheden. Pileknapperne på skærmen fungerer også med touch.
 - Gå gennem den åbne dør fra Space Invaders ud i gangen. Minecraft ligger til højre; længere fremme ligger toiletentréen til venstre. Gangen fører lige frem til køkkenet, hvor sideåbningen giver adgang til passagen neden for MØDE 2. Gang, Toiletter, Minecraft, Køkken, Lille gang og Kontoret vælger et udgangspunkt i det pågældende område. Rumplanen og stednavnet følger dig mellem rummene.
 - Escape eller H vender tilbage til overblikket, når 3D-visningen har tastaturfokus.

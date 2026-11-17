@@ -1,13 +1,13 @@
 {
-  "_easter-egg-state-C50QrGYk.js": {
-    "file": "assets/easter-egg-state-C50QrGYk.js",
+  "_easter-egg-state-DdFpJ-tP.js": {
+    "file": "assets/easter-egg-state-DdFpJ-tP.js",
     "name": "easter-egg-state",
     "imports": [
       "index.html"
     ]
   },
-  "_easter-interaction-ColFY1oV.js": {
-    "file": "assets/easter-interaction-ColFY1oV.js",
+  "_easter-interaction-C7CnhfB-.js": {
+    "file": "assets/easter-interaction-C7CnhfB-.js",
     "name": "easter-interaction",
     "imports": [
       "_three-BaonVORo.js",
@@ -18,8 +18,8 @@
     "file": "assets/three-BaonVORo.js",
     "name": "three"
   },
-  "_youtube-screen-visibility-DzjMaTAm.js": {
-    "file": "assets/youtube-screen-visibility-DzjMaTAm.js",
+  "_youtube-screen-visibility-6BDT3quo.js": {
+    "file": "assets/youtube-screen-visibility-6BDT3quo.js",
     "name": "youtube-screen-visibility",
     "imports": [
       "_three-BaonVORo.js",
@@ -27,7 +27,7 @@
     ]
   },
   "index.html": {
-    "file": "assets/index-DSdCpw-U.js",
+    "file": "assets/index-BwmqlQvF.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -67,37 +67,37 @@
     ]
   },
   "src/easter-eggs/coffee-controller.ts": {
-    "file": "assets/coffee-controller-qfxUaEsO.js",
+    "file": "assets/coffee-controller-CyrcJV8D.js",
     "name": "coffee-controller",
     "src": "src/easter-eggs/coffee-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-ColFY1oV.js"
+      "_easter-interaction-C7CnhfB-.js"
     ]
   },
   "src/easter-eggs/creeper-controller.ts": {
-    "file": "assets/creeper-controller-Dd_ErtKT.js",
+    "file": "assets/creeper-controller-REMNbf0Y.js",
     "name": "creeper-controller",
     "src": "src/easter-eggs/creeper-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-ColFY1oV.js",
-      "_easter-egg-state-C50QrGYk.js"
+      "_easter-interaction-C7CnhfB-.js",
+      "_easter-egg-state-DdFpJ-tP.js"
     ]
   },
   "src/easter-eggs/salmon-controller.ts": {
-    "file": "assets/salmon-controller-D5BXm1iv.js",
+    "file": "assets/salmon-controller-9_zG5Ryq.js",
     "name": "salmon-controller",
     "src": "src/easter-eggs/salmon-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-ColFY1oV.js"
+      "_easter-interaction-C7CnhfB-.js"
     ]
   },
   "src/fonts/virgil.woff2": {
@@ -105,7 +105,7 @@
     "src": "src/fonts/virgil.woff2"
   },
   "src/games/donkey-kong/donkey-kong-game.ts": {
-    "file": "assets/donkey-kong-game-qNpevVXS.js",
+    "file": "assets/donkey-kong-game-DdEoz6ra.js",
     "name": "donkey-kong-game",
     "src": "src/games/donkey-kong/donkey-kong-game.ts",
     "isDynamicEntry": true,
@@ -115,7 +115,7 @@
     ]
   },
   "src/games/invaders/whiteboard-game.ts": {
-    "file": "assets/whiteboard-game-C-q92My-.js",
+    "file": "assets/whiteboard-game-DPQ_NFIR.js",
     "name": "whiteboard-game",
     "src": "src/games/invaders/whiteboard-game.ts",
     "isDynamicEntry": true,
@@ -137,7 +137,7 @@
     ]
   },
   "src/games/tetris/tetris-game.ts": {
-    "file": "assets/tetris-game-7gq5zyUD.js",
+    "file": "assets/tetris-game-B0zhtz9_.js",
     "name": "tetris-game",
     "src": "src/games/tetris/tetris-game.ts",
     "isDynamicEntry": true,
@@ -156,7 +156,7 @@
     ]
   },
   "src/screens/anja-screens.ts": {
-    "file": "assets/anja-screens-DDIH02W5.js",
+    "file": "assets/anja-screens-DpR5PsMa.js",
     "name": "anja-screens",
     "src": "src/screens/anja-screens.ts",
     "isDynamicEntry": true,
@@ -170,7 +170,7 @@
     ]
   },
   "src/screens/david-screens.ts": {
-    "file": "assets/david-screens-IbO_9QCB.js",
+    "file": "assets/david-screens-CrsqeQpX.js",
     "name": "david-screens",
     "src": "src/screens/david-screens.ts",
     "isDynamicEntry": true,
@@ -180,7 +180,7 @@
     ]
   },
   "src/screens/gansted-screens.ts": {
-    "file": "assets/gansted-screens-DW0xwAcD.js",
+    "file": "assets/gansted-screens-D29evJRf.js",
     "name": "gansted-screens",
     "src": "src/screens/gansted-screens.ts",
     "isDynamicEntry": true,
@@ -194,7 +194,7 @@
     ]
   },
   "src/screens/henrik-screens.ts": {
-    "file": "assets/henrik-screens-DWtT99xA.js",
+    "file": "assets/henrik-screens-CJll5_iS.js",
     "name": "henrik-screens",
     "src": "src/screens/henrik-screens.ts",
     "isDynamicEntry": true,
@@ -207,7 +207,7 @@
     ]
   },
   "src/screens/holbech-screens.ts": {
-    "file": "assets/holbech-screens-Cauej3YS.js",
+    "file": "assets/holbech-screens-BKUiCq6P.js",
     "name": "holbech-screens",
     "src": "src/screens/holbech-screens.ts",
     "isDynamicEntry": true,
@@ -217,18 +217,18 @@
     ]
   },
   "src/screens/jesper-screen.ts": {
-    "file": "assets/jesper-screen-CQTDswFL.js",
+    "file": "assets/jesper-screen-ILpM3H0c.js",
     "name": "jesper-screen",
     "src": "src/screens/jesper-screen.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-egg-state-C50QrGYk.js"
+      "_easter-egg-state-DdFpJ-tP.js"
     ]
   },
   "src/screens/lars-screens.ts": {
-    "file": "assets/lars-screens-D60lYQ0w.js",
+    "file": "assets/lars-screens-BTnoC9vk.js",
     "name": "lars-screens",
     "src": "src/screens/lars-screens.ts",
     "isDynamicEntry": true,
@@ -238,7 +238,7 @@
     ]
   },
   "src/screens/nicolai-screens.ts": {
-    "file": "assets/nicolai-screens-cZcmraIV.js",
+    "file": "assets/nicolai-screens-MxIPRQRz.js",
     "name": "nicolai-screens",
     "src": "src/screens/nicolai-screens.ts",
     "isDynamicEntry": true,
@@ -248,7 +248,7 @@
     ]
   },
   "src/screens/palm-screens.ts": {
-    "file": "assets/palm-screens-CO53aBGt.js",
+    "file": "assets/palm-screens-C1J-OLjF.js",
     "name": "palm-screens",
     "src": "src/screens/palm-screens.ts",
     "isDynamicEntry": true,
@@ -258,17 +258,17 @@
     ]
   },
   "src/screens/spotify-screen.ts": {
-    "file": "assets/spotify-screen-D2obuSGZ.js",
+    "file": "assets/spotify-screen-DekZOcgq.js",
     "name": "spotify-screen",
     "src": "src/screens/spotify-screen.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
-      "_youtube-screen-visibility-DzjMaTAm.js"
+      "_youtube-screen-visibility-6BDT3quo.js"
     ]
   },
   "src/screens/thrane-screens.ts": {
-    "file": "assets/thrane-screens-m8hm4CjN.js",
+    "file": "assets/thrane-screens-CbKoVF1V.js",
     "name": "thrane-screens",
     "src": "src/screens/thrane-screens.ts",
     "isDynamicEntry": true,
@@ -278,13 +278,13 @@
     ]
   },
   "src/screens/youtube-screen.ts": {
-    "file": "assets/youtube-screen-gmG-oT0x.js",
+    "file": "assets/youtube-screen-CpFXs6Ia.js",
     "name": "youtube-screen",
     "src": "src/screens/youtube-screen.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
-      "_youtube-screen-visibility-DzjMaTAm.js"
+      "_youtube-screen-visibility-6BDT3quo.js"
     ]
   },
   "src/textures/images/1000mods-cheat-death.webp": {

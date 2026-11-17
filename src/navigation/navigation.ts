@@ -7,8 +7,8 @@ import { lobbyPreset } from '../office/lobby-layout.mjs';
 import { workspacePreset } from '../office/workspace-layout.mjs';
 import { day21Preset, tetrisPreset, donkeyKongPreset } from '../office/day21-layout.mjs';
 
-export type View = 'overview' | 'meeting' | 'lounge' | 'walk' | 'hallway' | 'restrooms' | 'minecraft' | 'kitchen' | 'lobby' | 'workspace' | 'day21' | 'tetris' | 'donkey-kong';
-const names = { overview: 'Overblik', meeting: 'Mødebord', lounge: 'Lounge', walk: 'Space Invaders · MØDE 4', hallway: 'Toiletgangen', restrooms: 'Toiletentré', minecraft: 'Minecraft · MØDE 3', kitchen: 'Køkken', lobby: 'Lille gang ved køkkenet', workspace: 'Kontoret', day21: 'Day21', tetris: 'Tetris', 'donkey-kong': 'Donkey Kong' };
+export type View = 'overview' | 'meeting' | 'lounge' | 'david' | 'walk' | 'hallway' | 'restrooms' | 'minecraft' | 'kitchen' | 'lobby' | 'workspace' | 'day21' | 'tetris' | 'donkey-kong';
+const names = { overview: 'Overblik', meeting: 'Mødebord', lounge: 'Lounge', david: 'Davids øjne', walk: 'Space Invaders · MØDE 4', hallway: 'Toiletgangen', restrooms: 'Toiletentré', minecraft: 'Minecraft · MØDE 3', kitchen: 'Køkken', lobby: 'Lille gang ved køkkenet', workspace: 'Kontoret', day21: 'Day21', tetris: 'Tetris', 'donkey-kong': 'Donkey Kong' };
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export class Navigation {
@@ -22,9 +22,10 @@ export class Navigation {
   private direction = new THREE.Vector3();
   private suspended = false;
 
-  get isWalking() { return this.view === 'walk' || this.view === 'hallway' || this.view === 'restrooms' || this.view === 'minecraft' || this.view === 'kitchen' || this.view === 'lobby' || this.view === 'workspace' || this.view === 'day21' || this.view === 'tetris' || this.view === 'donkey-kong'; }
+  get isOrbiting() { return this.view === 'overview' || this.view === 'meeting' || this.view === 'lounge'; }
+  get isWalking() { return !this.isOrbiting && this.view !== 'david'; }
 
-  constructor(readonly camera: THREE.PerspectiveCamera, readonly canvas: HTMLCanvasElement) {
+  constructor(readonly camera: THREE.PerspectiveCamera, readonly canvas: HTMLCanvasElement, private davidCamera: THREE.PerspectiveCamera, initialView: View) {
     this.controls = new OrbitControls(camera, canvas);
     this.controls.enableDamping = !reducedMotion;
     this.controls.dampingFactor = .09;
@@ -70,7 +71,7 @@ export class Navigation {
       button.addEventListener('pointerup', stop); button.addEventListener('pointercancel', stop); button.addEventListener('lostpointercapture', stop);
       button.addEventListener('click', e => { if (e.detail === 0 && this.isWalking) this.walkStep(code, .35); });
     });
-    this.setView('overview', true);
+    this.setView(initialView, true);
   }
 
   clearInput() { this.keys.clear(); this.drag = null; }
@@ -78,15 +79,16 @@ export class Navigation {
   suspend(suspended: boolean) {
     this.clearInput(); this.transition = null;
     this.suspended = suspended;
-    this.controls.enabled = !suspended && !this.isWalking;
+    this.controls.enabled = !suspended && this.isOrbiting;
   }
 
   setView(view: View, immediate = false) {
     this.clearInput(); this.transition = null;
     this.view = view;
     const walking = this.isWalking;
-    this.controls.enabled = !walking;
-    this.camera.fov = walking ? 67 : 42; this.camera.updateProjectionMatrix();
+    this.controls.enabled = this.isOrbiting;
+    this.camera.fov = view === 'david' ? this.davidCamera.fov : walking ? 67 : 42;
+    this.camera.updateProjectionMatrix();
     document.body.dataset.mode = walking ? 'walk' : view;
     document.querySelector('#view-name')!.textContent = names[view];
     document.querySelector('#map-mode')!.textContent = walking ? 'Din position' : 'Frit kamera';
@@ -95,7 +97,13 @@ export class Navigation {
       const selected = button.dataset.view === view;
       button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected));
     });
-    for (const id of ['rotate', 'pan', 'zoom-in', 'zoom-out']) document.querySelector<HTMLButtonElement>(`#${id}`)!.disabled = walking;
+    for (const id of ['rotate', 'pan', 'zoom-in', 'zoom-out']) document.querySelector<HTMLButtonElement>(`#${id}`)!.disabled = !this.isOrbiting;
+    if (view === 'david') {
+      document.querySelector('#map-mode')!.textContent = 'Davids position';
+      document.querySelector('#navigation-hint')!.textContent = 'Du følger David. Tryk Esc for overblik.';
+      this.canvas.focus({ preventScroll: true });
+      return;
+    }
     document.querySelector('#navigation-hint')!.innerHTML = walking
       ? '<span>W A S D / pile: gå</span><b>·</b><span>Træk / Q E: kig rundt</span><b>·</b><span>Esc: overblik</span>'
       : '<span>Træk: drej</span><b>·</b><span>Højretræk / to fingre: panorer</span><b>·</b><span>Scroll / knib: zoom</span>';
@@ -159,7 +167,7 @@ export class Navigation {
   }
 
   zoom(scale: number) {
-    if (this.isWalking) return;
+    if (!this.isOrbiting) return;
     this.transition = null;
     const offset = this.camera.position.clone().sub(this.controls.target);
     offset.setLength(THREE.MathUtils.clamp(offset.length() * scale, this.controls.minDistance, this.controls.maxDistance));
@@ -188,7 +196,10 @@ export class Navigation {
   update(dt: number) {
     if (this.suspended) return;
     const key = (...codes: string[]) => codes.some(code => this.keys.has(code)) ? 1 : 0;
-    if (this.isWalking) {
+    if (this.view === 'david') {
+      this.davidCamera.getWorldPosition(this.camera.position);
+      this.davidCamera.getWorldQuaternion(this.camera.quaternion);
+    } else if (this.isWalking) {
       this.yaw += (key('KeyE') - key('KeyQ')) * dt * 1.5;
       this.move(key('KeyW', 'ArrowUp') - key('KeyS', 'ArrowDown'), key('KeyD', 'ArrowRight') - key('KeyA', 'ArrowLeft'), dt * (key('ShiftLeft', 'ShiftRight') ? 2.8 : 1.65));
       this.look();
@@ -218,7 +229,7 @@ export class Navigation {
       this.controls.target.clamp(new THREE.Vector3(-29, 0, -1), new THREE.Vector3(18, 4, 25));
       this.camera.position.add(this.controls.target.clone().sub(target));
     }
-    const point = this.isWalking ? this.camera.position : this.controls.target;
+    const point = this.isOrbiting ? this.controls.target : this.camera.position;
     this.camera.getWorldDirection(this.direction);
     const angle = Math.atan2(this.direction.x, -this.direction.z) * 180 / Math.PI;
     const marker = mapPoint(point.x, point.z);

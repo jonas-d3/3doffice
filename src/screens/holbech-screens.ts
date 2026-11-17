@@ -122,7 +122,7 @@ export class HolbechScreens {
       const camera = live ? visitor.viewCamera : this.overviewCamera;
       roofs.forEach(roof => { roof.visible = live; });
       walls.forEach(wall => { wall.group.visible = live || (camera.position[wall.axis] - wall.position) * wall.inside > 0; });
-      if (live) visitor.group.visible = false;
+      visitor.group.visible = !live;
       camera.updateWorldMatrix(true, false); renderer.setRenderTarget(target); renderer.render(scene, camera);
       if (live) { this.liveDirty = false; this.elapsed = 0; } else this.dirty = false;
     } catch {

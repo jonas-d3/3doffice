@@ -28,7 +28,6 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.08;
-const navigation = new Navigation(camera, canvas);
 scene.add(new THREE.HemisphereLight('#f5f8ff', '#d6cbbc', 2.6));
 const sun = new THREE.DirectionalLight('#fff0da', 2.4);
 sun.position.set(-12, 36, 22);
@@ -53,6 +52,8 @@ const spotify = new LazyFeature('Spotify', loadQueue, () => import('./screens/sp
 spotify.prefetch();
 const visitor = new Visitor();
 scene.add(visitor.group, visitor.deskCups);
+const params = new URLSearchParams(location.search);
+const navigation = new Navigation(camera, canvas, visitor.viewCamera, params.get('view') === 'david' ? 'david' : 'overview');
 const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
 visitor.walk.paused = motionPreference.matches;
 motionPreference.addEventListener('change', () => {
@@ -131,7 +132,7 @@ THREE.DefaultLoadingManager.onLoad = () => { needsRender = true; };
 loadQueue.setPaused(document.hidden);
 document.addEventListener('visibilitychange', () => loadQueue.setPaused(document.hidden));
 let firstFrame = true;
-const measuring = new URLSearchParams(location.search).has('measure');
+const measuring = params.has('measure');
 const metrics = { modelMs, firstFrame: 0, frames: [] as object[], intervals: [] as number[] };
 if (measuring) {
   Object.assign(window, { officeDebug: { metrics, model, camera, navigation, renderer, scene, features, visitor } });
@@ -159,6 +160,7 @@ renderer.setAnimationLoop(now => {
   const dt = Math.min(elapsed, .05); previous = now;
   if (document.hidden) return;
   if (measuring && metrics.intervals.length < 3000) metrics.intervals.push(elapsed * 1000);
+  if (!tvGame.value?.active && !dialog.open && visitor.update(dt, motionPreference.matches)) needsRender = true;
   navigation.update(dt);
   loadingStatus.update();
   updateImagePriorities(camera);
@@ -173,15 +175,14 @@ renderer.setAnimationLoop(now => {
   tetrisGame.setRelevant(navigation.view === 'tetris' || screenPriority(model.tetrisGlass, camera, innerHeight) > 0);
   model.holbechScreens.value?.setPaused(blocked() || !focused);
   if (model.updateScreens(camera, dt, !motionPreference.matches && !blocked())) needsRender = true;
-  if (!tvGame.value?.active && !dialog.open && visitor.update(dt, motionPreference.matches)) needsRender = true;
   if (model.updateRestroomDoor(visitor.walk.restroomDoorClosure)) needsRender = true;
   if (tvGame.value?.update(dt)) needsRender = true;
   if (tetrisGame.value?.update(dt)) needsRender = true;
   // Its fixed simulation steps keep the tabletop game playable on slower 3D renderers.
   if (kongGame.value?.update(Math.min(elapsed, .25))) needsRender = true;
-  const walk = navigation.isWalking;
-  for (const wall of model.walls) wall.group.visible = walk || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
-  for (const roof of model.roofs) roof.visible = walk;
+  visitor.group.visible = navigation.view !== 'david';
+  for (const wall of model.walls) wall.group.visible = !navigation.isOrbiting || (camera.position[wall.axis] - wall.position) * wall.inside > 0;
+  for (const roof of model.roofs) roof.visible = !navigation.isOrbiting;
   if (whiteboardGame.value?.update(dt)) needsRender = true;
   if (coffee.value?.update()) needsRender = true;
   if (salmon.value?.update()) needsRender = true;
