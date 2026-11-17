@@ -1,13 +1,13 @@
 {
-  "_easter-egg-state-DdFpJ-tP.js": {
-    "file": "assets/easter-egg-state-DdFpJ-tP.js",
+  "_easter-egg-state-BUT1qfx5.js": {
+    "file": "assets/easter-egg-state-BUT1qfx5.js",
     "name": "easter-egg-state",
     "imports": [
       "index.html"
     ]
   },
-  "_easter-interaction-C7CnhfB-.js": {
-    "file": "assets/easter-interaction-C7CnhfB-.js",
+  "_easter-interaction-BBvmKHsy.js": {
+    "file": "assets/easter-interaction-BBvmKHsy.js",
     "name": "easter-interaction",
     "imports": [
       "_three-BaonVORo.js",
@@ -18,8 +18,8 @@
     "file": "assets/three-BaonVORo.js",
     "name": "three"
   },
-  "_youtube-screen-visibility-6BDT3quo.js": {
-    "file": "assets/youtube-screen-visibility-6BDT3quo.js",
+  "_youtube-screen-visibility-BBuERCcP.js": {
+    "file": "assets/youtube-screen-visibility-BBuERCcP.js",
     "name": "youtube-screen-visibility",
     "imports": [
       "_three-BaonVORo.js",
@@ -27,7 +27,7 @@
     ]
   },
   "index.html": {
-    "file": "assets/index-BwmqlQvF.js",
+    "file": "assets/index-Bun4MaYq.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -56,7 +56,7 @@
       "src/easter-eggs/creeper-controller.ts"
     ],
     "css": [
-      "assets/index-CBT23XKm.css"
+      "assets/index-D2j4-BXV.css"
     ],
     "assets": [
       "assets/martin-youtube-preview-I0azyiJC.webp",
@@ -67,37 +67,37 @@
     ]
   },
   "src/easter-eggs/coffee-controller.ts": {
-    "file": "assets/coffee-controller-CyrcJV8D.js",
+    "file": "assets/coffee-controller-Dz6P6l9c.js",
     "name": "coffee-controller",
     "src": "src/easter-eggs/coffee-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-C7CnhfB-.js"
+      "_easter-interaction-BBvmKHsy.js"
     ]
   },
   "src/easter-eggs/creeper-controller.ts": {
-    "file": "assets/creeper-controller-REMNbf0Y.js",
+    "file": "assets/creeper-controller-DBOfKfI2.js",
     "name": "creeper-controller",
     "src": "src/easter-eggs/creeper-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-C7CnhfB-.js",
-      "_easter-egg-state-DdFpJ-tP.js"
+      "_easter-interaction-BBvmKHsy.js",
+      "_easter-egg-state-BUT1qfx5.js"
     ]
   },
   "src/easter-eggs/salmon-controller.ts": {
-    "file": "assets/salmon-controller-9_zG5Ryq.js",
+    "file": "assets/salmon-controller-Bdryfsbv.js",
     "name": "salmon-controller",
     "src": "src/easter-eggs/salmon-controller.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-interaction-C7CnhfB-.js"
+      "_easter-interaction-BBvmKHsy.js"
     ]
   },
   "src/fonts/virgil.woff2": {
@@ -105,7 +105,7 @@
     "src": "src/fonts/virgil.woff2"
   },
   "src/games/donkey-kong/donkey-kong-game.ts": {
-    "file": "assets/donkey-kong-game-DdEoz6ra.js",
+    "file": "assets/donkey-kong-game-B19G44HC.js",
     "name": "donkey-kong-game",
     "src": "src/games/donkey-kong/donkey-kong-game.ts",
     "isDynamicEntry": true,
@@ -115,7 +115,7 @@
     ]
   },
   "src/games/invaders/whiteboard-game.ts": {
-    "file": "assets/whiteboard-game-DPQ_NFIR.js",
+    "file": "assets/whiteboard-game-B2kvVQ78.js",
     "name": "whiteboard-game",
     "src": "src/games/invaders/whiteboard-game.ts",
     "isDynamicEntry": true,
@@ -137,7 +137,7 @@
     ]
   },
   "src/games/tetris/tetris-game.ts": {
-    "file": "assets/tetris-game-B0zhtz9_.js",
+    "file": "assets/tetris-game-HDQ0LyHL.js",
     "name": "tetris-game",
     "src": "src/games/tetris/tetris-game.ts",
     "isDynamicEntry": true,
@@ -156,7 +156,7 @@
     ]
   },
   "src/screens/anja-screens.ts": {
-    "file": "assets/anja-screens-DpR5PsMa.js",
+    "file": "assets/anja-screens-CuU0TuHm.js",
     "name": "anja-screens",
     "src": "src/screens/anja-screens.ts",
     "isDynamicEntry": true,
@@ -170,7 +170,7 @@
     ]
   },
   "src/screens/david-screens.ts": {
-    "file": "assets/david-screens-CrsqeQpX.js",
+    "file": "assets/david-screens-Dw7_kONm.js",
     "name": "david-screens",
     "src": "src/screens/david-screens.ts",
     "isDynamicEntry": true,
@@ -180,7 +180,7 @@
     ]
   },
   "src/screens/gansted-screens.ts": {
-    "file": "assets/gansted-screens-D29evJRf.js",
+    "file": "assets/gansted-screens-BG9amAMn.js",
     "name": "gansted-screens",
     "src": "src/screens/gansted-screens.ts",
     "isDynamicEntry": true,
@@ -194,7 +194,7 @@
     ]
   },
   "src/screens/henrik-screens.ts": {
-    "file": "assets/henrik-screens-CJll5_iS.js",
+    "file": "assets/henrik-screens-CmbQspYk.js",
     "name": "henrik-screens",
     "src": "src/screens/henrik-screens.ts",
     "isDynamicEntry": true,
@@ -207,7 +207,7 @@
     ]
   },
   "src/screens/holbech-screens.ts": {
-    "file": "assets/holbech-screens-BKUiCq6P.js",
+    "file": "assets/holbech-screens-C3mnn6B6.js",
     "name": "holbech-screens",
     "src": "src/screens/holbech-screens.ts",
     "isDynamicEntry": true,
@@ -217,18 +217,18 @@
     ]
   },
   "src/screens/jesper-screen.ts": {
-    "file": "assets/jesper-screen-ILpM3H0c.js",
+    "file": "assets/jesper-screen-D1HlVfKW.js",
     "name": "jesper-screen",
     "src": "src/screens/jesper-screen.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
       "index.html",
-      "_easter-egg-state-DdFpJ-tP.js"
+      "_easter-egg-state-BUT1qfx5.js"
     ]
   },
   "src/screens/lars-screens.ts": {
-    "file": "assets/lars-screens-BTnoC9vk.js",
+    "file": "assets/lars-screens-CYaf7EJN.js",
     "name": "lars-screens",
     "src": "src/screens/lars-screens.ts",
     "isDynamicEntry": true,
@@ -238,7 +238,7 @@
     ]
   },
   "src/screens/nicolai-screens.ts": {
-    "file": "assets/nicolai-screens-MxIPRQRz.js",
+    "file": "assets/nicolai-screens-BaQuHPnW.js",
     "name": "nicolai-screens",
     "src": "src/screens/nicolai-screens.ts",
     "isDynamicEntry": true,
@@ -248,7 +248,7 @@
     ]
   },
   "src/screens/palm-screens.ts": {
-    "file": "assets/palm-screens-C1J-OLjF.js",
+    "file": "assets/palm-screens-C2_jYQNI.js",
     "name": "palm-screens",
     "src": "src/screens/palm-screens.ts",
     "isDynamicEntry": true,
@@ -258,17 +258,17 @@
     ]
   },
   "src/screens/spotify-screen.ts": {
-    "file": "assets/spotify-screen-DekZOcgq.js",
+    "file": "assets/spotify-screen-Bm64CbEw.js",
     "name": "spotify-screen",
     "src": "src/screens/spotify-screen.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
-      "_youtube-screen-visibility-6BDT3quo.js"
+      "_youtube-screen-visibility-BBuERCcP.js"
     ]
   },
   "src/screens/thrane-screens.ts": {
-    "file": "assets/thrane-screens-CbKoVF1V.js",
+    "file": "assets/thrane-screens-CWDKTTW5.js",
     "name": "thrane-screens",
     "src": "src/screens/thrane-screens.ts",
     "isDynamicEntry": true,
@@ -278,13 +278,13 @@
     ]
   },
   "src/screens/youtube-screen.ts": {
-    "file": "assets/youtube-screen-CpFXs6Ia.js",
+    "file": "assets/youtube-screen-DBjEL85u.js",
     "name": "youtube-screen",
     "src": "src/screens/youtube-screen.ts",
     "isDynamicEntry": true,
     "imports": [
       "_three-BaonVORo.js",
-      "_youtube-screen-visibility-6BDT3quo.js"
+      "_youtube-screen-visibility-BBuERCcP.js"
     ]
   },
   "src/textures/images/1000mods-cheat-death.webp": {

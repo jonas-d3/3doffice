@@ -65,6 +65,7 @@ body:not([data-mode="overview"]) .map-card { background: #f3f4eae8; padding: 12p
 body:not([data-mode="overview"]) #navigation-hint { background: #f3f4eae8; border-radius: 30px; padding: 7px 12px; margin-top: 9px; }
 body:not([data-mode="overview"]) .view-indicator { background: #f3f4eae8; padding: 8px 12px; border-radius: 20px; }
 body[data-mode="walk"] .side-tools { top: 30%; }
+body:is(:not([data-mode]), [data-mode="david"]) :is(.header-actions, .side-tools, .bottom-panel) { display: none; }
 dialog { width: min(480px, calc(100% - 32px)); max-height: 85dvh; overflow: auto; border: 1px solid #d8dccf; border-radius: 22px; padding: 32px; color: #25312d; background: #f8f8f2; box-shadow: 0 25px 120px #28352830; }
 dialog::backdrop { background: #26332d70; backdrop-filter: blur(7px); }
 .dialog-close { position: absolute; right: 17px; top: 17px; width: 33px; height: 33px; }
